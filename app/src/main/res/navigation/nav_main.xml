@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/fragmentPostsFeed">
+
+    <fragment
+        android:id="@+id/fragmentPostsFeed"
+        android:name="ru.testapp.nework.activity.FragmentPostsFeed"
+        android:label="FragmentPostsFeed" >
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentCreateAndEditPost2"
+            app:destination="@id/fragmentCreateAndEditPost"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentSignIn"
+            app:destination="@id/fragmentSignIn"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentSignUp"
+            app:destination="@id/fragmentSignUp"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentEvents"
+            app:destination="@id/fragmentEvents" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentUsers"
+            app:destination="@id/fragmentUsers" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCreateAndEditPost"
+        android:name="ru.testapp.nework.activity.FragmentCreateAndEditPost"
+        android:label="FragmentCreateAndEditPost" >
+        <action
+            android:id="@+id/action_fragmentCreateAndEditPost_to_fragmentPostsFeed2"
+            app:destination="@id/fragmentPostsFeed" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSignIn"
+        android:name="ru.testapp.nework.activity.FragmentSignIn"
+        android:label="FragmentSignIn" />
+    <fragment
+        android:id="@+id/fragmentSignUp"
+        android:name="ru.testapp.nework.activity.FragmentSignUp"
+        android:label="FragmentSignUp" />
+    <fragment
+        android:id="@+id/fragmentEvents"
+        android:name="ru.testapp.nework.activity.FragmentEvents"
+        android:label="FragmentEvents" >
+        <action
+            android:id="@+id/action_fragmentEvents_to_fragmentPostsFeed"
+            app:destination="@id/fragmentPostsFeed" />
+        <action
+            android:id="@+id/action_fragmentEvents_to_fragmentUsers"
+            app:destination="@id/fragmentUsers" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentUsers"
+        android:name="ru.testapp.nework.activity.FragmentUsers"
+        android:label="FragmentUsers" >
+        <action
+            android:id="@+id/action_fragmentUsers_to_fragmentPostsFeed"
+            app:destination="@id/fragmentPostsFeed" />
+        <action
+            android:id="@+id/action_fragmentUsers_to_fragmentEvents"
+            app:destination="@id/fragmentEvents" />
+    </fragment>
+</navigation>
