@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "ru.testapp.nework"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.testapp.nework"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -46,7 +46,7 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.5.2"
+    val roomVersion = "2.6.0-rc01"
     val retrofitVersion = "2.9.0"
     val retrofitGsonVersion = "2.9.0"
     val lifecycleVersion = "2.6.2"
@@ -58,7 +58,7 @@ dependencies {
     val workManagerVersion = "2.7.1"
     val pagingVersion = "3.2.0"
     val imagePickerVersion = "2.1"
-    val hiltVersion = "2.44"
+    val hiltVersion = "2.48.1"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

@@ -32,7 +32,6 @@ data class EntityEvent(
     val attachment: EventAttachmentEmbeddable?,
     val link: String?,
     val ownedByMe: Boolean = false,
-    @Embedded
     val users: Map<Long, EventUsersPreviewEmbeddable>,
 ) {
     fun toDto() = Event(
