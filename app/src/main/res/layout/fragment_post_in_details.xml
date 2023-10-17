@@ -160,6 +160,13 @@
                 app:layout_constraintStart_toEndOf="@id/postInDetailsMentionedButton"
                 app:layout_constraintTop_toTopOf="@id/postInDetailsMentionedButton"
                 tools:listitem="@layout/card_image" />
+
+            <com.yandex.mapkit.mapview.MapView
+                android:id="@+id/postInDetailsMapView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                app:layout_constraintTop_toBottomOf="@id/mentionedListShort"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </com.google.android.material.card.MaterialCardView>

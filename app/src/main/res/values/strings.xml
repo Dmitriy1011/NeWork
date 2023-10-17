@@ -64,4 +64,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="create">Create</string>
+    <string name="choose_where_open_your_image">Choose where open your image</string>
+    <string name="choose_where_open_your_video">Choose where open your video</string>
+    <string name="choose_where_open_your_audio">Choose where open your audio</string>
 </resources>

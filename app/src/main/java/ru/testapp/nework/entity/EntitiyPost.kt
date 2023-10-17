@@ -29,7 +29,6 @@ data class PostEntity(
     @Embedded
     val attachment: AttachmentEmbeddable?,
     val ownedByMe: Boolean,
-    @Embedded
     val users: Map<Long, UserPreviewEmbeddable>
 ) {
     fun toDto() = Post(

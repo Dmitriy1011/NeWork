@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardUserBinding
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
@@ -30,9 +31,7 @@ class AdapterUsers : ListAdapter<User, AdapterUsers.UserViewHolder>(UserDiffCall
                 userName.text = user.name
                 userLogin.text = user.login
 
-                val baseUrl = "https://netomedia.ru/"
-
-                val userAvaUrl = "{$baseUrl}avatars/${user.avatar}"
+                val userAvaUrl = "${BuildConfig.BASE_URL}}avatars/${user.avatar}"
 
                 userAvatar.loadAvatarImage(userAvaUrl)
             }

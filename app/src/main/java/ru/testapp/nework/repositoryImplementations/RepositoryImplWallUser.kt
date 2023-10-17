@@ -17,16 +17,18 @@ import ru.testapp.nework.entity.PostEntity
 import ru.testapp.nework.paging.RemoteMediatorUserWall
 import ru.testapp.nework.repository.RepositoryWallUser
 import java.io.IOException
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImplWallUser(
+class RepositoryImplWallUser @Inject constructor(
     private val apiServiceWallUser: ApiServiceWallUser,
     private val appDb: AppDb,
     private val dao: DaoPost,
-    private val post: Post,
     private val keyDao: DaoPostRemoteKey
 ) : RepositoryWallUser {
+
+    private lateinit var post: Post
 
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
@@ -37,7 +39,6 @@ class RepositoryImplWallUser(
             appDb = appDb,
             daoPost = dao,
             keyDao = keyDao,
-            post = post
         )
     ).flow.map { pagingData ->
         pagingData.map(PostEntity::toDto)

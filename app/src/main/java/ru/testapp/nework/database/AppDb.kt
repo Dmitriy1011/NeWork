@@ -5,8 +5,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.testapp.nework.dao.DaoEvent
 import ru.testapp.nework.dao.DaoEventRemoteKey
+import ru.testapp.nework.dao.DaoJob
 import ru.testapp.nework.dao.DaoPost
 import ru.testapp.nework.dao.DaoPostRemoteKey
+import ru.testapp.nework.dao.DaoRemoteKeyWallMy
+import ru.testapp.nework.dao.DaoRemoteKeyWallUsers
 import ru.testapp.nework.dao.DaoUser
 import ru.testapp.nework.entity.EntityEvent
 import ru.testapp.nework.entity.EntityEventRemoteKey
@@ -38,4 +41,7 @@ abstract class AppDb : RoomDatabase() {
     abstract fun userDao(): DaoUser
     abstract fun postRemoteKeyDao(): DaoPostRemoteKey
     abstract fun eventRemoteKeyDao(): DaoEventRemoteKey
+    abstract fun jobDao(): DaoJob
+    abstract fun remoteKeyWallMyDao(): DaoRemoteKeyWallMy
+    abstract fun remoteKeyWallUserDao(): DaoRemoteKeyWallUsers
 }

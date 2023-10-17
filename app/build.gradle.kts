@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,17 +10,27 @@ plugins {
 
 android {
     namespace = "ru.testapp.nework"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "ru.testapp.nework"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+            if(rootProject.file("maps.properties").exists()) {
+                properties.load(rootProject.file("maps.properties").inputStream())
+            }
+
+        buildConfigField("String", "BASE_URL", "\"https://netomedia.ru/\"")
+
+        buildConfigField("String", "MAPS_API_KEY", properties.getProperty("MAPS_API_KEY", ""))
     }
+
 
     buildTypes {
         release {
@@ -46,7 +58,7 @@ android {
 
 dependencies {
 
-    val roomVersion = "2.5.2"
+    val roomVersion = "2.6.0-rc01"
     val retrofitVersion = "2.9.0"
     val retrofitGsonVersion = "2.9.0"
     val lifecycleVersion = "2.6.2"
@@ -58,7 +70,7 @@ dependencies {
     val workManagerVersion = "2.7.1"
     val pagingVersion = "3.2.0"
     val imagePickerVersion = "2.1"
-    val hiltVersion = "2.44"
+    val hiltVersion = "2.48.1"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -96,6 +108,7 @@ dependencies {
     implementation ("androidx.room:room-paging:$roomVersion")
     implementation ("com.github.dhaval2404:imagepicker:$imagePickerVersion")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+    implementation ("com.yandex.android:maps.mobile:4.4.0-lite")
 
     coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.0.3")
 }

@@ -11,20 +11,22 @@ import kotlinx.coroutines.flow.map
 import ru.testapp.nework.api.ApiServiceWallMy
 import ru.testapp.nework.dao.DaoPost
 import ru.testapp.nework.dao.DaoPostRemoteKey
+import ru.testapp.nework.dao.DaoRemoteKeyWallMy
 import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.entity.PostEntity
 import ru.testapp.nework.paging.RemoteMediatorMyWall
 import ru.testapp.nework.repository.RepositoryWallMy
 import java.io.IOException
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImplWallMy(
+class RepositoryImplWallMy @Inject constructor(
     private val apiServiceWallMy: ApiServiceWallMy,
     private val dao: DaoPost,
     private val appDb: AppDb,
-    private val keyDao: DaoPostRemoteKey
+    private val keyDao: DaoRemoteKeyWallMy
 ) : RepositoryWallMy {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -33,7 +35,7 @@ class RepositoryImplWallMy(
         pagingSourceFactory = { dao.getPagingSource() },
         remoteMediator = RemoteMediatorMyWall(
             apiServiceWallMy = apiServiceWallMy,
-            daoPost = dao,
+            dao = dao,
             appDb = appDb,
             keyDao = keyDao
         )

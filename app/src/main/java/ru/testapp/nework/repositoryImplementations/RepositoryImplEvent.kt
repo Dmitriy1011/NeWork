@@ -23,10 +23,11 @@ import ru.testapp.nework.paging.RemoteMediatorEvent
 import ru.testapp.nework.repository.RepositoryEvents
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImplEvent(
+class RepositoryImplEvent @Inject constructor(
     private val apiService: ApiServiceEvents,
     private val eventDao: DaoEvent,
     private val keyDao: DaoEventRemoteKey,

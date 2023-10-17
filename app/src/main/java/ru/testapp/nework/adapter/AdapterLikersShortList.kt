@@ -33,7 +33,6 @@ class AdapterLikersShortList :
                     val url = entry.value.avatar.orEmpty()
                     likersPreviewImage.loadAvatarImage(url)
                 }
-
             }
         }
     }

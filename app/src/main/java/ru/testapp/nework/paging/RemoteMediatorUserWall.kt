@@ -13,6 +13,7 @@ import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.entity.EntityPostRemoteKey
 import ru.testapp.nework.entity.PostEntity
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class RemoteMediatorUserWall(
@@ -20,8 +21,9 @@ class RemoteMediatorUserWall(
     private val appDb: AppDb,
     private val daoPost: DaoPost,
     private val keyDao: DaoPostRemoteKey,
-    private val post: Post
 ) : RemoteMediator<Int, PostEntity>() {
+
+    lateinit var post: Post
 
     override suspend fun load(
         loadType: LoadType,

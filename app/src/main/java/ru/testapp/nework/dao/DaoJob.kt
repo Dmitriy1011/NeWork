@@ -27,6 +27,6 @@ interface DaoJob {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(entityJobList: List<EntityJob>)
 
-    @Query("SELECT * FROM EntityJob WHERE id = :id")
+    @Query("DELETE FROM EntityJob WHERE id = :id")
     suspend fun removeJob(id: Long)
 }

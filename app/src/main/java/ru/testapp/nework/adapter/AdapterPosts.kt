@@ -7,8 +7,10 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardPostBinding
+import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.handler.loadAttachmentImage
 import ru.testapp.nework.handler.loadAvatarImage
@@ -19,6 +21,9 @@ interface OnIteractionListener {
     fun onRemove(post: Post) {}
     fun onLike(post: Post) {}
     fun onUnLike(post: Post) {}
+    fun onOpenVideo(post: Post) {}
+    fun onOpenImage(post: Post) {}
+    fun onOpenAudio(post: Post) {}
 }
 
 class PostsAdapter(
@@ -56,14 +61,25 @@ class PostsAdapter(
                     )
                 }
 
-                postAttachmentImage.isVisible = !post.attachment?.url.isNullOrBlank()
+                //attachment
+                val attachmentType = post.attachment?.type
+                val instanceAttachmentUrl = post.attachment?.url
+
+                postAttachmentImage.isVisible = !instanceAttachmentUrl.isNullOrBlank()
+
+                binding.postAttachmentImage.setOnClickListener {
+                    when(attachmentType) {
+                        AttachmentType.IMAGE -> onIteractionListener.onOpenImage(post)
+                        AttachmentType.VIDEO -> onIteractionListener.onOpenVideo(post)
+                        AttachmentType.AUDIO -> onIteractionListener.onOpenAudio(post)
+                        else -> {}
+                    }
+                }
 
                 postMenuButton.isVisible = post.ownedByMe
 
-                val baseUrl = "https://netomedia.ru/"
-
-                val avatarUrl = "${baseUrl}avatars/${post.authorAvatar}"
-                val attachmentImageUrl = "${baseUrl}media/${post.attachment?.url}"
+                val avatarUrl = "${BuildConfig.BASE_URL}avatars/${post.authorAvatar}"
+                val attachmentImageUrl = "${BuildConfig.BASE_URL}media/${post.attachment?.url}"
 
                 postAvatar.loadAvatarImage(avatarUrl)
                 postAttachmentImage.loadAttachmentImage(attachmentImageUrl)

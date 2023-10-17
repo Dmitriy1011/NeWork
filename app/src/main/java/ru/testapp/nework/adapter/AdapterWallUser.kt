@@ -6,6 +6,7 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardPostBinding
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.handler.loadAttachmentImage
@@ -58,10 +59,8 @@ class AdapterWallUser(
 
                 postMenuButton.isVisible = post.ownedByMe
 
-                val baseUrl = "https://netomedia.ru/"
-
-                val avatarUrl = "${baseUrl}avatars/${post.authorAvatar}"
-                val attachmentImageUrl = "${baseUrl}media/${post.attachment?.url}"
+                val avatarUrl = "${BuildConfig.BASE_URL}avatars/${post.authorAvatar}"
+                val attachmentImageUrl = "${BuildConfig.BASE_URL}media/${post.attachment?.url}"
 
                 postAvatar.loadAvatarImage(avatarUrl)
                 postAttachmentImage.loadAttachmentImage(attachmentImageUrl)
