@@ -15,16 +15,16 @@ import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.Media
 
 interface ApiServiceEvents {
-    @GET("events")
+    @GET("api/events")
     suspend fun getAllEvents(): Response<List<Event>>
 
-    @GET("events/latest")
+    @GET("api/events/latest")
     suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
-    @GET("events/{id}/before")
+    @GET("api/events/{id}/before")
     suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Event>>
 
-    @GET("events/{id}/after")
+    @GET("api/events/{id}/after")
     suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Event>>
 
     @POST("events")

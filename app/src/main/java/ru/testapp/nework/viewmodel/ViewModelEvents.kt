@@ -159,13 +159,15 @@ class ViewModelEvents @Inject constructor(
         edited.value = event
     }
 
-    fun changeContent(content: String) {
+    fun changeContent(content: String, date: String, eventType: String) {
         val text = content.trim()
+        val date = date.trim()
+        val type = eventType.trim()
         if (edited.value?.content == text) {
             return
         }
         edited.value =
-            edited.value?.copy(content = text)
+            edited.value?.copy(content = text, datetime = date, type = eventType)
     }
 
     fun removeEvent(id: Long) {

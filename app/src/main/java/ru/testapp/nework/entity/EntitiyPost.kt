@@ -4,10 +4,10 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.testapp.nework.dto.Attachment
-import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Coordinates
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.UserPreview
+import ru.testapp.nework.enum.AttachmentTypePost
 
 @Entity
 data class PostEntity(
@@ -29,7 +29,8 @@ data class PostEntity(
     @Embedded
     val attachment: AttachmentEmbeddable?,
     val ownedByMe: Boolean,
-    val users: Map<Long, UserPreviewEmbeddable>
+    val users: Map<Long, UserPreviewEmbeddable>,
+    val likes: Int
 ) {
     fun toDto() = Post(
         id,
@@ -47,7 +48,8 @@ data class PostEntity(
         likedByMe,
         attachment,
         ownedByMe,
-        users
+        users,
+        likes
     )
 
     companion object {
@@ -67,7 +69,8 @@ data class PostEntity(
             dto.likedByMe,
             dto.attachment,
             dto.ownedByMe,
-            dto.users
+            dto.users,
+            dto.likes
         )
     }
 }
@@ -86,8 +89,8 @@ data class CoordinatesEmbeddable(
 
 
 data class AttachmentEmbeddable(
-    val url: String,
-    val type: AttachmentType
+    var url: String,
+    val type: String
 ) {
 
     fun toDto() = Attachment(url, type)

@@ -3,11 +3,11 @@ package ru.testapp.nework.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.EventAttachment
 import ru.testapp.nework.dto.EventCoordinates
 import ru.testapp.nework.dto.EventUserPreview
+import ru.testapp.nework.enum.AttachmentTypeEvent
 
 @Entity
 data class EntityEvent(
@@ -104,8 +104,8 @@ data class EventUsersPreviewEmbeddable(
 }
 
 data class EventAttachmentEmbeddable(
-    val url: String,
-    val type: AttachmentType
+    var url: String,
+    val type: String
 ) {
     fun toDto() = EventAttachment(url, type)
 

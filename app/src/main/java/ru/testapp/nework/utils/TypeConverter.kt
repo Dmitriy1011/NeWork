@@ -3,57 +3,64 @@ package ru.testapp.nework.utils
 import androidx.room.TypeConverter
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
-import ru.testapp.nework.dto.AttachmentType
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import ru.testapp.nework.entity.EventUsersPreviewEmbeddable
 import ru.testapp.nework.entity.UserPreviewEmbeddable
+import java.util.regex.Pattern
 
 private val gsonBuilder = GsonBuilder()
 private val gson = gsonBuilder.create()
-private val listType = TypeToken.getParameterized(List::class.java, String::class.java).type
-private val mapType = TypeToken.getParameterized(
-    Map::class.java,
-    Long::class.java,
-    UserPreviewEmbeddable::class.java
-).type
+private val listIntType = TypeToken.getParameterized(List::class.java, Int::class.java).type
 
 class TypeConverter {
     @TypeConverter
-    fun fromListToString(list: List<String>): String = gson.toJson(list)
+    fun fromMapType(currency: String): Map<Long, EventUsersPreviewEmbeddable>? {
+        val type = Types.newParameterizedType(
+            MutableMap::class.java,
+            Long::class.java,
+            EventUsersPreviewEmbeddable::class.java
+        )
+        return Moshi.Builder().build().adapter<Map<Long, EventUsersPreviewEmbeddable>>(type)
+            .fromJson(currency)
+    }
 
     @TypeConverter
-    fun fromStringToList(string: String): List<String> = gson.fromJson(string, listType)
+    fun fromString(map: Map<Long, EventUsersPreviewEmbeddable>): String {
+        val type = Types.newParameterizedType(
+            MutableMap::class.java,
+            Long::class.java,
+            EventUsersPreviewEmbeddable::class.java
+        )
+        return Moshi.Builder().build().adapter<Map<Long, EventUsersPreviewEmbeddable>>(type)
+            .toJson(map)
+    }
 
+    @TypeConverter
+    fun fromMapTypePost(currency: String): Map<Long, UserPreviewEmbeddable>? {
+        val type = Types.newParameterizedType(
+            MutableMap::class.java,
+            Long::class.java,
+            UserPreviewEmbeddable::class.java
+        )
+        return Moshi.Builder().build().adapter<Map<Long, UserPreviewEmbeddable>>(type)
+            .fromJson(currency)
+    }
+
+    @TypeConverter
+    fun fromStringPost(map: Map<Long, UserPreviewEmbeddable>): String {
+        val type = Types.newParameterizedType(
+            MutableMap::class.java,
+            Long::class.java,
+            UserPreviewEmbeddable::class.java
+        )
+        return Moshi.Builder().build().adapter<Map<Long, UserPreviewEmbeddable>>(type).toJson(map)
+    }
 
 
     @TypeConverter
-    fun fromMapToString(map: Map<Long, UserPreviewEmbeddable>): String = gson.toJson(map)
+    fun fromListIntToString(list: List<Int>) = list.joinToString(",")
 
     @TypeConverter
-    fun fromStringToMap(string: String): Map<Long, UserPreviewEmbeddable> =
-        gson.fromJson(string, mapType)
-
-
-
-    @TypeConverter
-    fun fromMapToStringEvent(map: Map<Long, EventUsersPreviewEmbeddable>): String = gson.toJson(map)
-
-    @TypeConverter
-    fun fromStringToMapEvent(string: String): Map<Long, EventUsersPreviewEmbeddable> =
-        gson.fromJson(string, mapType)
-
-
-
-    @TypeConverter
-    fun fromAttachmentType(value: AttachmentType) = value.name
-
-    @TypeConverter
-    fun toAttachmentType(value: String) = enumValueOf<AttachmentType>(value)
-
-
-
-    @TypeConverter
-    fun fromListIntToString(list: List<Int>): String = gson.toJson(list)
-
-    @TypeConverter
-    fun toListIntFromString(value: String): List<Int> = gson.fromJson(value, listType)
+    fun fromStringToListInt(string: String): List<Int> = string.split(",").map { it.toInt() }
 }

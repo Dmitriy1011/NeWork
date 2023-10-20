@@ -6,8 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/toolar_event_in_details" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -169,7 +167,7 @@
                 tools:text="1" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mentionedListShort"
+                android:id="@+id/participantsList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

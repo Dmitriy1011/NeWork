@@ -14,11 +14,11 @@ import ru.testapp.nework.api.ApiServicePosts
 import ru.testapp.nework.dao.DaoPost
 import ru.testapp.nework.dao.DaoPostRemoteKey
 import ru.testapp.nework.database.AppDb
-import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Media
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.entity.AttachmentEmbeddable
 import ru.testapp.nework.entity.PostEntity
+import ru.testapp.nework.enum.AttachmentTypePost
 import ru.testapp.nework.paging.RemoteMediatorPost
 import ru.testapp.nework.repository.RepositoryPost
 import java.io.File
@@ -162,7 +162,7 @@ class RepositoryImplPost @Inject constructor(
                 post.copy(
                     attachment = AttachmentEmbeddable(
                         url = media.id,
-                        AttachmentType.IMAGE,
+                        AttachmentTypePost.IMAGE.toString(),
                     )
                 )
             )

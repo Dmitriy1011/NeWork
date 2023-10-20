@@ -64,4 +64,23 @@
     <string name="choose_where_open_your_image">Choose where open your image</string>
     <string name="choose_where_open_your_video">Choose where open your video</string>
     <string name="choose_where_open_your_audio">Choose where open your audio</string>
+    <string name="saveusermentioned">saveusermentioned</string>
+    <string name="choose_users">Choose Users</string>
+    <string name="new_event">New Event</string>
+    <string name="nework">NeWork</string>
+    <string name="new_job">New Job</string>
+    <string name="post">Post</string>
+    <string name="account">Account</string>
+    <string name="you">You</string>
+    <string name="username">UserName</string>
+    <string name="savechooseuser">saveChooseUser</string>
+    <string name="share_event">Share event</string>
+    <string name="savenewevent">saveNewEvent</string>
+    <string name="savenewjob">saveNewJob</string>
+    <string name="savenewpost">saveNewPost</string>
+    <string name="sharepost">sharePost</string>
+    <string name="authorize">authorize</string>
+    <string name="event_date">Event date</string>
+    <string name="mm_dd_yyyy_hh_mm">MM/dd/yyyy HH:mm</string>
+    <string name="date_type">Date type</string>
 </resources>

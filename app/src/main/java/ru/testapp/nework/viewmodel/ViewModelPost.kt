@@ -37,7 +37,8 @@ private val emptyPost = Post(
     likedByMe = false,
     attachment = null,
     ownedByMe = false,
-    users = emptyMap()
+    users = emptyMap(),
+    likes = 0
 )
 
 @HiltViewModel
@@ -84,6 +85,10 @@ class ViewModelPost @Inject constructor(
     val photoState: LiveData<PhotoModel?>
         get() = _photoState
 
+    private val _mentionedIdsState = MutableLiveData<Int>()
+    val mentionedIdsState: LiveData<Int>
+        get() = _mentionedIdsState
+
 
     private val edited = MutableLiveData(emptyPost)
 
@@ -122,8 +127,15 @@ class ViewModelPost @Inject constructor(
                 }
             }
         }
-
         edited.value = emptyPost
+    }
+
+    fun saveMentionedIds(list: List<Int>) {
+        if(edited.value?.mentionIds == list) {
+            return
+        }
+        edited.value =
+            edited.value?.copy(mentionIds = list)
     }
 
 
@@ -133,8 +145,7 @@ class ViewModelPost @Inject constructor(
             try {
                 repository.like(id)
                 _feedState.value = StateFeed()
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _feedState.value = StateFeed(error = true)
             }
         }
@@ -146,8 +157,7 @@ class ViewModelPost @Inject constructor(
             try {
                 repository.unLike(id)
                 _feedState.value = StateFeed()
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 _feedState.value = StateFeed(error = true)
             }
         }

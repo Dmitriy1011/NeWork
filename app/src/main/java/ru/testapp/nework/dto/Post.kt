@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName
 import ru.testapp.nework.entity.AttachmentEmbeddable
 import ru.testapp.nework.entity.CoordinatesEmbeddable
 import ru.testapp.nework.entity.UserPreviewEmbeddable
+import ru.testapp.nework.enum.AttachmentTypePost
+import java.io.Serializable
 
 data class Post(
     val id: Long,
@@ -23,7 +25,8 @@ data class Post(
     val attachment: AttachmentEmbeddable? = null,
     val ownedByMe: Boolean = false,
     val users: Map<Long, UserPreviewEmbeddable>,
-)
+    var likes: Int
+): Serializable
 
 data class Coordinates(
     val latitude: String,
@@ -31,8 +34,8 @@ data class Coordinates(
 )
 
 data class Attachment(
-    val url: String,
-    val type: AttachmentType
+    var url: String,
+    val type: String
 )
 
 data class UserPreview(

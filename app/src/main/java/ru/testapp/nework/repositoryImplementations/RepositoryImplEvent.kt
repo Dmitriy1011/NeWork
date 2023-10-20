@@ -14,11 +14,11 @@ import ru.testapp.nework.api.ApiServiceEvents
 import ru.testapp.nework.dao.DaoEvent
 import ru.testapp.nework.dao.DaoEventRemoteKey
 import ru.testapp.nework.database.AppDb
-import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.Media
 import ru.testapp.nework.entity.EntityEvent
 import ru.testapp.nework.entity.EventAttachmentEmbeddable
+import ru.testapp.nework.enum.AttachmentTypeEvent
 import ru.testapp.nework.paging.RemoteMediatorEvent
 import ru.testapp.nework.repository.RepositoryEvents
 import java.io.File
@@ -162,7 +162,7 @@ class RepositoryImplEvent @Inject constructor(
                 event.copy(
                     attachment = EventAttachmentEmbeddable(
                         url = media.id,
-                        AttachmentType.IMAGE,
+                        AttachmentTypeEvent.IMAGE.toString(),
                     )
                 )
             )

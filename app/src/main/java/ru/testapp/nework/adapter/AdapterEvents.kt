@@ -3,18 +3,24 @@ package ru.testapp.nework.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardEventBinding
 import ru.testapp.nework.dto.Event
+import ru.testapp.nework.enum.AttachmentTypeEvent
+import ru.testapp.nework.enum.TypeStatus
 
 interface OnIteractionListenerEvents {
     fun onEdit(event: Event) {}
     fun onRemove(event: Event) {}
     fun onLike(event: Event) {}
     fun onUnLike(event: Event) {}
+    fun onOpenImage(event: Event) {}
+    fun onOpenVideo(event: Event) {}
+    fun onOpenAudio(event: Event) {}
 }
 
 class AdapterEvents(
@@ -42,12 +48,33 @@ class AdapterEvents(
             binding.apply {
                 eventAuthorName.text = event.author
                 eventPublishedDate.text = event.published
-                eventType.text = event.type
                 eventDateTime.text = event.datetime
                 eventTextContent.text = event.content
 
                 eventLikeButton.text = event.likeOwnerIds?.size.toString()
                 eventParticipantsButton.text = event.likeOwnerIds?.size.toString()
+
+                //attachment
+                val attachmentType = event.attachment?.type
+                val statusType = event.type
+                val instanceAttachmentUrl = event.attachment?.url
+
+                when(statusType) {
+                    TypeStatus.ONLINE.toString() -> eventType.text = "Online"
+                    TypeStatus.OFFLINE.toString() -> eventType.text = "Offline"
+
+                }
+
+                eventAttachmentImage.isVisible = !instanceAttachmentUrl.isNullOrBlank()
+
+                eventAttachmentImage.setOnClickListener {
+                    when(attachmentType) {
+                        AttachmentTypeEvent.IMAGE.toString() -> listener.onOpenImage(event)
+                        AttachmentTypeEvent.VIDEO.toString() -> listener.onOpenVideo(event)
+                        AttachmentTypeEvent.AUDIO.toString() -> listener.onOpenAudio(event)
+                        else -> {}
+                    }
+                }
 
                 eventMenuButton.setOnClickListener {
                     PopupMenu(it.context, it).apply {

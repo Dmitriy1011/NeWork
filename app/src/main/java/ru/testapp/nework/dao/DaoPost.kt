@@ -35,14 +35,15 @@ interface DaoPost {
         )
 
 
-    @Query(
-        """
+    @Query("""
             UPDATE PostEntity SET
+            likes = likes + CASE WHEN likedByMe THEN -1 ELSE + 1 END,
             likedByMe = CASE WHEN likedByMe THEN 0 ELSE 1 END
-            WHERE id=:id
+            WHERE id = :id
         """
     )
-    fun handleLike(id: Long)
+    suspend fun handleLike(id: Long)
+
 
     @Query("DELETE FROM PostEntity WHERE id=:id")
     suspend fun removeById(id: Long)

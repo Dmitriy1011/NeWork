@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navButtonPosts"
+        android:id="@+id/fragmentPostsFeed"
         android:enabled="true"
         android:icon="@drawable/rss_feed"
         android:title="@string/posts"/>
     <item
-        android:id="@+id/navButtonEvents"
+        android:id="@+id/fragmentEvents"
         android:enabled="true"
         android:icon="@drawable/event"
         android:title="@string/events"/>
     <item
-        android:id="@+id/navButtonUsers"
+        android:id="@+id/fragmentUsers"
         android:enabled="true"
         android:icon="@drawable/people"
         android:title="@string/users"/>

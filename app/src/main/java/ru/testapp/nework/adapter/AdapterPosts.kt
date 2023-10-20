@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardPostBinding
-import ru.testapp.nework.dto.AttachmentType
 import ru.testapp.nework.dto.Post
+import ru.testapp.nework.enum.AttachmentTypePost
 import ru.testapp.nework.handler.loadAttachmentImage
 import ru.testapp.nework.handler.loadAvatarImage
 
@@ -53,7 +53,7 @@ class PostsAdapter(
                 postTextContent.text = post.content
                 postPublishedDate.text = post.published
 
-                postLikeButton.text = post.likeOwnerIds?.size.toString()
+                postLikeButton.text = post.likes.toString()
 
                 postLikeButton.setOnClickListener {
                     if (!post.likedByMe) onIteractionListener.onLike(post) else onIteractionListener.onUnLike(
@@ -69,9 +69,9 @@ class PostsAdapter(
 
                 binding.postAttachmentImage.setOnClickListener {
                     when(attachmentType) {
-                        AttachmentType.IMAGE -> onIteractionListener.onOpenImage(post)
-                        AttachmentType.VIDEO -> onIteractionListener.onOpenVideo(post)
-                        AttachmentType.AUDIO -> onIteractionListener.onOpenAudio(post)
+                        AttachmentTypePost.IMAGE.toString() -> onIteractionListener.onOpenImage(post)
+                        AttachmentTypePost.VIDEO.toString() -> onIteractionListener.onOpenVideo(post)
+                        AttachmentTypePost.AUDIO.toString() -> onIteractionListener.onOpenAudio(post)
                         else -> {}
                     }
                 }

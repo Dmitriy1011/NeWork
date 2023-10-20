@@ -16,34 +16,34 @@ import ru.testapp.nework.dto.Post
 
 
 interface ApiServicePosts {
-    @GET("posts")
+    @GET("api/posts")
     suspend fun getAllPosts(): Response<List<Post>>
 
-    @GET("posts/latest")
+    @GET("api/posts/latest")
     suspend fun getLatestPosts(@Query("count") count: Int): Response<List<Post>>
 
-    @GET("posts/{id}/before")
+    @GET("api/posts/{id}/before")
     suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
-    @GET("posts/{id}/after")
+    @GET("api/posts/{id}/after")
     suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
-    @POST("posts")
+    @POST("api/posts")
     suspend fun savePost(@Body post: Post): Response<Post>
 
-    @POST("posts/{id}")
+    @POST("api/posts/{id}")
     suspend fun likePost(@Path("id") id: Long): Response<Post>
 
-    @POST("posts/{id}")
+    @POST("api/posts/{id}")
     suspend fun unLikePost(@Path("id") id: Long): Response<Post>
 
-    @DELETE("posts/{id}")
+    @DELETE("api/posts/{id}")
     suspend fun deletePost(@Path("id") id: Long): Response<Unit>
 
-    @PATCH("posts")
+    @PATCH("api/posts")
     suspend fun editPost(@Body post: Post): Response<Post>
 
     @Multipart
-    @POST("media")
+    @POST("api/media")
     suspend fun uploadMedia(@Part file: MultipartBody.Part): Response<Media>
 }

@@ -2,8 +2,8 @@ package ru.testapp.nework.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.testapp.nework.activity.FragmentJobsMy
-import ru.testapp.nework.activity.FragmentWallMy
+import ru.testapp.nework.activity.wall.FragmentJobsMy
+import ru.testapp.nework.activity.wall.FragmentWallMy
 
 class ViewPagerAdapter(
     fragment: Fragment

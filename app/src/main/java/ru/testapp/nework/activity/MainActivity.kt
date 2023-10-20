@@ -1,74 +1,81 @@
 package ru.testapp.nework.activity
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.Toolbar
-import androidx.activity.viewModels
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
-import ru.testapp.nework.viewmodel.ViewModelAuth
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity() : AppCompatActivity() {
 
     @Inject
     lateinit var appAuth: AppAuth
 
-    private lateinit var toolbar: Toolbar
+    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        toolbar = findViewById(R.id.toolbar)
-//
-//        setSupportActionBar(toolbar)
 
-        val authViewModel by viewModels<ViewModelAuth>()
+        toolbar = findViewById(R.id.toolbar)
+        //toolbar
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        var currentMenuProvider: MenuProvider? = null
+        val navController = navHostFragment.navController
 
-        authViewModel.data.observe(this) {
-            currentMenuProvider?.let { ::removeMenuProvider }
-            addMenuProvider(object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.menu_auth, menu)
+        val appBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(
+                R.id.fragmentChooseUsers,
+                R.id.fragmentCreateAndEditEvent,
+                R.id.fragmentEventInDetails2,
+                R.id.fragmentEvents,
+                R.id.fragmentJobCreate,
+                R.id.fragmentLikersEvent2,
+                R.id.fragmentCreateAndEditPost,
+                R.id.fragmentPostInDetails,
+                R.id.fragmentPostsFeed,
+                R.id.fragmentProfileMy,
+                R.id.fragmentProfileUser,
+                R.id.fragmentSignIn,
+                R.id.fragmentSignUp,
+                R.id.fragmentUsers
+            ),
+            fallbackOnNavigateUpListener = ::onSupportNavigateUp
+        )
+        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+            .setupWithNavController(navController, appBarConfiguration)
 
-                    val authenticated = authViewModel.authenticated
+        setSupportActionBar(toolbar)
 
-                    menu.let {
-                        it.setGroupVisible(R.id.authorized, authenticated)
-                        it.setGroupVisible(R.id.unauthorized, !authenticated)
-                    }
-                }
+        //bottomNavigation
+        val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-                    when (menuItem.itemId) {
-                        R.id.signUp -> {
-                            //TODO:
-                            true
-                        }
+        val bottomAppBarConfiguration = AppBarConfiguration(
+            topLevelDestinationIds = setOf(
+                R.id.fragmentPostsFeed,
+                R.id.fragmentEvents,
+                R.id.fragmentUsers
+            )
+        )
+        setupActionBarWithNavController(navController, bottomAppBarConfiguration)
+        navView.setupWithNavController(navController)
 
-                        R.id.signIn -> {
-                            // TODO:
-                            true
-                        }
 
-                        R.id.logout -> {
-                            // TODO:
-                            true
-                        }
-
-                        else -> false
-                    }
-            }.also {
-                currentMenuProvider = it
-            }, this)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.fragmentUsers || destination.id == R.id.fragmentEvents || destination.id == R.id.fragmentPostsFeed) {
+                navView.visibility = View.VISIBLE
+            } else {
+                navView.visibility = View.GONE
+            }
         }
     }
 }

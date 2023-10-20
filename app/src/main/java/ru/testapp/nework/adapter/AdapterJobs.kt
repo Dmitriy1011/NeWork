@@ -8,11 +8,18 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import ru.testapp.nework.databinding.CardJobBinding
 import ru.testapp.nework.dto.Job
 
-class AdapterJobs : ListAdapter<Job, AdapterJobs.ViewHolderJob>(JobDiffCallback()) {
+interface OnIteractionListenerJobs {
+    fun onRemove(job: Job) {}
+}
+
+class AdapterJobs(
+    private val listener: OnIteractionListenerJobs
+) : ListAdapter<Job, AdapterJobs.ViewHolderJob>(JobDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderJob {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolderJob(
-            CardJobBinding.inflate(inflater, parent, false)
+            CardJobBinding.inflate(inflater, parent, false),
+            listener = listener
         )
     }
 
@@ -21,7 +28,8 @@ class AdapterJobs : ListAdapter<Job, AdapterJobs.ViewHolderJob>(JobDiffCallback(
     }
 
     class ViewHolderJob(
-        private val binding: CardJobBinding
+        private val binding: CardJobBinding,
+        private val listener: OnIteractionListenerJobs
     ) : ViewHolder(binding.root) {
         fun bind(job: Job) {
             binding.apply {
@@ -30,6 +38,10 @@ class AdapterJobs : ListAdapter<Job, AdapterJobs.ViewHolderJob>(JobDiffCallback(
                 endDate.text = job.finish
                 jobPosition.text = job.position
                 jobLink.text = job.link
+
+                deleteJobButton.setOnClickListener {
+                    listener.onRemove(job)
+                }
             }
         }
     }

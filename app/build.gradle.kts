@@ -109,6 +109,7 @@ dependencies {
     implementation ("com.github.dhaval2404:imagepicker:$imagePickerVersion")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
     implementation ("com.yandex.android:maps.mobile:4.4.0-lite")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
     coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.0.3")
 }
