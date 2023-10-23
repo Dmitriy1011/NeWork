@@ -30,7 +30,7 @@ class FragmentJobsMy : Fragment() {
     private val viewModel: ViewModelJobs by viewModels()
 
     @Inject
-    private lateinit var appAuth: AppAuth
+    lateinit var appAuth: AppAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -192,7 +192,7 @@ class FragmentPostsFeed : Fragment() {
         }
 
         binding.fab.setOnClickListener {
-            if (appAuth.authStateFlow.value == null) {
+            if (appAuth.authStateFlow.value != null) {
                 findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentCreateAndEditPost2)
             }
             Snackbar.make(

@@ -10,9 +10,15 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.activity.users.FragmentUsers.Companion.userIdArg
 import ru.testapp.nework.adapter.ViewPagerAdapter
@@ -32,7 +38,7 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
     lateinit var appAuth: AppAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        FragmentProfileMyBinding.bind(view)
+        val binding = FragmentProfileMyBinding.bind(view)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -52,8 +58,8 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
 
         tabLayout = requireActivity().findViewById(R.id.tabLayout)
         viewPager2 = requireActivity().findViewById(R.id.viewPager)
-        viewPager2.adapter = viewPagerAdapter
         viewPagerAdapter = ViewPagerAdapter(this)
+        viewPager2.adapter = viewPagerAdapter
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -73,5 +79,28 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
                 tabLayout.getTabAt(position)?.select()
             }
         })
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    binding.fab.setOnClickListener {
+                        if (appAuth.authStateFlow.value == null) {
+                            findNavController().navigate(R.id.action_fragmentProfileMy_to_fragmentJobCreate)
+                        }
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.fab_click_message),
+                            Snackbar.LENGTH_LONG
+                        ).setAction(
+                            getString(R.string.sign_in),
+                        ) {
+                            findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentSignIn)
+                        }.setAction(
+                            getString(R.string.sign_up)
+                        ) {
+                            findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentSignUp)
+                        }.show()
+                    }
+            }
+        }
     }
 }

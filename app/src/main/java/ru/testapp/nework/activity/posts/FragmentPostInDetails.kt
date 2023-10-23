@@ -50,6 +50,14 @@ class FragmentPostInDetails : Fragment() {
     ): View {
         val binding = FragmentPostInDetailsBinding.inflate(inflater, container, false)
 
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_post_in_details, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
+        })
+
         viewModelPosts.postData.observe(viewLifecycleOwner) { modelPost ->
             modelPost.posts.find { it.id == arguments?.idArg }?.let { post ->
                 binding.cardPostInDetails.apply {

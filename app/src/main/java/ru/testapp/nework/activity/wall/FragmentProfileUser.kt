@@ -32,8 +32,9 @@ class FragmentProfileUser : Fragment(R.layout.fragment_profile_user) {
 
         tabLayout = requireActivity().findViewById(R.id.tabLayout)
         viewPager2 = requireActivity().findViewById(R.id.viewPager)
-        viewPager2.adapter = viewPagerAdapterUser
         viewPagerAdapterUser = ViewPagerAdapterUser(this)
+        viewPager2.adapter = viewPagerAdapterUser
+
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
