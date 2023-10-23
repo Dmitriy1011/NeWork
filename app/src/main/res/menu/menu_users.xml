@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/authorize"
+        android:id="@+id/authorizeUsers"
         android:icon="@drawable/account_circle"
         android:title="@string/authorize"
         app:showAsAction="ifRoom"/>

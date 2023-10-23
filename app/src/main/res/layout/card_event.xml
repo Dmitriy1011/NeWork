@@ -19,7 +19,7 @@
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/default_ava"
+            app:srcCompat="@drawable/no_avatar"
             />
 
         <TextView
@@ -57,22 +57,35 @@
             style="@style/Widget.AppTheme.IconButton"
             />
 
-        <ImageView
-            android:id="@+id/eventAttachmentImage"
+        <FrameLayout
+            android:id="@+id/eventAttachmentImageFrame"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/eventAvatar"
-            />
+            app:layout_constraintTop_toBottomOf="@id/eventAvatar">
 
+            <ImageView
+                android:id="@+id/eventAttachmentImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"/>
+
+            <ImageButton
+                android:id="@+id/eventPlayButton"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                app:srcCompat="@drawable/play"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/eventType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/online_status"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/eventAttachmentImage"/>
+            app:layout_constraintTop_toBottomOf="@id/eventAttachmentImageFrame"/>
 
         <TextView
             android:id="@+id/eventDateTime"
@@ -88,9 +101,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:autoLink="web"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/eventDateTime"
             android:text="@string/event_text_content"/>
+
+        <TextView
+            android:id="@+id/eventLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventTextContent"
+            android:text="@string/https_netomedia_ru"
+            android:layout_marginTop="8dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/eventLikeButton"
@@ -99,7 +122,7 @@
             android:checkable="true"
             android:layout_marginTop="25dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/eventTextContent"
+            app:layout_constraintTop_toBottomOf="@id/eventLink"
             app:icon="@drawable/ic_like"
             tools:checked="false"
             tools:text="1"
@@ -117,6 +140,90 @@
             style="@style/Widget.AppTheme.LikeCheckBox"
             />
 
+        <TextView
+            android:id="@+id/speakersTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventLink"
+            android:text="@string/speakers"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/speakersList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/speakersTitle"
+            tools:listitem="@layout/card_image" />
+
+        <TextView
+            android:id="@+id/likersTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/likers"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/speakersList" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/likersListShort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/eventLikeButton"
+            app:layout_constraintStart_toEndOf="@id/eventLikeButton"
+            app:layout_constraintTop_toTopOf="@id/eventLikeButton"
+            tools:listitem="@layout/card_image" />
+
+        <ImageButton
+            android:id="@+id/moreLikersButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/likersListShort"
+            app:layout_constraintStart_toEndOf="@id/likersListShort"
+            app:layout_constraintTop_toTopOf="@id/likersListShort"
+            app:srcCompat="@drawable/more_likers_button_image" />
+
+        <TextView
+            android:id="@+id/participantsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/participants"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/eventLikeButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/eventInDetailsMentionedButton"
+            style="@style/Widget.AppTheme.LikeCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:icon="@drawable/people_outline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/participantsTitle"
+            tools:checked="false"
+            tools:text="1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/participantsList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/eventInDetailsMentionedButton"
+            app:layout_constraintStart_toEndOf="@id/eventInDetailsMentionedButton"
+            app:layout_constraintTop_toTopOf="@id/eventInDetailsMentionedButton"
+            tools:listitem="@layout/card_image" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/eventParticipantsButton"
             android:layout_width="wrap_content"
@@ -128,7 +235,5 @@
             android:text="@string/_2"
             style="@style/Widget.AppTheme.LikeCheckBox"
             />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

@@ -2,38 +2,59 @@ package ru.testapp.nework.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.BuildConfig
+import ru.testapp.nework.R
+import ru.testapp.nework.databinding.CardMentionedUserBinding
 import ru.testapp.nework.databinding.CardUserBinding
+import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-class AdapterChooseUsers : ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
+interface OnIteractionListenerChooseUsers {
+    fun returnPostForTransfer(post: Post) {}
+}
+
+class AdapterChooseUsers(
+    private val listener: OnIteractionListenerChooseUsers
+) : ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserChooseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return UserChooseViewHolder(
-            CardUserBinding.inflate(inflater, parent, false),
+            CardMentionedUserBinding.inflate(inflater, parent, false),
+            listener = listener
         )
     }
 
+    private val _mentionedList = MutableLiveData<Int>()
+    val mentionedList: LiveData<Int>
+        get() = _mentionedList
+
     override fun onBindViewHolder(holder: UserChooseViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.findViewById<CheckBox>(R.id.mentionedUserCheckBox).setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                _mentionedList.value = getItemId(position).toInt()
+            }
+        }
     }
 
     class UserChooseViewHolder(
-        private val binding: CardUserBinding
+        private val binding: CardMentionedUserBinding,
+        private val listener: OnIteractionListenerChooseUsers
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
-                userName.text = user.name
-                userLogin.text = user.login
+                mentionedUserName.text = user.name
+                mentionedUserLogin.text = user.login
 
-                val userAvaUrl = "${BuildConfig.BASE_URL}}avatars/${user.avatar}"
-
-                userAvatar.loadAvatarImage(userAvaUrl)
+                mentionedUserAvatar.loadAvatarImage(user.avatar)
             }
         }
     }

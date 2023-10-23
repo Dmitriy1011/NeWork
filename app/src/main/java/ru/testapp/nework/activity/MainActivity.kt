@@ -3,6 +3,9 @@ package ru.testapp.nework.activity
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -11,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
+import ru.testapp.nework.dto.Post
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -19,42 +23,26 @@ class MainActivity() : AppCompatActivity() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    private lateinit var toolbar: androidx.appcompat.widget.Toolbar
+    private lateinit var toolbar: Toolbar
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         toolbar = findViewById(R.id.toolbar)
+
         //toolbar
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        val navController = navHostFragment.navController
-
-        val appBarConfiguration = AppBarConfiguration(
-            topLevelDestinationIds = setOf(
-                R.id.fragmentChooseUsers,
-                R.id.fragmentCreateAndEditEvent,
-                R.id.fragmentEventInDetails2,
-                R.id.fragmentEvents,
-                R.id.fragmentJobCreate,
-                R.id.fragmentLikersEvent2,
-                R.id.fragmentCreateAndEditPost,
-                R.id.fragmentPostInDetails,
-                R.id.fragmentPostsFeed,
-                R.id.fragmentProfileMy,
-                R.id.fragmentProfileUser,
-                R.id.fragmentSignIn,
-                R.id.fragmentSignUp,
-                R.id.fragmentUsers
-            ),
-            fallbackOnNavigateUpListener = ::onSupportNavigateUp
-        )
-        findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-            .setupWithNavController(navController, appBarConfiguration)
+        navController = navHostFragment.navController
 
         setSupportActionBar(toolbar)
+        setupActionBarWithNavController(navController)
 
         //bottomNavigation
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
@@ -77,5 +65,9 @@ class MainActivity() : AppCompatActivity() {
                 navView.visibility = View.GONE
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

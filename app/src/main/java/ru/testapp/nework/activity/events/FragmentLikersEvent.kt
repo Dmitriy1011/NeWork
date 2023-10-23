@@ -16,9 +16,7 @@ import ru.testapp.nework.viewmodel.ViewModelUsers
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FragmentLikersEvent @Inject constructor(
-    private val event: Event
-) : Fragment() {
+class FragmentLikersEvent : Fragment() {
     private val viewModelUsers: ViewModelUsers by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,10 +26,6 @@ class FragmentLikersEvent @Inject constructor(
         val binding = FragmentLikersEventBinding.inflate(inflater, container, false)
 
         val adapter = AdapterLikersEventFull()
-
-        findNavController().navigate(R.id.fragmentLikersEvent2, Bundle().apply {
-            putSerializable("eventKey", event)
-        })
 
         val event = requireArguments().getSerializable("eventKey") as Event
 

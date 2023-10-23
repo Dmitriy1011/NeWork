@@ -1,13 +1,17 @@
 package ru.testapp.nework.repositoryImplementations
 
 import android.accounts.NetworkErrorException
+import androidx.lifecycle.asLiveData
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import okhttp3.Dispatcher
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.testapp.nework.api.ApiServicePosts
@@ -18,6 +22,7 @@ import ru.testapp.nework.dto.Media
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.entity.AttachmentEmbeddable
 import ru.testapp.nework.entity.PostEntity
+import ru.testapp.nework.entity.listToDto
 import ru.testapp.nework.enum.AttachmentTypePost
 import ru.testapp.nework.paging.RemoteMediatorPost
 import ru.testapp.nework.repository.RepositoryPost
@@ -31,7 +36,7 @@ class RepositoryImplPost @Inject constructor(
     private val apiService: ApiServicePosts,
     private val postDao: DaoPost,
     private val keyDao: DaoPostRemoteKey,
-    private val appDb: AppDb
+    private val appDb: AppDb,
 ) : RepositoryPost {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -47,6 +52,8 @@ class RepositoryImplPost @Inject constructor(
     ).flow.map {
         it.map(PostEntity::toDto)
     }
+
+    override val postData: Flow<List<Post>> = postDao.getAllPosts().map(List<PostEntity>::listToDto).flowOn(Dispatchers.Default)
 
     override suspend fun getAllPosts() {
         try {

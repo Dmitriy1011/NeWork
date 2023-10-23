@@ -1,10 +1,11 @@
 package ru.testapp.nework.dto
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import ru.testapp.nework.entity.AttachmentEmbeddable
 import ru.testapp.nework.entity.CoordinatesEmbeddable
 import ru.testapp.nework.entity.UserPreviewEmbeddable
-import ru.testapp.nework.enum.AttachmentTypePost
 import java.io.Serializable
 
 data class Post(
@@ -26,7 +27,7 @@ data class Post(
     val ownedByMe: Boolean = false,
     val users: Map<Long, UserPreviewEmbeddable>,
     var likes: Int
-): Serializable
+) : Serializable
 
 data class Coordinates(
     val latitude: String,

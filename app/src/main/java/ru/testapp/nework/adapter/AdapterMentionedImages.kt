@@ -34,7 +34,7 @@ class AdapterMentionedImages :
     ) : ViewHolder(binding.root) {
         fun bind(post: Post) {
             binding.apply {
-                val url = "${BuildConfig.BASE_URL}avatars/${post.authorAvatar}"
+                val url = post.authorAvatar ?: return
                 mentionedPreviewImage.loadAvatarImage(url)
             }
         }

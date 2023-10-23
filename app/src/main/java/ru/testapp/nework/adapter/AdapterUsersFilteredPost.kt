@@ -4,38 +4,39 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardImageBinding
-import ru.testapp.nework.dto.Event
+import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-interface OnIteractionListenerUsersFiltered {
-    fun returnEvent(event: Event) {}
+interface OnIteractionListenerUsersFilteredPost {
+    fun returnPostForTransfer(post: Post) {}
 }
 
-class AdapterUsersFilteredEvent(
-    private val listener: OnIteractionListenerUsersFiltered
+class AdapterUsersFilteredPost(
+    private val listener: OnIteractionListenerUsersFilteredPost
 ) :
-    ListAdapter<User, AdapterUsersFilteredEvent.EventUsersFilteredViewHolder>(EventUsersFilteredDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventUsersFilteredViewHolder {
+    ListAdapter<User, AdapterUsersFilteredPost.ViewHolderUsersFilteredPost>(
+        DiffCallBackUsersFilteredPost()
+    ) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderUsersFilteredPost {
         val inflater = LayoutInflater.from(parent.context)
-        return EventUsersFilteredViewHolder(
+        return ViewHolderUsersFilteredPost(
             CardImageBinding.inflate(inflater, parent, false),
             listener = listener
         )
     }
 
-    override fun onBindViewHolder(holder: EventUsersFilteredViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolderUsersFilteredPost, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class EventUsersFilteredViewHolder(
+    class ViewHolderUsersFilteredPost(
         private val binding: CardImageBinding,
-        private val listener: OnIteractionListenerUsersFiltered
-    ) : ViewHolder(binding.root) {
+        private val listener: OnIteractionListenerUsersFilteredPost
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
                 eventUsersFilteredPreviewImage.loadAvatarImage(user.avatar)
@@ -43,7 +44,7 @@ class AdapterUsersFilteredEvent(
         }
     }
 
-    class EventUsersFilteredDiffCallback : DiffUtil.ItemCallback<User>() {
+    class DiffCallBackUsersFilteredPost : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             if (oldItem::class != newItem::class) {
                 return false
@@ -52,8 +53,6 @@ class AdapterUsersFilteredEvent(
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean = oldItem == newItem
     }
 }

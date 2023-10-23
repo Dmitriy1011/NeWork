@@ -92,4 +92,19 @@ class RepositoryImplUser @Inject constructor(
             throw NetworkErrorException(e)
         }
     }
+
+    override suspend fun getUserById(id: Long): User {
+        try {
+            val response = apiService.getUserById(id)
+
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.message())
+            }
+
+            val result = response.body()
+            return result!!
+        } catch (e: IOException) {
+            throw NetworkErrorException(e)
+        }
+    }
 }

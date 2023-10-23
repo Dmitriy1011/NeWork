@@ -33,8 +33,7 @@ class AdapterLikersEventFull :
                 userName.text = user.name
                 userLogin.text = user.login
 
-                val userAvaUrl = "${BuildConfig.BASE_URL}}avatars/${user.avatar}"
-                userAvatar.loadAvatarImage(userAvaUrl)
+                userAvatar.loadAvatarImage(user.avatar)
             }
         }
     }

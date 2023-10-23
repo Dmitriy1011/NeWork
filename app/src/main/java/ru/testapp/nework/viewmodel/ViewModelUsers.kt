@@ -45,4 +45,15 @@ class ViewModelUsers @Inject constructor(
             }
         }
     }
+
+
+    fun getUserById(id: Long) {
+        viewModelScope.launch {
+            try {
+                repositoryUsers.getUserById(id)
+            } catch (e: Exception) {
+                throw RuntimeException(e)
+            }
+        }
+    }
 }

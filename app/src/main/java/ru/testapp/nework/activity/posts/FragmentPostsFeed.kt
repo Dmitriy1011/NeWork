@@ -4,9 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.testapp.nework.BuildConfig
@@ -27,6 +32,7 @@ import ru.testapp.nework.adapter.PostsAdapter
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentPostsFeedBinding
 import ru.testapp.nework.dto.Post
+import ru.testapp.nework.utils.PostIdArg
 import ru.testapp.nework.utils.SeparateImageArg
 import ru.testapp.nework.viewmodel.ViewModelPost
 import javax.inject.Inject
@@ -36,6 +42,7 @@ class FragmentPostsFeed : Fragment() {
 
     companion object {
         var Bundle.textArg: String? by SeparateImageArg
+        var Bundle.postIdArg: Long by PostIdArg
     }
 
     @Inject
@@ -49,6 +56,22 @@ class FragmentPostsFeed : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPostsFeedBinding.inflate(inflater, container, false)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_posts_feed, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.authorizeMenuPostsFeed -> {
+                        findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentProfileMy)
+                        true
+                    }
+
+                    else -> false
+                }
+        }, viewLifecycleOwner)
 
         val adapter = PostsAdapter(object : OnIteractionListener {
             override fun onEdit(post: Post) {
@@ -92,6 +115,20 @@ class FragmentPostsFeed : Fragment() {
                     getString(R.string.choose_where_open_your_audio)
                 )
                 startActivity(chooserIntent)
+            }
+
+            override fun followingTheLink(post: Post) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.link))
+                startActivity(intent)
+            }
+
+            override fun onDetailsClicked(post: Post) {
+                findNavController().navigate(
+                    R.id.action_fragmentPostsFeed_to_fragmentPostInDetails,
+                    Bundle().apply {
+                        postIdArg = post.id
+                    }
+                )
             }
         })
 
@@ -138,7 +175,7 @@ class FragmentPostsFeed : Fragment() {
         }
 
         viewModel.feedState.observe(viewLifecycleOwner) {
-            binding.swipeRefresh.isVisible = it.refreshing
+            binding.swipeRefresh.isRefreshing = it.refreshing
             binding.progressBar.isVisible = it.loading || it.refreshing
             binding.errorGroup.isVisible = it.error
             if (it.error) {
@@ -155,7 +192,7 @@ class FragmentPostsFeed : Fragment() {
         }
 
         binding.fab.setOnClickListener {
-            if (appAuth.authStateFlow.value != null) {
+            if (appAuth.authStateFlow.value == null) {
                 findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentCreateAndEditPost2)
             }
             Snackbar.make(

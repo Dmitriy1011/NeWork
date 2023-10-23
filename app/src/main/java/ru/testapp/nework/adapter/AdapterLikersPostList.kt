@@ -10,45 +10,34 @@ import ru.testapp.nework.databinding.CardUserBinding
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-interface OnIteractionListenerUsers {
-    fun onDetailsClick(user: User) {}
-}
+class AdapterLikersPostList : ListAdapter<User, AdapterLikersPostList.LikersPostViewHolder>(LikersPostDiffCallback()) {
 
-class AdapterUsers(
-    private val listener: OnIteractionListenerUsers
-) : ListAdapter<User, AdapterUsers.UserViewHolder>(UserDiffCallback()) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikersPostViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return UserViewHolder(
-            CardUserBinding.inflate(inflater, parent, false),
-            listener = listener
+        return LikersPostViewHolder(
+            CardUserBinding.inflate(inflater, parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: LikersPostViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class UserViewHolder(
-        private val binding: CardUserBinding,
-        private val listener: OnIteractionListenerUsers
+    class LikersPostViewHolder(
+        private val binding: CardUserBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
+
                 userName.text = user.name
                 userLogin.text = user.login
 
                 userAvatar.loadAvatarImage(user.avatar)
-
-                binding.root.setOnClickListener {
-                    listener.onDetailsClick(user)
-                }
             }
         }
     }
 
-    class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    class LikersPostDiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             if (oldItem::class != newItem::class) {
                 return false

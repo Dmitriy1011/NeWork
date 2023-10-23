@@ -3,11 +3,13 @@ package ru.testapp.nework.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -17,6 +19,7 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.dto.PhotoModel
 import ru.testapp.nework.dto.Post
+import ru.testapp.nework.models.ModelPost
 import ru.testapp.nework.repository.RepositoryPost
 import ru.testapp.nework.state.StateFeed
 import javax.inject.Inject
@@ -92,7 +95,7 @@ class ViewModelPost @Inject constructor(
 
     private val edited = MutableLiveData(emptyPost)
 
-
+    val postData: LiveData<ModelPost> = repository.postData.map(::ModelPost).asLiveData(Dispatchers.Default)
     init {
         loadPosts()
     }
@@ -131,7 +134,7 @@ class ViewModelPost @Inject constructor(
     }
 
     fun saveMentionedIds(list: List<Int>) {
-        if(edited.value?.mentionIds == list) {
+        if (edited.value?.mentionIds == list) {
             return
         }
         edited.value =

@@ -11,9 +11,12 @@ import android.widget.CheckBox
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterChooseUsers
+import ru.testapp.nework.adapter.OnIteractionListenerChooseUsers
 import ru.testapp.nework.databinding.FragmentChooseUsersBinding
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
@@ -22,10 +25,7 @@ import ru.testapp.nework.viewmodel.ViewModelUsers
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class FragmentChooseUsers @Inject constructor(
-    private val post: Post,
-    private val user: User
-) : Fragment() {
+class FragmentChooseUsers : Fragment() {
 
     private val viewModel: ViewModelPost by viewModels()
     private val viewModelUsers: ViewModelUsers by viewModels()
@@ -39,15 +39,16 @@ class FragmentChooseUsers @Inject constructor(
 
         var mentionedIds = mutableListOf<Int>()
 
-        val adapter = AdapterChooseUsers()
+        val adapter = AdapterChooseUsers(object : OnIteractionListenerChooseUsers {
+            override fun returnPostForTransfer(post: Post) {
+                return
+            }
+        })
 
-        requireActivity().findViewById<View>(R.id.saveChooseUser).setOnClickListener {
-            requireActivity().findViewById<CheckBox>(R.id.mentionedUserCheckBox)
-                .setOnCheckedChangeListener { _, isChecked ->
-                    if (isChecked) {
-                        mentionedIds.add(user.id.toInt())
-                    }
-                }
+        val post = requireArguments().getSerializable("postKey") as Post
+
+        adapter.mentionedList.observe(viewLifecycleOwner) { idOfCheckedItem ->
+            mentionedIds.add(idOfCheckedItem)
         }
 
         binding.mentionedUsersList.adapter = adapter
@@ -76,7 +77,6 @@ class FragmentChooseUsers @Inject constructor(
                 adapter.submitList(filteredUsers)
             }
         }
-
 
         return binding.root
     }

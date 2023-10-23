@@ -3,11 +3,13 @@ package ru.testapp.nework.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -17,6 +19,7 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.PhotoModel
+import ru.testapp.nework.models.ModelEvent
 import ru.testapp.nework.repository.RepositoryEvents
 import ru.testapp.nework.state.StateEventModel
 import javax.inject.Inject
@@ -87,9 +90,27 @@ class ViewModelEvents @Inject constructor(
     val photoState: LiveData<PhotoModel?>
         get() = _photoState
 
-
     private val edited = MutableLiveData(emptyEvent)
 
+
+    private val _eventTypesState = MutableLiveData<String>()
+    val eventTypesState: LiveData<String>
+        get() = _eventTypesState
+
+    private val _dateTimeState = MutableLiveData<String>()
+    val dateTimeState: LiveData<String>
+        get() = _dateTimeState
+
+    fun editType(type: String) {
+        _eventTypesState.value = type
+    }
+
+    fun editDateTime(dateTime: String) {
+        _dateTimeState.value = dateTime
+    }
+
+    val eventDetailsData: LiveData<ModelEvent> =
+        repository.detailsData.map(::ModelEvent).asLiveData(Dispatchers.Default)
 
     init {
         loadEvents()

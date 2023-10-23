@@ -4,9 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -27,6 +31,7 @@ import ru.testapp.nework.adapter.OnIteractionListenerEvents
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentEventsBinding
 import ru.testapp.nework.dto.Event
+import ru.testapp.nework.utils.EventIdArg
 import ru.testapp.nework.viewmodel.ViewModelEvents
 import javax.inject.Inject
 
@@ -38,13 +43,28 @@ class FragmentEvents : Fragment() {
 
     private val viewModel: ViewModelEvents by viewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentEventsBinding.inflate(inflater, container, false)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_events_feed, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.authorizeMenuEventsFeed -> {
+                        findNavController().navigate(R.id.action_fragmentEvents_to_fragmentProfileMy)
+                        true
+                    }
+
+                    else -> false
+                }
+        }, viewLifecycleOwner)
 
         val adapter = AdapterEvents(object : OnIteractionListenerEvents {
             override fun onEdit(event: Event) {
@@ -89,6 +109,20 @@ class FragmentEvents : Fragment() {
                 )
                 startActivity(chooserIntent)
             }
+
+            override fun followingTheLink(event: Event) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
+                startActivity(intent)
+            }
+
+            override fun onDetailsClicked(event: Event) {
+                findNavController().navigate(
+                    R.id.action_fragmentEvents_to_fragmentEventInDetails2,
+                    Bundle().apply {
+                        eventIdArg = event.id
+                    }
+                )
+            }
         })
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -126,7 +160,7 @@ class FragmentEvents : Fragment() {
         }
 
         viewModel.eventsState.observe(viewLifecycleOwner) {
-            binding.swipeRefresh.isVisible = it.refreshing
+            binding.swipeRefresh.isRefreshing = it.refreshing
             binding.progressBar.isVisible = it.loading || it.refreshing
             binding.errorGroup.isVisible = it.error
             if (it.error) {
@@ -143,7 +177,7 @@ class FragmentEvents : Fragment() {
         }
 
         binding.fab.setOnClickListener {
-            if (appAuth.authStateFlow.value != null) {
+            if (appAuth.authStateFlow.value == null) {
                 findNavController().navigate(R.id.action_fragmentEvents_to_fragmentCreateAndEditEvent)
             }
             Snackbar.make(
@@ -170,5 +204,9 @@ class FragmentEvents : Fragment() {
         }
 
         return binding.root
+    }
+
+    companion object {
+        var Bundle.eventIdArg: Long by EventIdArg
     }
 }

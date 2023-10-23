@@ -86,4 +86,5 @@
     <string name="event_date">Event date</string>
     <string name="mm_dd_yyyy_hh_mm">MM/dd/yyyy HH:mm</string>
     <string name="date_type">Date type</string>
+    <string name="https_netomedia_ru">https://netomedia.ru/</string>
 </resources>

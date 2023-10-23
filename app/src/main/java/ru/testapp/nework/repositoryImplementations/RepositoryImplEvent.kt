@@ -6,7 +6,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -18,6 +20,7 @@ import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.Media
 import ru.testapp.nework.entity.EntityEvent
 import ru.testapp.nework.entity.EventAttachmentEmbeddable
+import ru.testapp.nework.entity.listEntityEventToEvent
 import ru.testapp.nework.enum.AttachmentTypeEvent
 import ru.testapp.nework.paging.RemoteMediatorEvent
 import ru.testapp.nework.repository.RepositoryEvents
@@ -31,7 +34,7 @@ class RepositoryImplEvent @Inject constructor(
     private val apiService: ApiServiceEvents,
     private val eventDao: DaoEvent,
     private val keyDao: DaoEventRemoteKey,
-    private val appDb: AppDb
+    private val appDb: AppDb,
 ) : RepositoryEvents {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -47,6 +50,10 @@ class RepositoryImplEvent @Inject constructor(
     ).flow.map {
         it.map(EntityEvent::toDto)
     }
+
+    override val detailsData: Flow<List<Event>> =
+        eventDao.getAllEvents().map(List<EntityEvent>::listEntityEventToEvent)
+            .flowOn(Dispatchers.Default)
 
     override suspend fun getAllEvents() {
         try {

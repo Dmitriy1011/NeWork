@@ -41,6 +41,24 @@ class ViewModelJobs @Inject constructor(
     val jobCreated: SingleLiveEvent<Unit>
         get() = _jobCreated
 
+
+    private val _startDateState = MutableLiveData<String>()
+    val startDateState: LiveData<String>
+        get() = _startDateState
+
+    private val _endDateState = MutableLiveData<String>()
+    val endDateState: LiveData<String>
+        get() = _endDateState
+
+    fun editStartDate(date: String) {
+        _startDateState.value = date
+    }
+
+    fun editEndDate(date: String) {
+        _endDateState.value = date
+    }
+
+
     init {
         loadJobsMy()
     }

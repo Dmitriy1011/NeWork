@@ -11,7 +11,7 @@ import ru.testapp.nework.entity.EntityEvent
 @Dao
 interface DaoEvent {
     @Query("SELECT * FROM EntityEvent ORDER BY id DESC")
-    fun getAllPosts(): Flow<List<EntityEvent>>
+    fun getAllEvents(): Flow<List<EntityEvent>>
 
     @Query("SELECT * FROM EntityEvent ORDER BY id DESC")
     fun getPagingSource(): PagingSource<Int, EntityEvent>
@@ -23,12 +23,12 @@ interface DaoEvent {
     suspend fun isEmpty(): Boolean
 
     @Query("SELECT * FROM EntityEvent ORDER BY id DESC LIMIT :count")
-    fun getLatestPosts(count: Int = 1): Flow<List<EntityEvent>>
+    fun getLatestEvents(count: Int = 1): Flow<List<EntityEvent>>
 
     @Query("UPDATE EntityEvent SET content = :content WHERE id=:id")
     suspend fun updateContentById(id: Long, content: String)
 
-    suspend fun savePost(entityEvent: EntityEvent) =
+    suspend fun saveEvent(entityEvent: EntityEvent) =
         if (entityEvent.id == 0L) insert(entityEvent) else updateContentById(
             entityEvent.id,
             entityEvent.content

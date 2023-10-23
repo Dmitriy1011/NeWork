@@ -123,14 +123,22 @@ class FragmentCreateAndEditEvent : Fragment() {
             modalBottomSheet.show(requireActivity().supportFragmentManager, ModalBottomSheet.TAG)
         }
 
-        setFragmentResultListener("typeRequestKey") { _, bundle ->
-            val typeResult = bundle.getString("typeBundleKey")
-            binding.displayEventTypeButton.text = typeResult!!
+        viewModel.eventTypesState.observe(viewLifecycleOwner) {
+            binding.displayEventTypeButton.text = it
         }
-        setFragmentResultListener("dateRequestKey") { _, bundle ->
-            val dateResult = bundle.getString("dateBundleKey")
-            binding.displayEventDateTextButton.text = dateResult!!
+
+        viewModel.dateTimeState.observe(viewLifecycleOwner) {
+            binding.displayEventDateTextButton.text = it
         }
+
+//        setFragmentResultListener("typeRequestKey") { _, bundle ->
+//            val typeResult = bundle.getString("typeBundleKey")
+//            binding.displayEventTypeButton.text = typeResult!!
+//        }
+//        setFragmentResultListener("dateRequestKey") { _, bundle ->
+//            val dateResult = bundle.getString("dateBundleKey")
+//            binding.displayEventDateTextButton.text = dateResult!!
+//        }
 
         return binding.root
     }

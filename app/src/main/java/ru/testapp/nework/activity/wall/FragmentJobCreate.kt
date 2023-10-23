@@ -59,11 +59,19 @@ class FragmentJobCreate : Fragment() {
             dialog.cancel()
         }
 
-        val startDate = dialog.findViewById<TextInputLayout>(R.id.selectStartDate)
-        val endDate = dialog.findViewById<TextInputLayout>(R.id.selectEndDate)
+//        val startDate = dialog.findViewById<TextInputLayout>(R.id.selectStartDate)
+//        val endDate = dialog.findViewById<TextInputLayout>(R.id.selectEndDate)
+//
+//        binding.startDataText.text = startDate.toString()
+//        binding.finishDataText.text = endDate.toString()
 
-        binding.startDataText.text = startDate.toString()
-        binding.finishDataText.text = endDate.toString()
+        viewModel.startDateState.observe(viewLifecycleOwner) {
+            binding.startDataText.text = it
+        }
+
+        viewModel.endDateState.observe(viewLifecycleOwner) {
+            binding.finishDataText.text = it
+        }
 
         return binding.root
     }

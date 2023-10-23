@@ -15,34 +15,34 @@ import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.Media
 
 interface ApiServiceEvents {
-    @GET("api/events")
+    @GET("/api/events/")
     suspend fun getAllEvents(): Response<List<Event>>
 
-    @GET("api/events/latest")
+    @GET("/api/events/latest/")
     suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
-    @GET("api/events/{id}/before")
-    suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Event>>
+    @GET("/api/events/{event_id}/before/")
+    suspend fun getBefore(@Path("event_id") id: Long, @Query("count") count: Int): Response<List<Event>>
 
-    @GET("api/events/{id}/after")
-    suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Event>>
+    @GET("/api/events/{event_id}/after/")
+    suspend fun getAfter(@Path("event_id") id: Long, @Query("count") count: Int): Response<List<Event>>
 
-    @POST("events")
+    @POST("/api/events/")
     suspend fun saveEvent(@Body event: Event): Response<Event>
 
-    @POST("events/{id}")
-    suspend fun likeEvent(@Path("id") id: Long): Response<Event>
+    @POST("/api/events/{event_id}/")
+    suspend fun likeEvent(@Path("event_id") id: Long): Response<Event>
 
-    @POST("events/{id}")
-    suspend fun unLikeEvent(@Path("id") id: Long): Response<Event>
+    @POST("/api/events/{event_id}/")
+    suspend fun unLikeEvent(@Path("event_id") id: Long): Response<Event>
 
-    @DELETE("events/{id}")
-    suspend fun deleteEvent(@Path("id") id: Long): Response<Unit>
+    @DELETE("/api/events/{event_id}/")
+    suspend fun deleteEvent(@Path("event_id") id: Long): Response<Unit>
 
-    @PATCH("events")
+    @PATCH("/api/events/")
     suspend fun editEvent(@Body event: Event): Response<Event>
 
     @Multipart
-    @POST("media")
+    @POST("/api/media/")
     suspend fun uploadMedia(@Part file: MultipartBody.Part): Response<Media>
 }

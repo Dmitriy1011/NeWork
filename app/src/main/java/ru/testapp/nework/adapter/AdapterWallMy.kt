@@ -61,8 +61,8 @@ class AdapterWallMy(
 
                 postMenuButton.isVisible = post.ownedByMe
 
-                val avatarUrl = "${BuildConfig.BASE_URL}avatars/${post.authorAvatar}"
-                val attachmentImageUrl = "${BuildConfig.BASE_URL}media/${post.attachment?.url}"
+                val avatarUrl = post.authorAvatar ?: return
+                val attachmentImageUrl = post.attachment?.url ?: return
 
                 postAvatar.loadAvatarImage(avatarUrl)
                 postAttachmentImage.loadAttachmentImage(attachmentImageUrl)

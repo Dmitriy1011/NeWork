@@ -13,6 +13,9 @@ interface DaoPost {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun getAllPosts(): Flow<List<PostEntity>>
 
+    @Query("SELECT * FROM PostEntity WHERE id=:id")
+    fun getPost(id: Long): PostEntity
+
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
     fun getPagingSource(): PagingSource<Int, PostEntity>
 

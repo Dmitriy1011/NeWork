@@ -7,6 +7,8 @@ import java.io.File
 
 interface RepositoryPost {
     val data: Flow<PagingData<Post>>
+
+    val postData: Flow<List<Post>>
     suspend fun getAllPosts()
     suspend fun savePost(post: Post)
     suspend fun editPost(post: Post)

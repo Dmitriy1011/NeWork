@@ -6,8 +6,6 @@ import androidx.room.PrimaryKey
 import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.EventAttachment
 import ru.testapp.nework.dto.EventCoordinates
-import ru.testapp.nework.dto.EventUserPreview
-import ru.testapp.nework.enum.AttachmentTypeEvent
 
 @Entity
 data class EntityEvent(
@@ -32,7 +30,7 @@ data class EntityEvent(
     val attachment: EventAttachmentEmbeddable?,
     val link: String?,
     val ownedByMe: Boolean = false,
-    val users: Map<Long, EventUsersPreviewEmbeddable>,
+    val users: Map<Long, UserPreviewEmbeddable>,
 ) {
     fun toDto() = Event(
         id,
@@ -91,18 +89,6 @@ data class EventCoordinatesEmbeddable(
         fun fromDto(dto: EventCoordinates) = EventCoordinatesEmbeddable(dto.latitude, dto.longitude)
     }
 }
-
-data class EventUsersPreviewEmbeddable(
-    val name: String,
-    val avatar: String?
-) {
-    fun toDto() = EventUserPreview(name, avatar)
-
-    companion object {
-        fun fromDto(dto: EventUserPreview) = EventUsersPreviewEmbeddable(dto.name, dto.avatar)
-    }
-}
-
 data class EventAttachmentEmbeddable(
     var url: String,
     val type: String

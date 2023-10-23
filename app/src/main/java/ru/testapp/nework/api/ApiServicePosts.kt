@@ -16,34 +16,34 @@ import ru.testapp.nework.dto.Post
 
 
 interface ApiServicePosts {
-    @GET("api/posts")
+    @GET("/api/posts/")
     suspend fun getAllPosts(): Response<List<Post>>
 
-    @GET("api/posts/latest")
+    @GET("/api/posts/latest/")
     suspend fun getLatestPosts(@Query("count") count: Int): Response<List<Post>>
 
-    @GET("api/posts/{id}/before")
+    @GET("/api/posts/{id}/before/")
     suspend fun getBefore(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
-    @GET("api/posts/{id}/after")
+    @GET("/api/posts/{id}/after/")
     suspend fun getAfter(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
 
-    @POST("api/posts")
+    @POST("/api/posts/")
     suspend fun savePost(@Body post: Post): Response<Post>
 
-    @POST("api/posts/{id}")
+    @POST("/api/posts/{id}/")
     suspend fun likePost(@Path("id") id: Long): Response<Post>
 
-    @POST("api/posts/{id}")
+    @POST("/api/posts/{id}/")
     suspend fun unLikePost(@Path("id") id: Long): Response<Post>
 
-    @DELETE("api/posts/{id}")
+    @DELETE("/api/posts/{id}/")
     suspend fun deletePost(@Path("id") id: Long): Response<Unit>
 
-    @PATCH("api/posts")
+    @PATCH("/api/posts/")
     suspend fun editPost(@Body post: Post): Response<Post>
 
     @Multipart
-    @POST("api/media")
+    @POST("/api/media/")
     suspend fun uploadMedia(@Part file: MultipartBody.Part): Response<Media>
 }

@@ -13,11 +13,14 @@ import ru.testapp.nework.dto.TokenAuth
 import ru.testapp.nework.dto.User
 
 interface ApiServiceUsers {
-    @GET("users")
+    @GET("/api/users/")
     suspend fun getAllUsers(): Response<List<User>>
 
+    @GET("/api/users/{user_id}/")
+    suspend fun getUserById(@Path("user_id") id: Long): Response<User>
+
     @FormUrlEncoded
-    @POST("users/registration")
+    @POST("/api/users/registration/")
     suspend fun registerUser(
         @Part("login") login: RequestBody,
         @Part("password") password: RequestBody,
@@ -26,7 +29,7 @@ interface ApiServiceUsers {
     ): Response<TokenAuth>
 
     @FormUrlEncoded
-    @POST("users/authentication")
+    @POST("/api/users/authentication/")
     suspend fun updateUser(
         @Field("login") login: String,
         @Field("password") password: String

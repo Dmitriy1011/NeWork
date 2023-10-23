@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardEventBinding
 import ru.testapp.nework.dto.Event
+import ru.testapp.nework.dto.Job
 import ru.testapp.nework.enum.AttachmentTypeEvent
 import ru.testapp.nework.enum.TypeStatus
+import ru.testapp.nework.handler.loadAttachmentImage
+import ru.testapp.nework.handler.loadAvatarImage
 
 interface OnIteractionListenerEvents {
     fun onEdit(event: Event) {}
@@ -21,6 +24,8 @@ interface OnIteractionListenerEvents {
     fun onOpenImage(event: Event) {}
     fun onOpenVideo(event: Event) {}
     fun onOpenAudio(event: Event) {}
+    fun followingTheLink(event: Event) {}
+    fun onDetailsClicked(event: Event) {}
 }
 
 class AdapterEvents(
@@ -51,18 +56,34 @@ class AdapterEvents(
                 eventDateTime.text = event.datetime
                 eventTextContent.text = event.content
 
+                eventLink.isVisible = event.link.isNullOrBlank()
+                eventLink.text = event.link
+
+                binding.eventLink.setOnClickListener {
+                    listener.followingTheLink(event)
+                }
+
                 eventLikeButton.text = event.likeOwnerIds?.size.toString()
                 eventParticipantsButton.text = event.likeOwnerIds?.size.toString()
+
+                binding.root.setOnClickListener {
+                    listener.onDetailsClicked(event)
+                }
 
                 //attachment
                 val attachmentType = event.attachment?.type
                 val statusType = event.type
                 val instanceAttachmentUrl = event.attachment?.url
 
+                eventPlayButton.isVisible = false
+
+                when (attachmentType) {
+                    AttachmentTypeEvent.VIDEO.toString() -> eventPlayButton.isVisible = true
+                }
+
                 when(statusType) {
                     TypeStatus.ONLINE.toString() -> eventType.text = "Online"
                     TypeStatus.OFFLINE.toString() -> eventType.text = "Offline"
-
                 }
 
                 eventAttachmentImage.isVisible = !instanceAttachmentUrl.isNullOrBlank()
@@ -75,6 +96,12 @@ class AdapterEvents(
                         else -> {}
                     }
                 }
+
+                val avatarUrl = event.authorAvatar ?: return
+                val attachmentImageUrl = event.attachment?.url ?: return
+
+                eventAvatar.loadAvatarImage(avatarUrl)
+                eventAttachmentImage.loadAttachmentImage(attachmentImageUrl)
 
                 eventMenuButton.setOnClickListener {
                     PopupMenu(it.context, it).apply {

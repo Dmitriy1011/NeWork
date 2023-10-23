@@ -2,6 +2,7 @@ package ru.testapp.nework.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -9,6 +10,7 @@ import ru.testapp.nework.databinding.CardJobBinding
 import ru.testapp.nework.dto.Job
 
 interface OnIteractionListenerJobs {
+    fun followingTheLink(job: Job) {}
     fun onRemove(job: Job) {}
 }
 
@@ -37,10 +39,16 @@ class AdapterJobs(
                 startDate.text = job.start
                 endDate.text = job.finish
                 jobPosition.text = job.position
+
+                jobLink.isVisible = job.link.isNullOrBlank()
                 jobLink.text = job.link
 
                 deleteJobButton.setOnClickListener {
                     listener.onRemove(job)
+                }
+
+                binding.jobLink.setOnClickListener {
+                    listener.followingTheLink(job)
                 }
             }
         }

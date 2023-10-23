@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +26,8 @@ interface OnIteractionListener {
     fun onOpenVideo(post: Post) {}
     fun onOpenImage(post: Post) {}
     fun onOpenAudio(post: Post) {}
+    fun followingTheLink(post: Post) {}
+    fun onDetailsClicked(post: Post) {}
 }
 
 class PostsAdapter(
@@ -53,6 +57,13 @@ class PostsAdapter(
                 postTextContent.text = post.content
                 postPublishedDate.text = post.published
 
+                postLink.isVisible = post.link.isNullOrBlank()
+                postLink.text = post.link
+
+                binding.postLink.setOnClickListener {
+                    onIteractionListener.followingTheLink(post)
+                }
+
                 postLikeButton.text = post.likes.toString()
 
                 postLikeButton.setOnClickListener {
@@ -61,14 +72,24 @@ class PostsAdapter(
                     )
                 }
 
+                binding.root.setOnClickListener {
+                    onIteractionListener.onDetailsClicked(post)
+                }
+
                 //attachment
                 val attachmentType = post.attachment?.type
                 val instanceAttachmentUrl = post.attachment?.url
 
-                postAttachmentImage.isVisible = !instanceAttachmentUrl.isNullOrBlank()
+                postAttachmentImageFrame.isVisible = !instanceAttachmentUrl.isNullOrBlank()
+
+                playButton.isVisible = false
+
+                when (attachmentType) {
+                    AttachmentTypePost.VIDEO.toString() -> playButton.isVisible = true
+                }
 
                 binding.postAttachmentImage.setOnClickListener {
-                    when(attachmentType) {
+                    when (attachmentType) {
                         AttachmentTypePost.IMAGE.toString() -> onIteractionListener.onOpenImage(post)
                         AttachmentTypePost.VIDEO.toString() -> onIteractionListener.onOpenVideo(post)
                         AttachmentTypePost.AUDIO.toString() -> onIteractionListener.onOpenAudio(post)
@@ -78,8 +99,8 @@ class PostsAdapter(
 
                 postMenuButton.isVisible = post.ownedByMe
 
-                val avatarUrl = "${BuildConfig.BASE_URL}avatars/${post.authorAvatar}"
-                val attachmentImageUrl = "${BuildConfig.BASE_URL}media/${post.attachment?.url}"
+                val avatarUrl = post.authorAvatar ?: return
+                val attachmentImageUrl = post.attachment?.url ?: return
 
                 postAvatar.loadAvatarImage(avatarUrl)
                 postAttachmentImage.loadAttachmentImage(attachmentImageUrl)
