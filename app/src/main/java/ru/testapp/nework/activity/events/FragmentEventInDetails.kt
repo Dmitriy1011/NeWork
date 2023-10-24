@@ -1,5 +1,7 @@
 package ru.testapp.nework.activity.events
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -12,12 +14,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
 import ru.testapp.nework.activity.events.FragmentEvents.Companion.eventIdArg
+import ru.testapp.nework.activity.posts.FragmentPostsFeed.Companion.textArg
+import ru.testapp.nework.adapter.AdapterEvents
 import ru.testapp.nework.adapter.AdapterUsersFilteredEvent
+import ru.testapp.nework.adapter.OnIteractionListenerEvents
 import ru.testapp.nework.adapter.OnIteractionListenerUsersFiltered
 import ru.testapp.nework.databinding.FragmentEventInDetailsBinding
 import ru.testapp.nework.dto.Event
+import ru.testapp.nework.dto.Post
 import ru.testapp.nework.viewmodel.ViewModelEvents
 import ru.testapp.nework.viewmodel.ViewModelUsers
 
@@ -66,6 +73,56 @@ class FragmentEventInDetails : Fragment() {
                                 }
                             }
                         })
+
+                    AdapterEvents.EventsViewHolder(this, object: OnIteractionListenerEvents {
+                        override fun onEdit(event: Event) {
+                            eventsViewModel.editEvent(event)
+                        }
+
+                        override fun onRemove(event: Event) {
+                            eventsViewModel.removeEvent(event.id)
+                        }
+
+                        override fun onLike(event: Event) {
+                            eventsViewModel.likeEvent(event.id)
+                        }
+
+                        override fun onUnLike(event: Event) {
+                            eventsViewModel.unLikeEvent(event.id)
+                        }
+
+                        override fun onOpenImage(event: Event) {
+                            findNavController().navigate(
+                                R.id.action_fragmentPostInDetails_to_fragmentAttachmentSeparate,
+                                Bundle().apply {
+                                    textArg = "${BuildConfig.BASE_URL}media/${event.attachment?.url}"
+                                }
+                            )
+                        }
+
+                        override fun onOpenVideo(event: Event) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                            val chooserIntent = Intent.createChooser(
+                                intent,
+                                getString(R.string.choose_where_open_your_video)
+                            )
+                            startActivity(chooserIntent)
+                        }
+
+                        override fun onOpenAudio(event: Event) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                            val chooserIntent = Intent.createChooser(
+                                intent,
+                                getString(R.string.choose_where_open_your_audio)
+                            )
+                            startActivity(chooserIntent)
+                        }
+
+                        override fun followingTheLink(event: Event) {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
+                            startActivity(intent)
+                        }
+                    }).bind(event)
 
                     likersListShort.adapter = usersFilteredAdapter
                     speakersList.adapter = usersFilteredAdapter

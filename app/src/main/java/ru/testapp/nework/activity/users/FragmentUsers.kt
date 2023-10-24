@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -90,6 +91,15 @@ class FragmentUsers : Fragment() {
                     viewModel.loadUsers()
                 }.show()
             }
+        }
+
+        viewModel.usersLoadError.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), viewModel.usersLoadError.value, Toast.LENGTH_LONG)
+                .show()
+        }
+
+        binding.usersRetryButton.setOnClickListener {
+            viewModel.loadUsers()
         }
 
         return binding.root

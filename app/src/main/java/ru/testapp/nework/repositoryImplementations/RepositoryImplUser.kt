@@ -27,7 +27,7 @@ class RepositoryImplUser @Inject constructor(
     private val dao: DaoUser
 ) : RepositoryUsers {
 
-    override val data: Flow<List<User>> =
+    override val data =
         dao.getAllUsers().map(List<EntityUser>::toDto).flowOn(Dispatchers.Default)
 
     @Inject

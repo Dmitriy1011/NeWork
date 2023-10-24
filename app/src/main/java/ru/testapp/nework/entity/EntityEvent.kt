@@ -31,6 +31,7 @@ data class EntityEvent(
     val link: String?,
     val ownedByMe: Boolean = false,
     val users: Map<Long, UserPreviewEmbeddable>,
+    val likes: Int
 ) {
     fun toDto() = Event(
         id,
@@ -51,7 +52,8 @@ data class EntityEvent(
         attachment,
         link,
         ownedByMe,
-        users
+        users,
+        likes
     )
 
     companion object {
@@ -74,7 +76,8 @@ data class EntityEvent(
             dto.attachment,
             dto.link,
             dto.ownedByMe,
-            dto.users
+            dto.users,
+            dto.likes
         )
     }
 }

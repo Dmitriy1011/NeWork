@@ -118,7 +118,7 @@ class FragmentPostInDetails : Fragment() {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(post.link))
                             startActivity(intent)
                         }
-                    })
+                    }).bind(post)
 
                     requireActivity().addMenuProvider(object : MenuProvider {
                         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

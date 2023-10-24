@@ -9,7 +9,7 @@ import ru.testapp.nework.entity.EntityUser
 
 @Dao
 interface DaoUser {
-    @Query("SELECT * FROM EntityUser")
+    @Query("SELECT * FROM EntityUser ORDER BY id DESC")
     fun getAllUsers(): Flow<List<EntityUser>>
 
     @Insert

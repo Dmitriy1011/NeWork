@@ -27,6 +27,7 @@ data class Event(
     val link: String?,
     val ownedByMe: Boolean = false,
     val users: Map<Long, UserPreviewEmbeddable>,
+    val likes: Int
 ): Serializable
 
 data class EventCoordinates(

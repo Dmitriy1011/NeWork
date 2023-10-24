@@ -43,7 +43,8 @@ private val emptyEvent = Event(
     attachment = null,
     link = "",
     ownedByMe = false,
-    users = emptyMap()
+    users = emptyMap(),
+    likes = 0
 )
 
 @HiltViewModel
