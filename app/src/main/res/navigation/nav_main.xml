@@ -239,6 +239,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentEventInDetails2_to_fragmentAttachmentSeparateEvent"
+            app:destination="@id/fragmentAttachmentSeparateEvent"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentLikersEvent2"
@@ -364,6 +371,18 @@
         <action
             android:id="@+id/action_fragmentPostLikers_to_fragmentPostInDetails"
             app:destination="@id/fragmentPostInDetails"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentAttachmentSeparateEvent"
+        android:name="ru.testapp.nework.activity.events.FragmentAttachmentSeparateEvent"
+        android:label="FragmentAttachmentSeparateEvent" >
+        <action
+            android:id="@+id/action_fragmentAttachmentSeparateEvent_to_fragmentEventInDetails2"
+            app:destination="@id/fragmentEventInDetails2"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
