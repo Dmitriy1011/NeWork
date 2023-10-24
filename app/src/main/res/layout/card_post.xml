@@ -72,7 +72,8 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 app:srcCompat="@drawable/play"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
 
         </FrameLayout>
 
