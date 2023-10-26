@@ -11,21 +11,14 @@ import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-interface OnIteractionListenerUsersFilteredPost {
-    fun returnPostForTransfer(post: Post) {}
-}
-
-class AdapterUsersFilteredPost(
-    private val listener: OnIteractionListenerUsersFilteredPost
-) :
+class AdapterUsersFilteredPost :
     ListAdapter<User, AdapterUsersFilteredPost.ViewHolderUsersFilteredPost>(
         DiffCallBackUsersFilteredPost()
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderUsersFilteredPost {
         val inflater = LayoutInflater.from(parent.context)
         return ViewHolderUsersFilteredPost(
-            CardImageBinding.inflate(inflater, parent, false),
-            listener = listener
+            CardImageBinding.inflate(inflater, parent, false)
         )
     }
 
@@ -35,11 +28,11 @@ class AdapterUsersFilteredPost(
 
     class ViewHolderUsersFilteredPost(
         private val binding: CardImageBinding,
-        private val listener: OnIteractionListenerUsersFilteredPost
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
-                eventUsersFilteredPreviewImage.loadAvatarImage(user.avatar)
+                val ava = user.avatar ?: return
+                eventUsersFilteredPreviewImage.loadAvatarImage(ava)
             }
         }
     }

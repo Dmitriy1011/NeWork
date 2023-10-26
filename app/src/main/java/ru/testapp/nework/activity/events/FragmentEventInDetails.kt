@@ -9,10 +9,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.MapObjectTapListener
+import com.yandex.mapkit.mapview.MapView
+import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
@@ -24,7 +32,6 @@ import ru.testapp.nework.adapter.OnIteractionListenerEvents
 import ru.testapp.nework.adapter.OnIteractionListenerUsersFiltered
 import ru.testapp.nework.databinding.FragmentEventInDetailsBinding
 import ru.testapp.nework.dto.Event
-import ru.testapp.nework.dto.Post
 import ru.testapp.nework.viewmodel.ViewModelEvents
 import ru.testapp.nework.viewmodel.ViewModelUsers
 
@@ -32,6 +39,8 @@ import ru.testapp.nework.viewmodel.ViewModelUsers
 class FragmentEventInDetails : Fragment() {
     private val usersViewModel: ViewModelUsers by viewModels()
     private val eventsViewModel: ViewModelEvents by viewModels()
+
+    private var mapView: MapView? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,17 +48,19 @@ class FragmentEventInDetails : Fragment() {
     ): View {
         val binding = FragmentEventInDetailsBinding.inflate(inflater, container, false)
 
+        val currentMenuProvider: MenuProvider? = null
+
+        var idArg = arguments?.eventIdArg
+
         eventsViewModel.eventDetailsData.observe(viewLifecycleOwner) { modelEvent ->
-            modelEvent.eventsList.find { it.id == arguments?.eventIdArg }?.let { event ->
+            modelEvent.eventsList.map { it.copy(id = idArg!!) }
+            currentMenuProvider?.let { requireActivity().removeMenuProvider(currentMenuProvider) }
+            modelEvent.eventsList.find { it.id == idArg }?.let { event ->
                 binding.eventCardInDetails.apply {
-                    speakersTitle.visibility = View.VISIBLE
-                    speakersList.visibility = View.VISIBLE
                     likersTitle.visibility = View.VISIBLE
-                    likersListShort.visibility = View.VISIBLE
-                    moreLikersButton.visibility = View.VISIBLE
                     participantsTitle.visibility = View.VISIBLE
                     eventInDetailsMentionedButton.visibility = View.VISIBLE
-                    participantsList.visibility = View.GONE
+                    eventParticipantsButton.visibility = View.GONE
 
                     requireActivity().addMenuProvider(object : MenuProvider {
                         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -74,7 +85,7 @@ class FragmentEventInDetails : Fragment() {
                             }
                         })
 
-                    AdapterEvents.EventsViewHolder(this, object: OnIteractionListenerEvents {
+                    AdapterEvents.EventsViewHolder(this, object : OnIteractionListenerEvents {
                         override fun onEdit(event: Event) {
                             eventsViewModel.editEvent(event)
                         }
@@ -95,13 +106,15 @@ class FragmentEventInDetails : Fragment() {
                             findNavController().navigate(
                                 R.id.action_fragmentPostInDetails_to_fragmentAttachmentSeparate,
                                 Bundle().apply {
-                                    textArg = "${BuildConfig.BASE_URL}media/${event.attachment?.url}"
+                                    textArg =
+                                        "${BuildConfig.BASE_URL}media/${event.attachment?.url}"
                                 }
                             )
                         }
 
                         override fun onOpenVideo(event: Event) {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                            val intent =
+                                Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
                             val chooserIntent = Intent.createChooser(
                                 intent,
                                 getString(R.string.choose_where_open_your_video)
@@ -110,7 +123,8 @@ class FragmentEventInDetails : Fragment() {
                         }
 
                         override fun onOpenAudio(event: Event) {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                            val intent =
+                                Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
                             val chooserIntent = Intent.createChooser(
                                 intent,
                                 getString(R.string.choose_where_open_your_audio)
@@ -131,14 +145,23 @@ class FragmentEventInDetails : Fragment() {
 
                     usersViewModel.data.observe(viewLifecycleOwner) {
                         val likerOwnerIds = event.likeOwnerIds.orEmpty().toSet()
-                        likerOwnerIds.forEach { likerOwnerId ->
-                            val filteredUsers = it.users.filter { it.id == likerOwnerId.toLong() }
-                            usersFilteredAdapter.submitList(filteredUsers)
+                        if (likerOwnerIds.isNotEmpty()) {
+                            likersListShort.visibility = View.VISIBLE
+                            moreLikersButton.visibility = View.VISIBLE
+                            likerOwnerIds.forEach { likerOwnerId ->
+                                val filteredUsers =
+                                    it.users.filter { it.id == likerOwnerId.toLong() }
+                                usersFilteredAdapter.submitList(filteredUsers)
+                            }
                         }
                     }
 
                     usersViewModel.data.observe(viewLifecycleOwner) {
                         val speakerOwnerIds = event.speakerIds.orEmpty().toSet()
+                        if (speakerOwnerIds.isNotEmpty()) {
+                            speakersList.visibility = View.VISIBLE
+                            speakersTitle.visibility = View.VISIBLE
+                        }
                         speakerOwnerIds.forEach { speakerOwnerId ->
                             val filteredUsers = it.users.filter { it.id == speakerOwnerId.toLong() }
                             usersFilteredAdapter.submitList(filteredUsers)
@@ -147,16 +170,78 @@ class FragmentEventInDetails : Fragment() {
 
                     usersViewModel.data.observe(viewLifecycleOwner) {
                         val participantOwnerIds = event.participantsIds.orEmpty().toSet()
-                        participantOwnerIds.forEach { participantOwnerId ->
-                            val filteredUsers =
-                                it.users.filter { it.id == participantOwnerId.toLong() }
-                            usersFilteredAdapter.submitList(filteredUsers)
+                        if (participantOwnerIds.isNotEmpty()) {
+                            participantsList.visibility = View.VISIBLE
+                            participantOwnerIds.forEach { participantOwnerId ->
+                                val filteredUsers =
+                                    it.users.filter { it.id == participantOwnerId.toLong() }
+                                usersFilteredAdapter.submitList(filteredUsers)
+                            }
                         }
                     }
+
+                    moreLikersButton.setOnClickListener {
+                        findNavController().navigate(
+                            R.id.action_fragmentEventInDetails2_to_fragmentLikersEvent2,
+                            Bundle().apply
+                            { putSerializable("eventKey", event) })
+                    }
+
+                    if (event.coordinates == null) {
+                        mapView?.findViewById<MapView>(R.id.eventInDetailsMapView)?.onStop()
+                        return@observe
+                    }
+
+                    mapView?.findViewById<MapView>(R.id.eventInDetailsMapView)?.isVisible =
+                        event.coordinates != null
+
+                    MapKitFactory.initialize(requireContext())
+                    mapView?.findViewById<MapView>(R.id.eventInDetailsMapView)
+
+                    val latitude = event.coordinates?.latitude!!.toDouble()
+                    val longitude = event.coordinates.longitude!!.toDouble()
+
+                    CameraPosition(
+                        Point(latitude, longitude),
+                        /* zoom = */ 17.0f,
+                        /* azimuth = */ 150.0f,
+                        /* tilt = */ 30.0f
+                    )
+
+                    val imageProvider =
+                        ImageProvider.fromResource(requireContext(), R.drawable.map_point)
+                    val placemark = mapView?.map?.mapObjects?.addPlacemark().apply {
+                        this?.geometry = Point(latitude, longitude)
+                        this?.setIcon(imageProvider)
+                    }
+
+                    val placemarkTapListener = MapObjectTapListener { _, _ ->
+                        Toast.makeText(
+                            context,
+                            "That's place of doing event",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        true
+                    }
+
+                    placemark?.addTapListener(placemarkTapListener)
+                    placemark?.removeTapListener(placemarkTapListener)
                 }
             }
         }
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView?.onStart()
+    }
+
+    override fun onStop() {
+        mapView?.onStop()
+        MapKitFactory.getInstance().onStop()
+        super.onStop()
     }
 }

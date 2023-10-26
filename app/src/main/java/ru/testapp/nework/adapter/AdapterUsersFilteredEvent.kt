@@ -38,7 +38,8 @@ class AdapterUsersFilteredEvent(
     ) : ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
-                eventUsersFilteredPreviewImage.loadAvatarImage(user.avatar)
+                val ava = user.avatar ?: return
+                eventUsersFilteredPreviewImage.loadAvatarImage(ava)
             }
         }
     }

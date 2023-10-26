@@ -56,6 +56,9 @@ class FragmentJobsMy : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.jobDataMy.observe(viewLifecycleOwner) { modelJobMy ->
+                    if (modelJobMy.jobsMy.isEmpty()) {
+                        binding.myJobsEmptyText.visibility = View.VISIBLE
+                    }
                     adapter.submitList(modelJobMy.jobsMy)
                 }
             }

@@ -27,7 +27,6 @@ import ru.testapp.nework.R
 import ru.testapp.nework.activity.posts.FragmentPostsFeed.Companion.textArg
 import ru.testapp.nework.adapter.AdapterUsersFilteredPost
 import ru.testapp.nework.adapter.OnIteractionListener
-import ru.testapp.nework.adapter.OnIteractionListenerUsersFilteredPost
 import ru.testapp.nework.adapter.PostsAdapter
 import ru.testapp.nework.databinding.FragmentPostInDetailsBinding
 import ru.testapp.nework.dto.Post
@@ -56,18 +55,22 @@ class FragmentPostInDetails : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
-        })
+        }, viewLifecycleOwner)
+
+        val currentMenuProvider: MenuProvider? = null
+
+        val arg = arguments?.idArg
 
         viewModelPosts.postData.observe(viewLifecycleOwner) { modelPost ->
-            modelPost.posts.find { it.id == arguments?.idArg }?.let { post ->
+            modelPost.posts.map { it.copy(id = arg!!) }
+            currentMenuProvider?.let { requireActivity().removeMenuProvider(currentMenuProvider) }
+            modelPost.posts.find { it.id == arg }?.let { post ->
                 binding.cardPostInDetails.apply {
                     postLikersListShortInDetails.visibility = View.VISIBLE
-                    moreLikersButton.visibility = View.VISIBLE
+                    likersTitle.visibility = View.VISIBLE
+                    postInDetailsMapView.visibility = View.VISIBLE
                     mentionedTitle.visibility = View.VISIBLE
                     postInDetailsMentionedButton.visibility = View.VISIBLE
-                    likersTitle.visibility = View.VISIBLE
-                    mentionedListShort.visibility = View.VISIBLE
-                    postInDetailsMapView.visibility = View.VISIBLE
                     postShareButton.visibility = View.GONE
 
                     PostsAdapter.PostViewHolder(this, object : OnIteractionListener {
@@ -128,37 +131,46 @@ class FragmentPostInDetails : Fragment() {
                         override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
                     }, viewLifecycleOwner)
 
-                    val usersFilteredAdapter =
-                        AdapterUsersFilteredPost(object : OnIteractionListenerUsersFilteredPost {
-                            override fun returnPostForTransfer(post: Post) {
-                                moreLikersButton.setOnClickListener {
-                                    findNavController().navigate(R.id.action_fragmentPostInDetails_to_fragmentPostLikers,
-                                        Bundle().apply {
-                                            putSerializable("postKey", post)
-                                        }
-                                    )
-                                }
+                    val usersFilteredAdapter = AdapterUsersFilteredPost()
+
+                    moreLikersButton.setOnClickListener {
+                        findNavController().navigate(R.id.action_fragmentPostInDetails_to_fragmentPostLikers,
+                            Bundle().apply {
+                                putSerializable("postKey", post)
                             }
-                        })
+                        )
+                    }
 
                     postLikersListShortInDetails.adapter = usersFilteredAdapter
                     mentionedListShort.adapter = usersFilteredAdapter
 
                     viewModel.data.observe(viewLifecycleOwner) {
                         val likerOwnersIds = post.likeOwnerIds.orEmpty().toSet()
-                        likerOwnersIds.forEach { likerOwnerId ->
-                            val filteredUsers = it.users.filter { it.id == likerOwnerId.toLong() }
-                            usersFilteredAdapter.submitList(filteredUsers)
+                        if (likerOwnersIds.isNotEmpty()) {
+                            moreLikersButton.visibility = View.VISIBLE
+                            likerOwnersIds.forEach { likerOwnerId ->
+                                val filteredUsers =
+                                    it.users.filter { it.id == likerOwnerId.toLong() }
+                                usersFilteredAdapter.submitList(filteredUsers)
+                            }
                         }
                     }
 
                     viewModel.data.observe(viewLifecycleOwner) {
                         val mentionedOwnersIds = post.mentionIds.orEmpty().toSet()
-                        mentionedOwnersIds.forEach { mentionedOwnerId ->
-                            val filteredUsers =
-                                it.users.filter { it.id == mentionedOwnerId.toLong() }
-                            usersFilteredAdapter.submitList(filteredUsers)
+                        if (mentionedOwnersIds.isNotEmpty()) {
+                            mentionedListShort.visibility = View.VISIBLE
+                            mentionedOwnersIds.forEach { mentionedOwnerId ->
+                                val filteredUsers =
+                                    it.users.filter { it.id == mentionedOwnerId.toLong() }
+                                usersFilteredAdapter.submitList(filteredUsers)
+                            }
                         }
+                    }
+
+                    if (post.coordinates == null) {
+                        mapView?.findViewById<MapView>(R.id.postInDetailsMapView)?.onStop()
+                        return@observe
                     }
 
                     mapView?.findViewById<MapView>(R.id.postInDetailsMapView)?.isVisible =
@@ -167,15 +179,15 @@ class FragmentPostInDetails : Fragment() {
                     MapKitFactory.initialize(requireContext())
                     mapView?.findViewById<MapView>(R.id.postInDetailsMapView)
 
+                    val latitude = post.coordinates?.latitude!!.toDouble()
+                    val longitude = post.coordinates.longitude!!.toDouble()
+
                     CameraPosition(
-                        Point(55.751225, 37.629540),
+                        Point(latitude, longitude),
                         /* zoom = */ 17.0f,
                         /* azimuth = */ 150.0f,
                         /* tilt = */ 30.0f
                     )
-
-                    val latitude = post.coordinates?.latitude!!.toDouble()
-                    val longitude = post.coordinates?.longitude!!.toDouble()
 
                     val imageProvider =
                         ImageProvider.fromResource(requireContext(), R.drawable.map_point)

@@ -16,4 +16,8 @@
         <item name="android:minWidth">@dimen/icon_button_min_size</item>
         <item name="android:minHeight">@dimen/icon_button_min_size</item>
     </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:layout_marginBottom">?attr/actionBarSize</item>
+    </style>
 </resources>

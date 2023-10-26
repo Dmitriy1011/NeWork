@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/common_spacing"
-            android:text="Something went wrong. Try again"
+            android:text="@string/something_went_wrong_try_again"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@id/usersRetryButton"
             app:layout_constraintEnd_toEndOf="parent"

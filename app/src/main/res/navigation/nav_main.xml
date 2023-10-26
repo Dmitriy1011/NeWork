@@ -63,6 +63,20 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentAttachmentSeparate2"
+            app:destination="@id/fragmentAttachmentSeparate"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentPostsFeed_to_fragmentSignIn2"
+            app:destination="@id/fragmentSignIn"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCreateAndEditPost"
@@ -97,6 +111,27 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignIn_to_fragmentProfileMy"
+            app:destination="@id/fragmentProfileMy"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignIn_to_fragmentPostsFeed"
+            app:destination="@id/fragmentPostsFeed"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignIn_to_fragmentSignUp"
+            app:destination="@id/fragmentSignUp"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
@@ -112,6 +147,20 @@
         <action
             android:id="@+id/action_fragmentSignUp_to_fragmentUsers"
             app:destination="@id/fragmentUsers"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignUp_to_fragmentProfileMy"
+            app:destination="@id/fragmentProfileMy"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignUp_to_fragmentSignIn"
+            app:destination="@id/fragmentSignIn"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -220,6 +269,13 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentAttachmentSeparate_to_fragmentPostsFeed2"
+            app:destination="@id/fragmentPostsFeed"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEventInDetails2"
@@ -242,6 +298,13 @@
         <action
             android:id="@+id/action_fragmentEventInDetails2_to_fragmentAttachmentSeparateEvent"
             app:destination="@id/fragmentAttachmentSeparateEvent"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentEventInDetails2_to_fragmentEvents2"
+            app:destination="@id/fragmentEvents"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -351,6 +414,20 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentProfileMy_to_fragmentSignUp"
+            app:destination="@id/fragmentSignUp"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentProfileMy_to_fragmentSignIn"
+            app:destination="@id/fragmentSignIn"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/fragmentProfileUser"
@@ -388,4 +465,20 @@
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentWallUser"
+        android:name="ru.testapp.nework.activity.wall.FragmentWallUser"
+        android:label="FragmentWallUser" />
+    <fragment
+        android:id="@+id/fragmentJobsUser"
+        android:name="ru.testapp.nework.activity.wall.FragmentJobsUser"
+        android:label="FragmentJobsUser" />
+    <fragment
+        android:id="@+id/fragmentWallMy"
+        android:name="ru.testapp.nework.activity.wall.FragmentWallMy"
+        android:label="FragmentWallMy" />
+    <fragment
+        android:id="@+id/fragmentJobsMy"
+        android:name="ru.testapp.nework.activity.wall.FragmentJobsMy"
+        android:label="FragmentJobsMy" />
 </navigation>

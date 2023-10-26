@@ -6,5 +6,5 @@ import ru.testapp.nework.dto.Post
 
 interface RepositoryWallMy {
     val data: Flow<PagingData<Post>>
-    suspend fun getAllFromMyWall()
+    suspend fun getAllFromMyWall(): List<Post>
 }

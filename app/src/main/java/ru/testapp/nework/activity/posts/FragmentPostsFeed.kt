@@ -21,18 +21,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
+import ru.testapp.nework.activity.posts.FragmentPostInDetails.Companion.idArg
 import ru.testapp.nework.adapter.AdapterPostsLoadingState
 import ru.testapp.nework.adapter.OnIteractionListener
 import ru.testapp.nework.adapter.PostsAdapter
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentPostsFeedBinding
 import ru.testapp.nework.dto.Post
-import ru.testapp.nework.utils.PostIdArg
 import ru.testapp.nework.utils.SeparateImageArg
 import ru.testapp.nework.viewmodel.ViewModelPost
 import javax.inject.Inject
@@ -42,7 +41,6 @@ class FragmentPostsFeed : Fragment() {
 
     companion object {
         var Bundle.textArg: String? by SeparateImageArg
-        var Bundle.postIdArg: Long by PostIdArg
     }
 
     @Inject
@@ -126,7 +124,7 @@ class FragmentPostsFeed : Fragment() {
                 findNavController().navigate(
                     R.id.action_fragmentPostsFeed_to_fragmentPostInDetails,
                     Bundle().apply {
-                        postIdArg = post.id
+                        idArg = post.id
                     }
                 )
             }
@@ -203,10 +201,6 @@ class FragmentPostsFeed : Fragment() {
                 getString(R.string.sign_in),
             ) {
                 findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentSignIn)
-            }.setAction(
-                getString(R.string.sign_up)
-            ) {
-                findNavController().navigate(R.id.action_fragmentPostsFeed_to_fragmentSignUp)
             }.show()
         }
 

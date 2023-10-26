@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import ru.testapp.nework.api.ApiServiceWallUser
 import ru.testapp.nework.dao.DaoPost
 import ru.testapp.nework.dao.DaoPostRemoteKey
+import ru.testapp.nework.dao.DaoRemoteKeyWallUsers
 import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.entity.PostEntity
@@ -25,7 +26,7 @@ class RepositoryImplWallUser @Inject constructor(
     private val apiServiceWallUser: ApiServiceWallUser,
     private val appDb: AppDb,
     private val dao: DaoPost,
-    private val keyDao: DaoPostRemoteKey
+    private val keyDao: DaoRemoteKeyWallUsers
 ) : RepositoryWallUser {
 
     private lateinit var post: Post
@@ -37,14 +38,13 @@ class RepositoryImplWallUser @Inject constructor(
         remoteMediator = RemoteMediatorUserWall(
             apiServiceWallUser = apiServiceWallUser,
             appDb = appDb,
-            daoPost = dao,
             keyDao = keyDao,
         )
     ).flow.map { pagingData ->
         pagingData.map(PostEntity::toDto)
     }
 
-    override suspend fun getAllFromUsersWall() {
+    override suspend fun getAllFromUsersWall(): List<Post> {
         try {
             val response = apiServiceWallUser.getAllFromUserWall(post.authorId)
 
@@ -52,11 +52,9 @@ class RepositoryImplWallUser @Inject constructor(
                 throw RuntimeException(response.message())
             }
 
-            val body = response.body() ?: throw RuntimeException("body is null")
-            dao.insert(body.map(PostEntity::fromDto))
+            return response.body() ?: throw RuntimeException("body is null")
         } catch (e: IOException) {
             throw NetworkErrorException(e)
         }
     }
-
 }

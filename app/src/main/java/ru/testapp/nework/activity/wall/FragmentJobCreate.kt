@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -51,12 +52,6 @@ class FragmentJobCreate : Fragment() {
             dialog.setCancelable(true)
 
             dialog.show()
-        }
-
-        val closeButton = dialog.findViewById<MaterialButton>(R.id.cancelButton)
-
-        closeButton.setOnClickListener {
-            dialog.cancel()
         }
 
 //        val startDate = dialog.findViewById<TextInputLayout>(R.id.selectStartDate)

@@ -50,6 +50,8 @@ class FragmentUsers : Fragment() {
             }
         })
 
+        binding.usersList.adapter = adapter
+
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_users, menu)
@@ -65,8 +67,6 @@ class FragmentUsers : Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner)
-
-        binding.usersList.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

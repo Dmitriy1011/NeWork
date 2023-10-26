@@ -10,18 +10,18 @@ import retrofit2.http.Path
 import ru.testapp.nework.dto.Job
 
 interface ApiServiceJobs {
-    @GET("/api/jobs/")
+    @GET("/api/my/jobs/")
     suspend fun getMyJobs(): Response<List<Job>>
 
     @GET("/api/{user_id}/jobs/")
     suspend fun getUsersJobs(@Path("user_id") id: Long): Response<List<Job>>
 
-    @POST("/api/jobs/")
+    @POST("/api/my/jobs/")
     suspend fun saveJob(@Body job: Job): Response<Job>
 
-    @PATCH("/api/jobs/")
+    @PATCH("/api/my/jobs/")
     suspend fun editJob(@Body job: Job): Response<Job>
 
-    @DELETE("/api/jobs/{id}/")
+    @DELETE("/api/my/jobs/{id}/")
     suspend fun removeJob(@Path("id") id: Long): Response<Unit>
 }

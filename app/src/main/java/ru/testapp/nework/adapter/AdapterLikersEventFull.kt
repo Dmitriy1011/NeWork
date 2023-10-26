@@ -33,7 +33,8 @@ class AdapterLikersEventFull :
                 userName.text = user.name
                 userLogin.text = user.login
 
-                userAvatar.loadAvatarImage(user.avatar)
+                val ava = user.avatar ?: return
+                userAvatar.loadAvatarImage(ava)
             }
         }
     }

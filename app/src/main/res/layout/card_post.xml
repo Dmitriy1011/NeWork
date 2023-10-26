@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/postAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -135,6 +135,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toEndOf="@id/postLikeButton"
             app:layout_constraintTop_toTopOf="@id/postLikeButton"
             app:layout_constraintBottom_toBottomOf="@id/postLikeButton"
@@ -145,6 +146,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:visibility="gone"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="@id/postLikersListShortInDetails"
             app:layout_constraintStart_toEndOf="@id/postLikersListShortInDetails"
             app:layout_constraintTop_toTopOf="@id/postLikersListShortInDetails"
@@ -156,6 +158,7 @@
             android:layout_height="wrap_content"
             android:text="@string/mentioned"
             android:visibility="gone"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postLikeButton" />
 
@@ -164,14 +167,12 @@
             style="@style/Widget.AppTheme.LikeCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:visibility="gone"
             app:icon="@drawable/people_outline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mentionedTitle"
-            tools:checked="false"
-            tools:text="1" />
+            tools:text="0" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/mentionedListShort"
@@ -179,6 +180,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/postInDetailsMentionedButton"
             app:layout_constraintStart_toEndOf="@id/postInDetailsMentionedButton"
             app:layout_constraintTop_toTopOf="@id/postInDetailsMentionedButton"
@@ -187,6 +189,7 @@
         <com.yandex.mapkit.mapview.MapView
             android:id="@+id/postInDetailsMapView"
             android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
             android:layout_height="250dp"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"

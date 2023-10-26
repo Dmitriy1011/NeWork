@@ -6,18 +6,21 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.repository.RepositoryWallUser
 import javax.inject.Inject
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class ViewModelWallUser @Inject constructor(
     private val repository: RepositoryWallUser,
-    private val appAuth: AppAuth
+    appAuth: AppAuth
 ) : ViewModel() {
     private val cached: Flow<PagingData<Post>> = repository.data.cachedIn(viewModelScope)
 
@@ -31,4 +34,19 @@ class ViewModelWallUser @Inject constructor(
                     }
                 }
             }
+
+
+    init {
+        loadUserWallPosts()
+    }
+
+    fun loadUserWallPosts() {
+        viewModelScope.launch {
+            try {
+                repository.getAllFromUsersWall()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }

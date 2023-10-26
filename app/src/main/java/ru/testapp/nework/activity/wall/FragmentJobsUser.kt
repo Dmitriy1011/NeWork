@@ -11,16 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterJobs
 import ru.testapp.nework.adapter.OnIteractionListenerJobs
-import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentJobsUserBinding
 import ru.testapp.nework.dto.Job
 import ru.testapp.nework.viewmodel.ViewModelJobs
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentJobsUser : Fragment() {
@@ -46,8 +43,11 @@ class FragmentJobsUser : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.jobDataUser.observe(viewLifecycleOwner) {
-                    adapter.submitList(it.jobUser)
+                viewModel.jobDataUser.observe(viewLifecycleOwner) { modelJobUser ->
+                    if (modelJobUser.jobUserList.isEmpty()) {
+                        binding.userJobsEmptyText.visibility = View.VISIBLE
+                    }
+                    adapter.submitList(modelJobUser.jobUserList)
                 }
             }
         }

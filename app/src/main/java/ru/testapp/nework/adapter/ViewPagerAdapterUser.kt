@@ -10,12 +10,11 @@ class ViewPagerAdapterUser(
 ) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
-        val result = when (position) {
+        return when (position) {
             0 -> FragmentWallUser()
             1 -> FragmentJobsUser()
             else -> FragmentWallUser()
         }
-        return result
     }
 
     override fun getItemCount(): Int {

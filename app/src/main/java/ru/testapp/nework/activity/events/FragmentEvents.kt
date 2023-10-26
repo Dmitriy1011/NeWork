@@ -125,6 +125,8 @@ class FragmentEvents : Fragment() {
             }
         })
 
+        binding.eventsList.adapter = adapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.data.collectLatest {
@@ -182,16 +184,12 @@ class FragmentEvents : Fragment() {
             }
             Snackbar.make(
                 binding.root,
-                getString(R.string.fab_click_message),
+                getString(R.string.fab_click_message_event),
                 Snackbar.LENGTH_LONG
             ).setAction(
                 getString(R.string.sign_in),
             ) {
                 findNavController().navigate(R.id.action_fragmentEvents_to_fragmentSignIn)
-            }.setAction(
-                getString(R.string.sign_up)
-            ) {
-                findNavController().navigate(R.id.action_fragmentEvents_to_fragmentSignUp)
             }.show()
         }
 

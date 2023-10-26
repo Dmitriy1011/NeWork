@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/mentionedPreviewImage"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:srcCompat="@drawable/no_avatar" />
 
 </com.google.android.material.card.MaterialCardView>

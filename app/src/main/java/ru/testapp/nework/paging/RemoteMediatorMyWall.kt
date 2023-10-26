@@ -16,7 +16,6 @@ import ru.testapp.nework.entity.PostEntity
 @OptIn(ExperimentalPagingApi::class)
 class RemoteMediatorMyWall(
     private val apiServiceWallMy: ApiServiceWallMy,
-    private val dao: DaoPost,
     private val appDb: AppDb,
     private val keyDao: DaoRemoteKeyWallMy
 ) : RemoteMediator<Int, PostEntity>() {
@@ -79,8 +78,6 @@ class RemoteMediatorMyWall(
 
                     else -> Unit
                 }
-
-                dao.insert(body.map(PostEntity::fromDto))
             }
             return MediatorResult.Success(
                 body.isEmpty()

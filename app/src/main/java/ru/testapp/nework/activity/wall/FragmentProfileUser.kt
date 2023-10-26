@@ -16,6 +16,7 @@ import ru.testapp.nework.adapter.ViewPagerAdapterUser
 import ru.testapp.nework.databinding.FragmentProfileMyBinding
 import ru.testapp.nework.databinding.FragmentProfileUserBinding
 import ru.testapp.nework.handler.loadAvatarImage
+import ru.testapp.nework.handler.loadImage
 import ru.testapp.nework.viewmodel.ViewModelUsers
 
 @AndroidEntryPoint
@@ -30,8 +31,8 @@ class FragmentProfileUser : Fragment(R.layout.fragment_profile_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentProfileUserBinding.bind(view)
 
-        tabLayout = requireActivity().findViewById(R.id.tabLayout)
-        viewPager2 = requireActivity().findViewById(R.id.viewPager)
+        tabLayout = requireActivity().findViewById(R.id.tabLayoutUsers)
+        viewPager2 = requireActivity().findViewById(R.id.viewPagerUsers)
         viewPagerAdapterUser = ViewPagerAdapterUser(this)
         viewPager2.adapter = viewPagerAdapterUser
 
@@ -59,7 +60,7 @@ class FragmentProfileUser : Fragment(R.layout.fragment_profile_user) {
         viewModel.data.observe(viewLifecycleOwner) { modelUser ->
             modelUser.users.find { it.id == arguments?.userIdArg }.let { user ->
                 binding.apply {
-                    profileUserImage.loadAvatarImage(user?.avatar!!)
+                    profileUserImage.loadImage(user?.avatar!!)
                     requireActivity().findViewById<Toolbar>(R.id.toolbar).title = user.name
                 }
             }

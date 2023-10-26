@@ -41,6 +41,10 @@ class FragmentCreateAndEditPost : Fragment() {
 
         arguments?.editTextArg?.let(binding.editText::setText)
 
+        binding.peopleButton.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentCreateAndEditPost_to_fragmentChooseUsers)
+        }
+
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_new_post, menu)

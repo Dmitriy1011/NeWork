@@ -16,19 +16,13 @@ import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-interface OnIteractionListenerChooseUsers {
-    fun returnPostForTransfer(post: Post) {}
-}
 
-class AdapterChooseUsers(
-    private val listener: OnIteractionListenerChooseUsers
-) : ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
+class AdapterChooseUsers : ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserChooseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return UserChooseViewHolder(
-            CardMentionedUserBinding.inflate(inflater, parent, false),
-            listener = listener
+            CardMentionedUserBinding.inflate(inflater, parent, false)
         )
     }
 
@@ -46,15 +40,15 @@ class AdapterChooseUsers(
     }
 
     class UserChooseViewHolder(
-        private val binding: CardMentionedUserBinding,
-        private val listener: OnIteractionListenerChooseUsers
+        private val binding: CardMentionedUserBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: User) {
             binding.apply {
                 mentionedUserName.text = user.name
                 mentionedUserLogin.text = user.login
 
-                mentionedUserAvatar.loadAvatarImage(user.avatar)
+                val userAvatar = user.avatar ?: return
+                mentionedUserAvatar.loadAvatarImage(userAvatar)
             }
         }
     }

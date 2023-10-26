@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,8 +25,6 @@ class MainActivity() : AppCompatActivity() {
     lateinit var appAuth: AppAuth
 
     private lateinit var toolbar: Toolbar
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
 
     private lateinit var navController: NavController
 

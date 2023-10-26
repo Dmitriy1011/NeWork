@@ -18,6 +18,8 @@
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="fab_click_message">Чтобы добавить пост, необходимо зарегестрироваться или войти</string>
+    <string name="fab_click_message_event">Чтобы добавить пост, необходимо зарегестрироваться или войти</string>
+    <string name="fab_click_message_job">Чтобы добавить пост, необходимо зарегестрироваться или войти</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="retry">Retry</string>
@@ -84,4 +86,8 @@
     <string name="mm_dd_yyyy_hh_mm">MM/dd/yyyy HH:mm</string>
     <string name="date_type">Date type</string>
     <string name="https_netomedia_ru">https://netomedia.ru/</string>
+    <string name="no_job_experience_yet">No job experience yet</string>
+    <string name="post_empty_likers_text">Этот пост пока ещё никому не нравится, но все впереди ;)</string>
+    <string name="event_likers_empty_text">Это событие пока ещё никому не нравится, но всё ещё впереди ;)</string>
+    <string name="here_will_be_your_jobs">Here will be your jobs</string>
 </resources>

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.testapp.nework.api.ApiServiceWallMy
 import ru.testapp.nework.dao.DaoPost
-import ru.testapp.nework.dao.DaoPostRemoteKey
 import ru.testapp.nework.dao.DaoRemoteKeyWallMy
 import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.dto.Post
@@ -35,7 +34,6 @@ class RepositoryImplWallMy @Inject constructor(
         pagingSourceFactory = { dao.getPagingSource() },
         remoteMediator = RemoteMediatorMyWall(
             apiServiceWallMy = apiServiceWallMy,
-            dao = dao,
             appDb = appDb,
             keyDao = keyDao
         )
@@ -43,7 +41,7 @@ class RepositoryImplWallMy @Inject constructor(
         it.map(PostEntity::toDto)
     }
 
-    override suspend fun getAllFromMyWall() {
+    override suspend fun getAllFromMyWall(): List<Post>{
         try {
             val response = apiServiceWallMy.getAllFromMyWall()
 
@@ -51,8 +49,7 @@ class RepositoryImplWallMy @Inject constructor(
                 throw RuntimeException(response.message())
             }
 
-            val body = response.body() ?: throw RuntimeException("body is null")
-            dao.insert(body.map(PostEntity::fromDto))
+            return response.body() ?: throw RuntimeException("body is null")
         } catch (e: IOException) {
             throw NetworkErrorException(e)
         }

@@ -10,7 +10,7 @@ interface ApiServiceWallUser {
     @GET("/api/{author_id}/wall/")
     suspend fun getAllFromUserWall(@Path("author_id") id: Long): Response<List<Post>>
 
-    @GET("/{author_id}/wall/latest/")
+    @GET("/api/{author_id}/wall/latest/")
     suspend fun getLatestFromUserWall(
         @Path("author_id") id: Long,
         @Query("count") count: Int

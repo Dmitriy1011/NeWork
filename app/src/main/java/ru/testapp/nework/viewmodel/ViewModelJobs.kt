@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.util.SingleLiveEvent
@@ -27,11 +28,13 @@ private val emptyJob = Job(
 )
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class ViewModelJobs @Inject constructor(
     private val repositoryJobs: RepositoryJobs,
 ) : ViewModel() {
     val jobDataMy: LiveData<ModelJobMy> =
         repositoryJobs.dataMyJobs.map(::ModelJobMy).asLiveData(Dispatchers.Default)
+
     val jobDataUser: LiveData<ModelJobUser> =
         repositoryJobs.dataMyJobs.map(::ModelJobUser).asLiveData(Dispatchers.Default)
 
@@ -68,7 +71,7 @@ class ViewModelJobs @Inject constructor(
             try {
                 repositoryJobs.getMyJobs()
             } catch (e: IOException) {
-                throw RuntimeException(e)
+                e.printStackTrace()
             }
         }
     }

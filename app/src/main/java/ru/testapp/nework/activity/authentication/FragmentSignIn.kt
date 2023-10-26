@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentSignInBinding
 import ru.testapp.nework.viewmodel.ViewModelAuth
@@ -36,11 +37,11 @@ class FragmentSignIn : Fragment() {
             val pass = binding.passwordTextField.editText?.text.toString()
             viewModel.saveIdAndToken(login, pass)
 
-            authViewModel.data.observe(viewLifecycleOwner) { state ->
-                appAuth.setAuth(state.id, state.token!!)
-            }
-
             findNavController().navigateUp()
+        }
+
+        binding.registerText.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentSignIn_to_fragmentSignUp)
         }
 
        return binding.root

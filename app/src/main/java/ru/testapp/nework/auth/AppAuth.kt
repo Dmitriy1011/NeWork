@@ -1,6 +1,12 @@
 package ru.testapp.nework.auth
 
 import android.content.Context
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +17,7 @@ import javax.inject.Singleton
 @Singleton
 class AppAuth @Inject constructor(
     @ApplicationContext
-    context: Context
+    private val context: Context
 ) {
     private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
     private val tokenKey = "TOKEN_KEY"
@@ -28,7 +34,7 @@ class AppAuth @Inject constructor(
         val token = prefs.getString(tokenKey, null)
         val id = prefs.getLong(idKey, 0)
 
-        if (id == 0L && token != null) {
+        if (id == 0L || token != null) {
             _authStateFlow = MutableStateFlow(AuthState())
             with(prefs.edit()) {
                 clear()
@@ -50,7 +56,6 @@ class AppAuth @Inject constructor(
             putString(tokenKey, token)
             apply()
         }
-//        sendPushToken()
     }
 
     @Synchronized
@@ -60,6 +65,5 @@ class AppAuth @Inject constructor(
             clear()
             apply()
         }
-//        sendPushToken()
     }
 }

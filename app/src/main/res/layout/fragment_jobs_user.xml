@@ -10,9 +10,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profileUserJobsList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/card_job"/>
+
+    <TextView
+        android:id="@+id/userJobsEmptyText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_job_experience_yet"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

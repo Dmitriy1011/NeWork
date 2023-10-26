@@ -7,22 +7,19 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterChooseUsers
-import ru.testapp.nework.adapter.OnIteractionListenerChooseUsers
 import ru.testapp.nework.databinding.FragmentChooseUsersBinding
-import ru.testapp.nework.dto.Post
-import ru.testapp.nework.dto.User
 import ru.testapp.nework.viewmodel.ViewModelPost
 import ru.testapp.nework.viewmodel.ViewModelUsers
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentChooseUsers : Fragment() {
@@ -39,19 +36,21 @@ class FragmentChooseUsers : Fragment() {
 
         var mentionedIds = mutableListOf<Int>()
 
-        val adapter = AdapterChooseUsers(object : OnIteractionListenerChooseUsers {
-            override fun returnPostForTransfer(post: Post) {
-                return
-            }
-        })
+        val adapter = AdapterChooseUsers()
 
-        val post = requireArguments().getSerializable("postKey") as Post
+        binding.mentionedUsersList.adapter = adapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModelUsers.data.observe(viewLifecycleOwner) {
+                    adapter.submitList(it.users)
+                }
+            }
+        }
 
         adapter.mentionedList.observe(viewLifecycleOwner) { idOfCheckedItem ->
             mentionedIds.add(idOfCheckedItem)
         }
-
-        binding.mentionedUsersList.adapter = adapter
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -69,14 +68,6 @@ class FragmentChooseUsers : Fragment() {
                     else -> false
                 }
         }, viewLifecycleOwner)
-
-        viewModelUsers.data.observe(viewLifecycleOwner) {
-            val mentionIds = post.mentionIds.orEmpty().toSet()
-            mentionIds.forEach { listItem ->
-                val filteredUsers = it.users.filter { it.id == listItem.toLong() }
-                adapter.submitList(filteredUsers)
-            }
-        }
 
         return binding.root
     }

@@ -10,7 +10,7 @@ data class EntityUser(
     val id: Long,
     val login: String,
     val name: String,
-    val avatar: String
+    val avatar: String?
 ) {
     fun toDto() = User(id, login, name, avatar)
 

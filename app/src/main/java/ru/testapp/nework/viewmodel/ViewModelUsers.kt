@@ -7,6 +7,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.util.SingleLiveEvent
@@ -16,6 +17,7 @@ import ru.testapp.nework.state.StateUserModel
 import javax.inject.Inject
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class ViewModelUsers @Inject constructor(
     private val repositoryUsers: RepositoryUsers
 ) : ViewModel() {
@@ -42,17 +44,6 @@ class ViewModelUsers @Inject constructor(
                 _state.value = StateUserModel()
             } catch (e: Exception) {
                 _state.value = StateUserModel(error = true)
-            }
-        }
-    }
-
-
-    fun getUserById(id: Long) {
-        viewModelScope.launch {
-            try {
-                repositoryUsers.getUserById(id)
-            } catch (e: Exception) {
-                throw RuntimeException(e)
             }
         }
     }

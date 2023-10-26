@@ -8,9 +8,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.databinding.CardBottomSheetDialogBinding
 import ru.testapp.nework.viewmodel.ViewModelEvents
 
+@AndroidEntryPoint
 class ModalBottomSheet(
 ) : BottomSheetDialogFragment() {
 

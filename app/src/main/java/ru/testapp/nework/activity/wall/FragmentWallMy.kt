@@ -14,16 +14,21 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.testapp.nework.adapter.AdapterWallMy
 import ru.testapp.nework.adapter.OnIteractionListenerWallMy
+import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentWallMyBinding
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.viewmodel.ViewModelPost
 import ru.testapp.nework.viewmodel.ViewModelWallMy
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentWallMy : Fragment() {
 
     private val viewModelPost: ViewModelPost by viewModels()
     private val viewModelWallMy: ViewModelWallMy by viewModels()
+
+    @Inject
+    lateinit var appAuth: AppAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +61,14 @@ class FragmentWallMy : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModelWallMy.data.collectLatest {
                     adapter.submitData(it)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                appAuth.authStateFlow.collect {
+                    adapter.refresh()
                 }
             }
         }

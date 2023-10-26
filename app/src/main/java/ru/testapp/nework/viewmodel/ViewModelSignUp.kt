@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.testapp.nework.dto.MediaUpload
 import ru.testapp.nework.repository.RepositoryUsers
@@ -12,8 +13,8 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class
-ViewModelSignUp @Inject constructor(
+@ExperimentalCoroutinesApi
+class ViewModelSignUp @Inject constructor(
     private val repository: RepositoryUsers
 ) : ViewModel() {
     private val _registerImage = MutableLiveData<MediaUpload>()

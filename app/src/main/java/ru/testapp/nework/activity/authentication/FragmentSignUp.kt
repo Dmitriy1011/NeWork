@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentSignUpBinding
 import ru.testapp.nework.viewmodel.ViewModelAuth
@@ -39,12 +40,8 @@ class FragmentSignUp : Fragment() {
                 viewModel.saveRegisteredUser(login, pass, name, media.file)
             }
 
-            authViewModel.data.observe(viewLifecycleOwner) { state ->
-                appAuth.setAuth(state.id, state.token!!)
-            }
+            findNavController().navigateUp()
         }
-
-        findNavController().navigateUp()
 
         return binding.root
     }
