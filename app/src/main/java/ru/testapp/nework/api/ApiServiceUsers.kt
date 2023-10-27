@@ -29,6 +29,14 @@ interface ApiServiceUsers {
     ): Response<TokenAuth>
 
     @FormUrlEncoded
+    @POST("/api/users/registration/")
+    suspend fun registerUserWithoutAvatar(
+        @Part("login") login: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("name") name: RequestBody
+    ): Response<TokenAuth>
+
+    @FormUrlEncoded
     @POST("/api/users/authentication/")
     suspend fun updateUser(
         @Field("login") login: String,

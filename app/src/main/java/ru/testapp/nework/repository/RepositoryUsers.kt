@@ -10,4 +10,6 @@ interface RepositoryUsers {
     suspend fun getUserById(id: Long): User
     suspend fun setIdAndTokenToAuth(id: String, token: String)
     suspend fun registerUser(login: String, name: String, password: String, file: File)
+
+    suspend fun registerUserWithoutAvatar(login: String, name: String, password: String)
 }

@@ -8,11 +8,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentSignUpBinding
@@ -28,6 +25,7 @@ class FragmentSignUp : Fragment() {
 
     private val viewModel: ViewModelSignUp by activityViewModels()
     private val authViewModel: ViewModelAuth by viewModels()
+    private val signUpViewModel: ViewModelSignUp by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,8 +39,11 @@ class FragmentSignUp : Fragment() {
             val login = binding.regLoginTextField.editText?.text.toString()
             val pass = binding.regPasswordTextField.editText?.text.toString()
 
-            viewModel.registerImage.observe(viewLifecycleOwner) { media ->
-                viewModel.saveRegisteredUser(login, pass, name, media.file)
+            signUpViewModel.registerImageState.observe(viewLifecycleOwner) { media ->
+                if (media != null) {
+                    viewModel.saveRegisteredUser(login, pass, name, media.file)
+                }
+                viewModel.saveRegisterUserWithoutAvatar(login, pass, name)
             }
 
             binding.progressBar.isVisible = true
@@ -52,6 +53,10 @@ class FragmentSignUp : Fragment() {
                     findNavController().navigateUp()
                 }
             }
+        }
+
+        binding.signInProfilePhoto.setOnClickListener {
+            findNavController().navigate(R.id.action_fragmentSignUp_to_fragmentSignInProfilePhoto)
         }
 
         return binding.root

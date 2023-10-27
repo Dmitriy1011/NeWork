@@ -17,19 +17,33 @@ import javax.inject.Inject
 class ViewModelSignUp @Inject constructor(
     private val repository: RepositoryUsers
 ) : ViewModel() {
-    private val _registerImage = MutableLiveData<MediaUpload>()
+    private val _registerImageState = MutableLiveData<MediaUpload>()
 
-    val registerImage: LiveData<MediaUpload>
-        get() = _registerImage
+    val registerImageState: LiveData<MediaUpload>
+        get() = _registerImageState
 
     fun setRegisterImage(media: MediaUpload) {
-        _registerImage.value = media
+        _registerImageState.value = media
+    }
+
+    fun clearImage() {
+        _registerImageState.value = null
     }
 
     fun saveRegisteredUser(login: String, password: String, name: String, file: File) {
         viewModelScope.launch {
             try {
                 repository.registerUser(login, name, password, file)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun saveRegisterUserWithoutAvatar(login: String, password: String, name: String) {
+        viewModelScope.launch {
+            try {
+                repository.registerUserWithoutAvatar(login, name, password)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

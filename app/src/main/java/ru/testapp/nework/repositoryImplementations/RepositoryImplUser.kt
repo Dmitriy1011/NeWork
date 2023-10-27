@@ -1,6 +1,7 @@
 package ru.testapp.nework.repositoryImplementations
 
 import android.accounts.NetworkErrorException
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -51,6 +52,27 @@ class RepositoryImplUser @Inject constructor(
     override suspend fun setIdAndTokenToAuth(id: String, token: String) {
         try {
             val response = apiService.updateUser(id, token)
+
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.message())
+            }
+
+            val result = response.body() ?: throw RuntimeException("body is null")
+            appAuth.setAuth(result.id, result.token)
+        } catch (e: IOException) {
+            throw NetworkErrorException(e)
+        }
+    }
+
+
+    override suspend fun registerUserWithoutAvatar(login: String, name: String, password: String) {
+        try {
+
+            val userLogin = login.toRequestBody("text/plain".toMediaType())
+            val userPassword = password.toRequestBody("text/plain".toMediaType())
+            val userName = name.toRequestBody("text/plain".toMediaType())
+
+            val response = apiService.registerUserWithoutAvatar(userLogin, userPassword, userName)
 
             if (!response.isSuccessful) {
                 throw RuntimeException(response.message())

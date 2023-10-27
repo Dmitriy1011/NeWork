@@ -132,6 +132,9 @@
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
             app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignIn_self"
+            app:destination="@id/fragmentSignIn" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
@@ -161,6 +164,13 @@
         <action
             android:id="@+id/action_fragmentSignUp_to_fragmentSignIn"
             app:destination="@id/fragmentSignIn"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+        <action
+            android:id="@+id/action_fragmentSignUp_to_fragmentSignInProfilePhoto"
+            app:destination="@id/fragmentSignInProfilePhoto"
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
@@ -481,4 +491,16 @@
         android:id="@+id/fragmentJobsMy"
         android:name="ru.testapp.nework.activity.wall.FragmentJobsMy"
         android:label="FragmentJobsMy" />
+    <fragment
+        android:id="@+id/fragmentSignInProfilePhoto"
+        android:name="ru.testapp.nework.activity.authentication.FragmentSignInProfilePhoto"
+        android:label="FragmentSignInProfilePhoto" >
+        <action
+            android:id="@+id/action_fragmentSignInProfilePhoto_to_fragmentSignUp"
+            app:destination="@id/fragmentSignUp"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 </navigation>
