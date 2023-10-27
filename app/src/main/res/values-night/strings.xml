@@ -90,4 +90,5 @@
     <string name="post_empty_likers_text">Этот пост пока ещё никому не нравится, но все впереди ;)</string>
     <string name="event_likers_empty_text">Это событие пока ещё никому не нравится, но всё ещё впереди ;)</string>
     <string name="here_will_be_your_jobs">Here will be your jobs</string>
+    <string name="clear">Clear</string>
 </resources>

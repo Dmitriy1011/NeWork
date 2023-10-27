@@ -3,11 +3,13 @@ package ru.testapp.nework.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.testapp.nework.repository.RepositoryUsers
 import javax.inject.Inject
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class ViewModelSignIn @Inject constructor(
     private val repository: RepositoryUsers
 ) : ViewModel() {

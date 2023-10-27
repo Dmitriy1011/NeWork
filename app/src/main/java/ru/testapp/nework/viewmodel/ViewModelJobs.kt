@@ -70,7 +70,7 @@ class ViewModelJobs @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryJobs.getMyJobs()
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

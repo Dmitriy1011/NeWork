@@ -31,8 +31,8 @@ class FragmentProfileUser : Fragment(R.layout.fragment_profile_user) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentProfileUserBinding.bind(view)
 
-        tabLayout = requireActivity().findViewById(R.id.tabLayoutUsers)
-        viewPager2 = requireActivity().findViewById(R.id.viewPagerUsers)
+        tabLayout = requireActivity().findViewById(R.id.tabLayout)
+        viewPager2 = binding.viewPagerUsers
         viewPagerAdapterUser = ViewPagerAdapterUser(this)
         viewPager2.adapter = viewPagerAdapterUser
 

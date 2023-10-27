@@ -34,7 +34,7 @@ class AppAuth @Inject constructor(
         val token = prefs.getString(tokenKey, null)
         val id = prefs.getLong(idKey, 0)
 
-        if (id == 0L || token != null) {
+        if (id == 0L || token == null) {
             _authStateFlow = MutableStateFlow(AuthState())
             with(prefs.edit()) {
                 clear()
@@ -65,5 +65,22 @@ class AppAuth @Inject constructor(
             clear()
             apply()
         }
+    }
+
+    companion object {
+        @Volatile
+        private var instance: AppAuth? = null
+
+        fun getInstance(): AppAuth = synchronized(this) {
+            instance ?: throw IllegalStateException(
+                "AppAuth is not initialized, you must call AppAuth.initializeApp(Context context) first."
+            )
+        }
+
+        fun initApp(context: Context): AppAuth = instance ?: synchronized(this) {
+            instance ?: buildAuth(context).also { instance = it }
+        }
+
+        private fun buildAuth(context: Context): AppAuth = AppAuth(context)
     }
 }

@@ -22,6 +22,6 @@ interface ApiServiceJobs {
     @PATCH("/api/my/jobs/")
     suspend fun editJob(@Body job: Job): Response<Job>
 
-    @DELETE("/api/my/jobs/{id}/")
-    suspend fun removeJob(@Path("id") id: Long): Response<Unit>
+    @DELETE("/api/my/jobs/{job_id}/")
+    suspend fun removeJob(@Path("job_id") id: Long): Response<Unit>
 }

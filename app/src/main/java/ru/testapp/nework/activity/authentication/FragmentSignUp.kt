@@ -4,10 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentSignUpBinding
@@ -21,7 +26,7 @@ class FragmentSignUp : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    private val viewModel: ViewModelSignUp by viewModels()
+    private val viewModel: ViewModelSignUp by activityViewModels()
     private val authViewModel: ViewModelAuth by viewModels()
 
     override fun onCreateView(
@@ -40,7 +45,13 @@ class FragmentSignUp : Fragment() {
                 viewModel.saveRegisteredUser(login, pass, name, media.file)
             }
 
-            findNavController().navigateUp()
+            binding.progressBar.isVisible = true
+
+            authViewModel.data.observe(viewLifecycleOwner) {
+                if (authViewModel.authenticated) {
+                    findNavController().navigateUp()
+                }
+            }
         }
 
         return binding.root

@@ -5,34 +5,34 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import ru.testapp.nework.databinding.CardJobBinding
+import androidx.recyclerview.widget.RecyclerView
+import ru.testapp.nework.databinding.CardJobUserBinding
 import ru.testapp.nework.dto.Job
 
-interface OnIteractionListenerJobs {
+interface OnIteractionListenerJobsUser {
     fun followingTheLink(job: Job) {}
-    fun onRemove(job: Job) {}
 }
 
-class AdapterJobs(
-    private val listener: OnIteractionListenerJobs
-) : ListAdapter<Job, AdapterJobs.ViewHolderJob>(JobDiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderJob {
+class AdapterJobsUser(
+    private val listener: OnIteractionListenerJobsUser
+) :
+    ListAdapter<Job, AdapterJobsUser.CardJobUserViewHolder>(DiffCallbackCardJobUser()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardJobUserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return ViewHolderJob(
-            CardJobBinding.inflate(inflater, parent, false),
+        return CardJobUserViewHolder(
+            CardJobUserBinding.inflate(inflater, parent, false),
             listener = listener
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolderJob, position: Int) {
+    override fun onBindViewHolder(holder: CardJobUserViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class ViewHolderJob(
-        private val binding: CardJobBinding,
-        private val listener: OnIteractionListenerJobs
-    ) : ViewHolder(binding.root) {
+    class CardJobUserViewHolder(
+        private val binding: CardJobUserBinding,
+        private val listener: OnIteractionListenerJobsUser
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(job: Job) {
             binding.apply {
                 jobName.text = job.name
@@ -43,10 +43,6 @@ class AdapterJobs(
                 jobLink.isVisible = job.link.isNullOrBlank()
                 jobLink.text = job.link
 
-                deleteJobButton.setOnClickListener {
-                    listener.onRemove(job)
-                }
-
                 binding.jobLink.setOnClickListener {
                     listener.followingTheLink(job)
                 }
@@ -54,7 +50,7 @@ class AdapterJobs(
         }
     }
 
-    class JobDiffCallback : DiffUtil.ItemCallback<Job>() {
+    class DiffCallbackCardJobUser : DiffUtil.ItemCallback<Job>() {
         override fun areItemsTheSame(oldItem: Job, newItem: Job): Boolean {
             if (oldItem::class != newItem::class) {
                 return false

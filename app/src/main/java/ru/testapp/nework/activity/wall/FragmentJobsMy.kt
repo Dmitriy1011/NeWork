@@ -64,16 +64,6 @@ class FragmentJobsMy : Fragment() {
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appAuth.authStateFlow.collect {
-                    if (it.id == 0L && it.token == null) {
-                        requireActivity().findViewById<MaterialButton>(R.id.deleteJobButton).visibility = View.GONE
-                    }
-                }
-            }
-        }
-
         return binding.root
     }
 }

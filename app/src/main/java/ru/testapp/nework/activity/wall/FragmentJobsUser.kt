@@ -1,5 +1,7 @@
 package ru.testapp.nework.activity.wall
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +11,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import ru.testapp.nework.R
-import ru.testapp.nework.adapter.AdapterJobs
-import ru.testapp.nework.adapter.OnIteractionListenerJobs
+import ru.testapp.nework.adapter.AdapterJobsUser
+import ru.testapp.nework.adapter.OnIteractionListenerJobsUser
 import ru.testapp.nework.databinding.FragmentJobsUserBinding
 import ru.testapp.nework.dto.Job
 import ru.testapp.nework.viewmodel.ViewModelJobs
@@ -31,13 +31,12 @@ class FragmentJobsUser : Fragment() {
     ): View {
         val binding = FragmentJobsUserBinding.inflate(inflater, container, false)
 
-        val adapter = AdapterJobs(object : OnIteractionListenerJobs {
-            override fun onRemove(job: Job) {
-                viewModel.removeJob(job.id)
+        val adapter = AdapterJobsUser(object : OnIteractionListenerJobsUser {
+            override fun followingTheLink(job: Job) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(job.link))
+                startActivity(intent)
             }
         })
-
-        requireActivity().findViewById<MaterialButton>(R.id.deleteJobButton).visibility = View.GONE
 
         binding.profileUserJobsList.adapter = adapter
 

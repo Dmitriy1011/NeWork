@@ -18,7 +18,7 @@ class ViewPagerAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 0
+        return 2
     }
 
 }

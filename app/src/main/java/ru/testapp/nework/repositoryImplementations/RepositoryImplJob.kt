@@ -36,7 +36,7 @@ class RepositoryImplJob @Inject constructor(
             val result = response.body() ?: throw RuntimeException("body is null")
             dao.insert(result.map(EntityJob::fromDto))
         } catch (e: IOException) {
-            throw NetworkErrorException()
+            throw NetworkErrorException(e)
         }
     }
 
@@ -51,7 +51,7 @@ class RepositoryImplJob @Inject constructor(
             val result = response.body() ?: throw RuntimeException("body is null")
             dao.insert(result.map(EntityJob::fromDto))
         } catch (e: IOException) {
-            throw NetworkErrorException()
+            throw NetworkErrorException(e)
         }
     }
 
@@ -66,7 +66,7 @@ class RepositoryImplJob @Inject constructor(
             val result = response.body() ?: throw RuntimeException("body is null")
             dao.insert(EntityJob.fromDto(result))
         } catch (e: IOException) {
-            throw NetworkErrorException()
+            throw NetworkErrorException(e)
         }
     }
 
@@ -81,7 +81,7 @@ class RepositoryImplJob @Inject constructor(
             val result = response.body() ?: throw RuntimeException("body is null")
             dao.insert(EntityJob.fromDto(result))
         } catch (e: IOException) {
-            throw NetworkErrorException()
+            throw NetworkErrorException(e)
         }
     }
 
@@ -95,7 +95,7 @@ class RepositoryImplJob @Inject constructor(
 
             dao.removeJob(id)
         } catch (e: IOException) {
-            throw NetworkErrorException()
+            throw NetworkErrorException(e)
         }
     }
 }

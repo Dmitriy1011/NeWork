@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#cee7ec"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/signInProfilePhotoContainer"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile photo"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/signInProfilePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/clearPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:text="@string/clear" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/signInBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cameraAddPhoto"
+            android:layout_width="24dp"
+            android:layout_height="48dp"
+            app:icon="@drawable/photo_camera"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"
+            app:iconTint="@color/black"
+            android:padding="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/galeryLoadPhoto"
+            android:layout_width="24dp"
+            android:layout_height="48dp"
+            app:icon="@drawable/attach_file"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"
+            app:iconTint="@color/black"
+            android:padding="0dp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

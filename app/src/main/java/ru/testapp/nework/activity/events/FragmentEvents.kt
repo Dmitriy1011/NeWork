@@ -179,7 +179,7 @@ class FragmentEvents : Fragment() {
         }
 
         binding.fab.setOnClickListener {
-            if (appAuth.authStateFlow.value != null) {
+            if (appAuth.authStateFlow.value.token != null) {
                 findNavController().navigate(R.id.action_fragmentEvents_to_fragmentCreateAndEditEvent)
             }
             Snackbar.make(
