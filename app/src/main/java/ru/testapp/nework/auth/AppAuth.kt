@@ -32,7 +32,7 @@ class AppAuth @Inject constructor(
 
     init {
         val token = prefs.getString(tokenKey, null)
-        val id = prefs.getLong(idKey, 0)
+        val id = prefs.getLong(idKey, 0L)
 
         if (id == 0L || token == null) {
             _authStateFlow = MutableStateFlow(AuthState())

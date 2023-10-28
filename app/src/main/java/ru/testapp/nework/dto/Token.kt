@@ -1,8 +1,6 @@
 package ru.testapp.nework.dto
 
-import java.io.Serializable
-
-data class TokenAuth(
+data class Token(
     val id: Long,
     val token: String
 )

@@ -78,16 +78,16 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
             }
         })
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appAuth.authStateFlow.collect {
-                    if (it.token != null) {
-                        requireActivity().findViewById<MaterialButton>(R.id.deleteJobButton).visibility =
-                            View.VISIBLE
-                    }
-                }
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                appAuth.authStateFlow.collect {
+//                    if (it.token != null) {
+//                        requireActivity().findViewById<MaterialButton>(R.id.deleteJobButton).visibility =
+//                            View.VISIBLE
+//                    }
+//                }
+//            }
+//        }
 
         binding.fab.setOnClickListener {
             if (appAuth.authStateFlow.value.token != null) {

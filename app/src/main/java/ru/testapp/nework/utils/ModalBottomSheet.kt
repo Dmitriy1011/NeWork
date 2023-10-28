@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -16,7 +17,7 @@ import ru.testapp.nework.viewmodel.ViewModelEvents
 class ModalBottomSheet(
 ) : BottomSheetDialogFragment() {
 
-    private val viewModel: ViewModelEvents by viewModels()
+    private val viewModel: ViewModelEvents by activityViewModels()
 
 //    private lateinit var buttonText: String
 //    private lateinit var date: String

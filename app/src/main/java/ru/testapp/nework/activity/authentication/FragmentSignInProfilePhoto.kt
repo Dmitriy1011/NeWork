@@ -16,9 +16,11 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.SignUpLoadProfileImageBinding
 import ru.testapp.nework.dto.MediaUpload
@@ -27,10 +29,10 @@ import ru.testapp.nework.viewmodel.ViewModelAuth
 import ru.testapp.nework.viewmodel.ViewModelPost
 import ru.testapp.nework.viewmodel.ViewModelSignUp
 
+@AndroidEntryPoint
 class FragmentSignInProfilePhoto : Fragment() {
 
-    private val viewModel: ViewModelAuth by viewModels()
-    private val signUpViewModel: ViewModelSignUp by viewModels()
+    private val signUpViewModel: ViewModelSignUp by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,9 +41,9 @@ class FragmentSignInProfilePhoto : Fragment() {
         val binding = SignUpLoadProfileImageBinding.inflate(inflater, container, false)
 
 
-        binding.clearPhoto.setOnClickListener {
-            signUpViewModel.clearImage()
-        }
+//        binding.clearPhoto.setOnClickListener {
+//            signUpViewModel.clearImage()
+//        }
 
         val pickPhotoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

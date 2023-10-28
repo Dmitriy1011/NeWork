@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
-import ru.testapp.nework.dto.TokenAuth
+import ru.testapp.nework.dto.Token
 import ru.testapp.nework.dto.User
 
 interface ApiServiceUsers {
@@ -26,7 +26,7 @@ interface ApiServiceUsers {
         @Part("password") password: RequestBody,
         @Part("name") name: RequestBody,
         @Part media: MultipartBody.Part
-    ): Response<TokenAuth>
+    ): Response<Token>
 
     @FormUrlEncoded
     @POST("/api/users/registration/")
@@ -34,12 +34,12 @@ interface ApiServiceUsers {
         @Part("login") login: RequestBody,
         @Part("password") password: RequestBody,
         @Part("name") name: RequestBody
-    ): Response<TokenAuth>
+    ): Response<Token>
 
     @FormUrlEncoded
     @POST("/api/users/authentication/")
     suspend fun updateUser(
         @Field("login") login: String,
         @Field("password") password: String
-    ): Response<TokenAuth>
+    ): Response<Token>
 }

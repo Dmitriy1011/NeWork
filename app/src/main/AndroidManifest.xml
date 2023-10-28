@@ -15,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NeWork"
         android:name=".application.App"
+        android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
         <activity
             android:name=".activity.MainActivity"

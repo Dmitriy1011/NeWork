@@ -9,7 +9,6 @@ import ru.testapp.nework.repository.RepositoryUsers
 import javax.inject.Inject
 
 @HiltViewModel
-@ExperimentalCoroutinesApi
 class ViewModelSignIn @Inject constructor(
     private val repository: RepositoryUsers
 ) : ViewModel() {
@@ -18,7 +17,7 @@ class ViewModelSignIn @Inject constructor(
             try {
                 repository.setIdAndTokenToAuth(id, token)
             } catch (e: Exception) {
-                e.printStackTrace()
+                throw RuntimeException(e)
             }
         }
     }

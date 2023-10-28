@@ -1,6 +1,7 @@
 package ru.testapp.nework.activity.authentication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ class FragmentSignUp : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    private val viewModel: ViewModelSignUp by activityViewModels()
+    private val viewModel: ViewModelSignUp by viewModels()
     private val authViewModel: ViewModelAuth by viewModels()
     private val signUpViewModel: ViewModelSignUp by viewModels()
 

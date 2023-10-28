@@ -1,6 +1,7 @@
 package ru.testapp.nework.activity.authentication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.testapp.nework.R
@@ -28,7 +30,7 @@ class FragmentSignIn : Fragment() {
     @Inject
     lateinit var appAuth: AppAuth
 
-    private val viewModel: ViewModelSignIn by activityViewModels()
+    private val viewModel: ViewModelSignIn by viewModels()
     private val authViewModel: ViewModelAuth by viewModels()
 
     override fun onCreateView(
@@ -42,6 +44,8 @@ class FragmentSignIn : Fragment() {
             val login = binding.loginTextField.editText?.text.toString()
             val pass = binding.passwordTextField.editText?.text.toString()
             viewModel.saveIdAndToken(login, pass)
+
+            Log.d("AUTH", "${viewModel.saveIdAndToken(login, pass)}")
 
             binding.progressBar.isVisible = true
 
