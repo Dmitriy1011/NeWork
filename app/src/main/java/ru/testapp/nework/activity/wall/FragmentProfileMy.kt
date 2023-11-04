@@ -7,16 +7,11 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.adapter.ViewPagerAdapter
 import ru.testapp.nework.auth.AppAuth
@@ -25,12 +20,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
-
-
-    lateinit var tabLayout: TabLayout
-    lateinit var viewPager2: ViewPager2
-    lateinit var viewPagerAdapter: ViewPagerAdapter
-
     @Inject
     lateinit var appAuth: AppAuth
 
@@ -53,9 +42,9 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
                 }
         }, viewLifecycleOwner)
 
-        tabLayout = requireActivity().findViewById(R.id.tabLayout)
-        viewPager2 = binding.viewPager
-        viewPagerAdapter = ViewPagerAdapter(this)
+        val tabLayout = requireActivity().findViewById<TabLayout>(R.id.tabLayout)
+        val viewPager2 = binding.viewPager
+        val viewPagerAdapter = ViewPagerAdapter(this)
         viewPager2.adapter = viewPagerAdapter
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -77,17 +66,6 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
                 tabLayout.getTabAt(position)?.select()
             }
         })
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                appAuth.authStateFlow.collect {
-//                    if (it.token != null) {
-//                        requireActivity().findViewById<MaterialButton>(R.id.deleteJobButton).visibility =
-//                            View.VISIBLE
-//                    }
-//                }
-//            }
-//        }
 
         binding.fab.setOnClickListener {
             if (appAuth.authStateFlow.value.token != null) {

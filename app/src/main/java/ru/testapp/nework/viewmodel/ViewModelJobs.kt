@@ -15,7 +15,8 @@ import ru.testapp.nework.dto.Job
 import ru.testapp.nework.models.ModelJobMy
 import ru.testapp.nework.models.ModelJobUser
 import ru.testapp.nework.repository.RepositoryJobs
-import java.io.IOException
+import ru.testapp.nework.state.StateJobMy
+import ru.testapp.nework.state.StateJobUser
 import javax.inject.Inject
 
 private val emptyJob = Job(
@@ -53,6 +54,17 @@ class ViewModelJobs @Inject constructor(
     val endDateState: LiveData<String>
         get() = _endDateState
 
+
+    private val _userIdState = MutableLiveData<Int>()
+    val userIdState: LiveData<Int>
+        get() = _userIdState
+
+
+    fun setUserIdState(id: Long) {
+        _userIdState.value = id.toInt()
+    }
+
+
     fun editStartDate(date: String) {
         _startDateState.value = date
     }
@@ -61,6 +73,14 @@ class ViewModelJobs @Inject constructor(
         _endDateState.value = date
     }
 
+    private val _loadingJobMyState = MutableLiveData(StateJobMy())
+    val loadingJobMyState: LiveData<StateJobMy>
+        get() = _loadingJobMyState
+
+
+    private val _loadingJobUserState = MutableLiveData(StateJobUser())
+    val loadingJobUserState: LiveData<StateJobUser>
+        get() = _loadingJobUserState
 
     init {
         loadJobsMy()
@@ -68,10 +88,25 @@ class ViewModelJobs @Inject constructor(
 
     fun loadJobsMy() {
         viewModelScope.launch {
+            _loadingJobMyState.value = StateJobMy(loading = true)
             try {
                 repositoryJobs.getMyJobs()
+                _loadingJobMyState.value = StateJobMy()
             } catch (e: Exception) {
-                e.printStackTrace()
+                _loadingJobMyState.value = StateJobMy(error = true)
+            }
+        }
+    }
+
+
+    fun loadJobsUser(id: Long) {
+        viewModelScope.launch {
+            _loadingJobUserState.value = StateJobUser(loading = true)
+            try {
+                repositoryJobs.getUsersJobs(id)
+                _loadingJobUserState.value = StateJobUser()
+            } catch (e: Exception) {
+                _loadingJobUserState.value = StateJobUser(error = true)
             }
         }
     }
@@ -80,40 +115,50 @@ class ViewModelJobs @Inject constructor(
         edited.value?.let {
             jobCreated.postValue(Unit)
             viewModelScope.launch {
+                _loadingJobMyState.value = StateJobMy(loading = true)
                 try {
                     repositoryJobs.saveJob(it)
+                    _loadingJobMyState.value = StateJobMy()
                 } catch (e: Exception) {
-                    throw RuntimeException(e)
+                    _loadingJobMyState.value = StateJobMy(error = true)
                 }
             }
         }
         edited.value = emptyJob
     }
 
-    fun editJob(job: Job) {
-        edited.value = job
-    }
-
-    fun changeContent(nameArg: String, positionArg: String) {
+    fun changeContent(nameArg: String, positionArg: String, link: String?, dateStart: String, dateFinish: String?) {
         val name = nameArg.trim()
         val position = positionArg.trim()
-        if(edited.value?.name == name && edited.value?.position == position) {
+        val link = link?.trim()
+        val dateStart = dateStart.trim()
+        val dateFinish = dateFinish?.trim()
+
+        if (edited.value?.name == name && edited.value?.position == position) {
             return
-        } else if(edited.value?.name != name && edited.value?.position == position) {
+
+        } else if (edited.value?.name != name && edited.value?.position == position) {
             edited.value =
                 edited.value?.copy(name = name)
-        } else if(edited.value?.name == name && edited.value?.position != position) {
+
+        } else if (edited.value?.name == name && edited.value?.position != position) {
             edited.value =
                 edited.value?.copy(position = position)
+
+        } else if (edited.value?.name == name && edited.value?.position == position && edited.value?.link != link) {
+            edited.value =
+                edited.value?.copy(link = link)
         }
     }
 
     fun removeJob(id: Long) {
         viewModelScope.launch {
+            _loadingJobMyState.value = StateJobMy(loading = true)
             try {
                 repositoryJobs.removeJob(id)
-            } catch (e: IOException) {
-                throw RuntimeException(e)
+                _loadingJobMyState.value = StateJobMy()
+            } catch (e: Exception) {
+                _loadingJobMyState.value = StateJobMy(error = true)
             }
         }
     }

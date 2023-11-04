@@ -20,4 +20,8 @@
     <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
         <item name="android:layout_marginBottom">?attr/actionBarSize</item>
     </style>
+
+    <style name="AlertDialog.AppCompat." parent="AlertDialog.AppCompat">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
 </resources>

@@ -1,7 +1,5 @@
 package ru.testapp.nework.dto
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import ru.testapp.nework.entity.AttachmentEmbeddable
 import ru.testapp.nework.entity.CoordinatesEmbeddable

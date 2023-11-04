@@ -1,55 +1,52 @@
 package ru.testapp.nework.activity.wall
 
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardEnterDatesBinding
 import ru.testapp.nework.viewmodel.ViewModelJobs
 
 @AndroidEntryPoint
-class FargmentEnterDate : Fragment() {
+class FragmentEnterDate : DialogFragment() {
 
     private val viewModel: ViewModelJobs by viewModels()
 
-//    private lateinit var startDate: String
-//    private lateinit var endDate: String
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return activity?.let {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val binding = CardEnterDatesBinding.inflate(inflater, container, false)
+            val builder = AlertDialog.Builder(it)
+            val binding = CardEnterDatesBinding.inflate(layoutInflater)
 
-//        startDate = binding.selectStartDate.toString()
-//        endDate = binding.selectEndDate.toString()
+            builder
+                .setView(binding.root).let {
+                    setStyle(
+                        R.style.AlertDialog_AppCompat_,
+                        R.style.AlertDialog_AppCompat_
+                    )
+                    binding.apply {
+                        okButton.setOnClickListener {
+                            val startDate = binding.selectStartDateInput.text.toString()
+                            val endDate = binding.selectEndDateInput.text.toString()
 
-//        binding.okButton.setOnClickListener {
-//            setFragmentResult("startDateRequestKey", bundleOf("startDateBundleKey" to startDate))
-//            setFragmentResult("endDateRequestKey", bundleOf("endDateBundleKey" to endDate))
-//        }
+                            viewModel.editStartDate(startDate)
+                            viewModel.editEndDate(endDate)
 
-        binding.cancelButton.setOnClickListener {
-            binding.root.isVisible = false
-        }
+                            binding.progressBar.visibility = View.VISIBLE
 
-        binding.okButton.setOnClickListener {
-            viewModel.startDateState.observe(viewLifecycleOwner) {
-                viewModel.editStartDate(binding.selectStartDate.toString())
-            }
+                            dialog?.cancel()
+                        }
 
-            viewModel.endDateState.observe(viewLifecycleOwner) {
-                viewModel.editEndDate(binding.selectEndDate.toString())
-            }
-        }
-
-
-
-        return binding.root
+                        cancelButton.setOnClickListener {
+                            dialog?.cancel()
+                        }
+                    }
+                }
+            builder.create()
+        } ?: throw IllegalStateException("Activity cannot be null")
     }
 }

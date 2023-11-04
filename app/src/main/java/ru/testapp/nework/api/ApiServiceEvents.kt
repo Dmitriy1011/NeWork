@@ -22,10 +22,16 @@ interface ApiServiceEvents {
     suspend fun getLatestEvents(@Query("count") count: Int): Response<List<Event>>
 
     @GET("/api/events/{event_id}/before/")
-    suspend fun getBefore(@Path("event_id") id: Long, @Query("count") count: Int): Response<List<Event>>
+    suspend fun getBefore(
+        @Path("event_id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Event>>
 
     @GET("/api/events/{event_id}/after/")
-    suspend fun getAfter(@Path("event_id") id: Long, @Query("count") count: Int): Response<List<Event>>
+    suspend fun getAfter(
+        @Path("event_id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Event>>
 
     @POST("/api/events/")
     suspend fun saveEvent(@Body event: Event): Response<Event>

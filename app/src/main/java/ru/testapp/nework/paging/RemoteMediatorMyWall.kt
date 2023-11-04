@@ -7,7 +7,6 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import ru.netology.nmedia.exceptions.ApiError
 import ru.testapp.nework.api.ApiServiceWallMy
-import ru.testapp.nework.dao.DaoPost
 import ru.testapp.nework.dao.DaoRemoteKeyWallMy
 import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.entity.EntityRemoteKeyWallMy

@@ -3,7 +3,7 @@
     <item
         android:id="@+id/fragmentPostsFeed"
         android:enabled="true"
-        android:icon="@drawable/rss_feed"
+        android:icon="@drawable/baseline_rss_feed_24"
         android:title="@string/posts"/>
     <item
         android:id="@+id/fragmentEvents"

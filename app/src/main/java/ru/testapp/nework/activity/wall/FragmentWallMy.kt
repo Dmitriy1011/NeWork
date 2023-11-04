@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterWallMy
 import ru.testapp.nework.adapter.OnIteractionListenerWallMy
 import ru.testapp.nework.auth.AppAuth
@@ -70,6 +74,30 @@ class FragmentWallMy : Fragment() {
                 appAuth.authStateFlow.collect {
                     adapter.refresh()
                 }
+            }
+        }
+
+        viewModelWallMy.wallMyPostsState.observe(viewLifecycleOwner) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.something_went_wrong), Toast.LENGTH_SHORT
+            ).show()
+        }
+
+        viewModelWallMy.wallMyPostsState.observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = it.refreshing
+            binding.progressBar.isVisible = it.loading || it.refreshing
+            binding.errorGroup.isVisible = it.error
+            if (it.error) {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.something_went_wrong_try_again),
+                    Snackbar.LENGTH_LONG
+                ).setAction(
+                    getString(R.string.retry)
+                ) {
+                    viewModelWallMy.getMyWallPosts()
+                }.show()
             }
         }
 

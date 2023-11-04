@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/jobCreateNameFieldInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E6E0E9" />
@@ -39,6 +40,7 @@
             app:layout_constraintTop_toBottomOf="@id/jobCreateNameField">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/jobCreatePositionFieldInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E6E0E9" />
@@ -57,13 +59,12 @@
             app:layout_constraintTop_toBottomOf="@id/jobCreatePositionField">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/jobCreateLinkFieldInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E6E0E9" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <include layout="@layout/card_enter_dates" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/datesCard"

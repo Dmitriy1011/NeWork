@@ -5,9 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardImageBinding
-import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 

@@ -19,28 +19,19 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.activity.posts.FragmentCreateAndEditPost.Companion.editTextArg
 import ru.testapp.nework.databinding.FragmentEventCreateAndEditBinding
 import ru.testapp.nework.dto.PhotoModel
-import ru.testapp.nework.utils.EditTextArg
-import ru.testapp.nework.utils.EditTextArgEvent
 import ru.testapp.nework.utils.HideKeyBoardUtil
-import ru.testapp.nework.utils.ModalBottomSheet
 import ru.testapp.nework.viewmodel.ViewModelEvents
 
 @AndroidEntryPoint
 class FragmentCreateAndEditEvent : Fragment() {
 
     private val viewModel: ViewModelEvents by activityViewModels()
-
-    private lateinit var modalBottomSheet: ModalBottomSheet
-    private lateinit var dialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,14 +82,22 @@ class FragmentCreateAndEditEvent : Fragment() {
 
         viewModel.photoState.observe(viewLifecycleOwner) { photoModel ->
             if (photoModel == null) {
-                binding.eventPreviewImage.isGone = true
-                binding.eventClearPreview.isGone = true
+                binding.eventPreviewImage.visibility = View.GONE
+                binding.eventClearPreview.visibility = View.GONE
                 return@observe
             }
 
-            binding.eventClearPreview.isVisible = true
-            binding.eventPreviewImage.isVisible = true
+            binding.eventClearPreview.visibility = View.VISIBLE
+            binding.eventPreviewImage.visibility = View.VISIBLE
             binding.eventPreviewImage.setImageURI(photoModel.uri)
+        }
+
+        binding.eventClearPreview.setOnClickListener {
+            viewModel.photoState.observe(viewLifecycleOwner) { photoModel ->
+                if (photoModel != null) {
+                    viewModel.clearPhoto()
+                }
+            }
         }
 
         binding.eventAddPhoto.setOnClickListener {
@@ -117,8 +116,8 @@ class FragmentCreateAndEditEvent : Fragment() {
                 .createIntent(pickPhotoLauncher::launch)
         }
 
-        dialog = Dialog(requireContext())
-        modalBottomSheet = ModalBottomSheet()
+        val dialog = Dialog(requireContext())
+        val modalBottomSheet = ModalBottomSheet()
 
         binding.fab.setOnClickListener {
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -133,19 +132,6 @@ class FragmentCreateAndEditEvent : Fragment() {
             binding.displayEventDateTextButton.text = it
         }
 
-//        setFragmentResultListener("typeRequestKey") { _, bundle ->
-//            val typeResult = bundle.getString("typeBundleKey")
-//            binding.displayEventTypeButton.text = typeResult!!
-//        }
-//        setFragmentResultListener("dateRequestKey") { _, bundle ->
-//            val dateResult = bundle.getString("dateBundleKey")
-//            binding.displayEventDateTextButton.text = dateResult!!
-//        }
-
         return binding.root
-    }
-
-    companion object {
-        var Bundle.editTextArgEvent: String? by EditTextArgEvent
     }
 }

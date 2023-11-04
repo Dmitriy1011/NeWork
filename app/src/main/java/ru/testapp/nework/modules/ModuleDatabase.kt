@@ -62,5 +62,6 @@ class ModuleDatabase {
 
     @Singleton
     @Provides
-    fun provideDaoRemoteKeyWallUser(appDb: AppDb): DaoRemoteKeyWallUsers = appDb.remoteKeyWallUserDao()
+    fun provideDaoRemoteKeyWallUser(appDb: AppDb): DaoRemoteKeyWallUsers =
+        appDb.remoteKeyWallUserDao()
 }

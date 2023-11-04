@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardImageBinding
 import ru.testapp.nework.dto.Event
 import ru.testapp.nework.dto.User
@@ -18,9 +17,14 @@ interface OnIteractionListenerUsersFiltered {
 class AdapterUsersFilteredEvent(
     private val listener: OnIteractionListenerUsersFiltered
 ) :
-    ListAdapter<User, AdapterUsersFilteredEvent.EventUsersFilteredViewHolder>(EventUsersFilteredDiffCallback()) {
+    ListAdapter<User, AdapterUsersFilteredEvent.EventUsersFilteredViewHolder>(
+        EventUsersFilteredDiffCallback()
+    ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventUsersFilteredViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): EventUsersFilteredViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return EventUsersFilteredViewHolder(
             CardImageBinding.inflate(inflater, parent, false),

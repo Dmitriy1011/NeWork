@@ -92,6 +92,7 @@ data class EventCoordinatesEmbeddable(
         fun fromDto(dto: EventCoordinates) = EventCoordinatesEmbeddable(dto.latitude, dto.longitude)
     }
 }
+
 data class EventAttachmentEmbeddable(
     var url: String,
     val type: String

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.testapp.nework.api.ApiServiceWallUser
 import ru.testapp.nework.dao.DaoPost
-import ru.testapp.nework.dao.DaoPostRemoteKey
 import ru.testapp.nework.dao.DaoRemoteKeyWallUsers
 import ru.testapp.nework.database.AppDb
 import ru.testapp.nework.dto.Post
@@ -26,10 +25,8 @@ class RepositoryImplWallUser @Inject constructor(
     private val apiServiceWallUser: ApiServiceWallUser,
     private val appDb: AppDb,
     private val dao: DaoPost,
-    private val keyDao: DaoRemoteKeyWallUsers
+    private val keyDao: DaoRemoteKeyWallUsers,
 ) : RepositoryWallUser {
-
-    private lateinit var post: Post
 
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
@@ -44,9 +41,9 @@ class RepositoryImplWallUser @Inject constructor(
         pagingData.map(PostEntity::toDto)
     }
 
-    override suspend fun getAllFromUsersWall(): List<Post> {
+    override suspend fun getAllFromUsersWall(authorId: Long): List<Post> {
         try {
-            val response = apiServiceWallUser.getAllFromUserWall(post.authorId)
+            val response = apiServiceWallUser.getAllFromUserWall(authorId)
 
             if (!response.isSuccessful) {
                 throw RuntimeException(response.message())

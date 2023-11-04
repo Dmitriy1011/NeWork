@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken
 import ru.testapp.nework.entity.UserPreviewEmbeddable
 
 private val gson = Gson()
-private val usersType = object : TypeToken<Map<Long, UserPreviewEmbeddable>>(){}.type
-private val listType = object : TypeToken<List<Int>>(){}.type
+private val usersType = object : TypeToken<Map<Long, UserPreviewEmbeddable>>() {}.type
+private val listType = object : TypeToken<List<Int>>() {}.type
 
 class TypeConverter {
     @TypeConverter
@@ -16,9 +16,12 @@ class TypeConverter {
     @TypeConverter
     fun fromStringToListInt(value: String): List<Int> = gson.fromJson(value, listType)
 
-    @TypeConverter fun fromMap(map: Map<Long, UserPreviewEmbeddable>): String {
+    @TypeConverter
+    fun fromMap(map: Map<Long, UserPreviewEmbeddable>): String {
         return gson.toJson(map)
     }
 
-    @TypeConverter fun toMap(usersSerialiazed: String): Map<Long, UserPreviewEmbeddable> = gson.fromJson(usersSerialiazed, usersType)
+    @TypeConverter
+    fun toMap(usersSerialiazed: String): Map<Long, UserPreviewEmbeddable> =
+        gson.fromJson(usersSerialiazed, usersType)
 }

@@ -7,7 +7,6 @@ import ru.testapp.nework.dto.Attachment
 import ru.testapp.nework.dto.Coordinates
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.UserPreview
-import ru.testapp.nework.enum.AttachmentTypePost
 
 @Entity
 data class PostEntity(
@@ -112,4 +111,3 @@ data class UserPreviewEmbeddable(
 }
 
 fun List<PostEntity>.listToDto(): List<Post> = map(PostEntity::toDto)
-fun List<Post>.listFromDto(): List<PostEntity> = map(PostEntity::fromDto)

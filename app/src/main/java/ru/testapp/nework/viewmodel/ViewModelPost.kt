@@ -88,14 +88,12 @@ class ViewModelPost @Inject constructor(
     val photoState: LiveData<PhotoModel?>
         get() = _photoState
 
-    private val _mentionedIdsState = MutableLiveData<Int>()
-    val mentionedIdsState: LiveData<Int>
-        get() = _mentionedIdsState
-
 
     private val edited = MutableLiveData(emptyPost)
 
-    val postData: LiveData<ModelPost> = repository.postData.map(::ModelPost).asLiveData(Dispatchers.Default)
+    val postData: LiveData<ModelPost> =
+        repository.postData.map(::ModelPost).asLiveData(Dispatchers.Default)
+
     init {
         loadPosts()
     }

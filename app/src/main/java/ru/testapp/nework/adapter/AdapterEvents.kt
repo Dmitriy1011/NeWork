@@ -1,5 +1,6 @@
 package ru.testapp.nework.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardEventBinding
 import ru.testapp.nework.dto.Event
-import ru.testapp.nework.dto.Job
 import ru.testapp.nework.enum.AttachmentTypeEvent
 import ru.testapp.nework.enum.TypeStatus
 import ru.testapp.nework.handler.loadAttachmentImage
@@ -29,14 +29,16 @@ interface OnIteractionListenerEvents {
 }
 
 class AdapterEvents(
-    private val listener: OnIteractionListenerEvents
+    private val listener: OnIteractionListenerEvents,
+    private val context: Context
 ) : PagingDataAdapter<Event, AdapterEvents.EventsViewHolder>(EventsDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return EventsViewHolder(
             CardEventBinding.inflate(inflater, parent, false),
-            listener = listener
+            listener = listener,
+            context = context
         )
     }
 
@@ -47,7 +49,8 @@ class AdapterEvents(
 
     class EventsViewHolder(
         private val binding: CardEventBinding,
-        private val listener: OnIteractionListenerEvents
+        private val listener: OnIteractionListenerEvents,
+        private val context: Context
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event) {
             binding.apply {
@@ -81,15 +84,18 @@ class AdapterEvents(
                     AttachmentTypeEvent.VIDEO.toString() -> eventPlayButton.isVisible = true
                 }
 
-                when(statusType) {
-                    TypeStatus.ONLINE.toString() -> eventType.text = "Online"
-                    TypeStatus.OFFLINE.toString() -> eventType.text = "Offline"
+                when (statusType) {
+                    TypeStatus.ONLINE.toString() -> eventType.text =
+                        context.getString(R.string.online_type_status)
+
+                    TypeStatus.OFFLINE.toString() -> eventType.text =
+                        context.getString(R.string.offline_type_status)
                 }
 
                 eventAttachmentImage.isVisible = !instanceAttachmentUrl.isNullOrBlank()
 
                 eventAttachmentImage.setOnClickListener {
-                    when(attachmentType) {
+                    when (attachmentType) {
                         AttachmentTypeEvent.IMAGE.toString() -> listener.onOpenImage(event)
                         AttachmentTypeEvent.VIDEO.toString() -> listener.onOpenVideo(event)
                         AttachmentTypeEvent.AUDIO.toString() -> listener.onOpenAudio(event)

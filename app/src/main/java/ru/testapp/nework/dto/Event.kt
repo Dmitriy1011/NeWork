@@ -28,7 +28,7 @@ data class Event(
     val ownedByMe: Boolean = false,
     val users: Map<Long, UserPreviewEmbeddable>,
     val likes: Int
-): Serializable
+) : Serializable
 
 data class EventCoordinates(
     val latitude: String,

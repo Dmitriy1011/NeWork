@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.databinding.CardUserBinding
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
-class AdapterLikersPostList : ListAdapter<User, AdapterLikersPostList.LikersPostViewHolder>(LikersPostDiffCallback()) {
+class AdapterLikersPostList :
+    ListAdapter<User, AdapterLikersPostList.LikersPostViewHolder>(LikersPostDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikersPostViewHolder {
         val inflater = LayoutInflater.from(parent.context)

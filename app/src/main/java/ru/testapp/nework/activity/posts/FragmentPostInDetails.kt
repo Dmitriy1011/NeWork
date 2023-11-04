@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
@@ -17,7 +18,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
@@ -59,10 +59,10 @@ class FragmentPostInDetails : Fragment() {
 
         val currentMenuProvider: MenuProvider? = null
 
-        val arg = arguments?.idArg
+        val arg = arguments?.let { it.idArg }
 
         viewModelPosts.postData.observe(viewLifecycleOwner) { modelPost ->
-            modelPost.posts.map { it.copy(id = arg!!) }
+            modelPost.posts.map { arg?.let { longTypeId -> it.copy(id = longTypeId) } }
             currentMenuProvider?.let { requireActivity().removeMenuProvider(currentMenuProvider) }
             modelPost.posts.find { it.id == arg }?.let { post ->
                 binding.cardPostInDetails.apply {
@@ -71,6 +71,7 @@ class FragmentPostInDetails : Fragment() {
                     postInDetailsMapView.visibility = View.VISIBLE
                     mentionedTitle.visibility = View.VISIBLE
                     postInDetailsMentionedButton.visibility = View.VISIBLE
+
                     postShareButton.visibility = View.GONE
 
                     PostsAdapter.PostViewHolder(this, object : OnIteractionListener {
@@ -123,6 +124,27 @@ class FragmentPostInDetails : Fragment() {
                         }
                     }).bind(post)
 
+                    postMenuButton.setOnClickListener {
+                        PopupMenu(it.context, it).apply {
+                            inflate(R.menu.options_post)
+                            setOnMenuItemClickListener { menuItem ->
+                                when (menuItem.itemId) {
+                                    R.id.edit -> {
+                                        viewModelPosts.editPost(post)
+                                        true
+                                    }
+
+                                    R.id.delete -> {
+                                        viewModelPosts.removePost(post.id)
+                                        true
+                                    }
+
+                                    else -> false
+                                }
+                            }
+                        }.show()
+                    }
+
                     requireActivity().addMenuProvider(object : MenuProvider {
                         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                             menuInflater.inflate(R.menu.menu_post_in_details, menu)
@@ -174,20 +196,13 @@ class FragmentPostInDetails : Fragment() {
                     }
 
                     mapView?.findViewById<MapView>(R.id.postInDetailsMapView)?.isVisible =
-                        post.coordinates != null
+                        true
 
                     MapKitFactory.initialize(requireContext())
                     mapView?.findViewById<MapView>(R.id.postInDetailsMapView)
 
-                    val latitude = post.coordinates?.latitude!!.toDouble()
-                    val longitude = post.coordinates.longitude!!.toDouble()
-
-                    CameraPosition(
-                        Point(latitude, longitude),
-                        /* zoom = */ 17.0f,
-                        /* azimuth = */ 150.0f,
-                        /* tilt = */ 30.0f
-                    )
+                    val latitude = post.coordinates.latitude.toDouble()
+                    val longitude = post.coordinates.longitude.toDouble()
 
                     val imageProvider =
                         ImageProvider.fromResource(requireContext(), R.drawable.map_point)
@@ -224,6 +239,11 @@ class FragmentPostInDetails : Fragment() {
         mapView?.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        mapView = null
+        super.onDestroy()
     }
 
     companion object {

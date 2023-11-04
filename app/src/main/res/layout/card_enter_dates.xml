@@ -2,9 +2,12 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:cardCornerRadius="48dp"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@android:color/transparent"
+    android:elevation="0dp"
+    android:background="@android:color/transparent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -65,13 +68,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/selectStartDate"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="170dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:hint="Date"
+                android:hint="@string/startdate"
                 app:layout_constraintTop_toBottomOf="@id/selectDatesBarrier"
                 app:placeholderText="@string/mm_dd_yyyy">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/selectStartDateInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -80,20 +84,31 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/selectEndDate"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="170dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:hint="Date"
+                android:hint="@string/enddate"
                 app:layout_constraintBottom_toBottomOf="@id/selectStartDate"
                 app:layout_constraintStart_toEndOf="@id/selectStartDate"
                 app:placeholderText="@string/end_date">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/selectEndDateInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/buttonsLayout"
@@ -110,6 +125,7 @@
                 android:background="@android:color/transparent"
                 android:padding="0dp"
                 android:text="@string/cancel"
+                android:clickable="true"
                 android:textColor="#6750A4" />
 
             <com.google.android.material.button.MaterialButton
@@ -117,6 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
+                android:clickable="true"
                 android:background="@android:color/transparent"
                 android:text="@string/ok"
                 android:textColor="#6750A4" />

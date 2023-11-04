@@ -1,11 +1,11 @@
 package ru.testapp.nework.activity
 
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
-import androidx.core.view.MenuProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,16 +15,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
-import ru.testapp.nework.dto.Post
+import ru.testapp.nework.databinding.ActivityMainBinding
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity() : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var appAuth: AppAuth
-
-    private lateinit var toolbar: Toolbar
 
     private lateinit var navController: NavController
 
@@ -32,9 +30,8 @@ class MainActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        //toolbar
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
@@ -43,7 +40,6 @@ class MainActivity() : AppCompatActivity() {
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(navController)
 
-        //bottomNavigation
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
 
         val bottomAppBarConfiguration = AppBarConfiguration(

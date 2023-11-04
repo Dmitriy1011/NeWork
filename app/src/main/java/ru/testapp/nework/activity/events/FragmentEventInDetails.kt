@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,7 +18,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
-import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.MapObjectTapListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
@@ -50,12 +50,12 @@ class FragmentEventInDetails : Fragment() {
 
         val currentMenuProvider: MenuProvider? = null
 
-        var idArg = arguments?.eventIdArg
+        val eventIdArg = arguments?.let { it.eventIdArg }
 
         eventsViewModel.eventDetailsData.observe(viewLifecycleOwner) { modelEvent ->
-            modelEvent.eventsList.map { it.copy(id = idArg!!) }
+            modelEvent.eventsList.map { eventIdArg?.let { longTypeId -> it.copy(id = longTypeId) } }
             currentMenuProvider?.let { requireActivity().removeMenuProvider(currentMenuProvider) }
-            modelEvent.eventsList.find { it.id == idArg }?.let { event ->
+            modelEvent.eventsList.find { it.id == eventIdArg }?.let { event ->
                 binding.eventCardInDetails.apply {
                     likersTitle.visibility = View.VISIBLE
                     participantsTitle.visibility = View.VISIBLE
@@ -85,58 +85,82 @@ class FragmentEventInDetails : Fragment() {
                             }
                         })
 
-                    AdapterEvents.EventsViewHolder(this, object : OnIteractionListenerEvents {
-                        override fun onEdit(event: Event) {
-                            eventsViewModel.editEvent(event)
-                        }
+                    context?.let {
+                        AdapterEvents.EventsViewHolder(this, object : OnIteractionListenerEvents {
+                            override fun onEdit(event: Event) {
+                                eventsViewModel.editEvent(event)
+                            }
 
-                        override fun onRemove(event: Event) {
-                            eventsViewModel.removeEvent(event.id)
-                        }
+                            override fun onRemove(event: Event) {
+                                eventsViewModel.removeEvent(event.id)
+                            }
 
-                        override fun onLike(event: Event) {
-                            eventsViewModel.likeEvent(event.id)
-                        }
+                            override fun onLike(event: Event) {
+                                eventsViewModel.likeEvent(event.id)
+                            }
 
-                        override fun onUnLike(event: Event) {
-                            eventsViewModel.unLikeEvent(event.id)
-                        }
+                            override fun onUnLike(event: Event) {
+                                eventsViewModel.unLikeEvent(event.id)
+                            }
 
-                        override fun onOpenImage(event: Event) {
-                            findNavController().navigate(
-                                R.id.action_fragmentPostInDetails_to_fragmentAttachmentSeparate,
-                                Bundle().apply {
-                                    textArg =
-                                        "${BuildConfig.BASE_URL}media/${event.attachment?.url}"
+                            override fun onOpenImage(event: Event) {
+                                findNavController().navigate(
+                                    R.id.action_fragmentPostInDetails_to_fragmentAttachmentSeparate,
+                                    Bundle().apply {
+                                        textArg =
+                                            "${BuildConfig.BASE_URL}media/${event.attachment?.url}"
+                                    }
+                                )
+                            }
+
+                            override fun onOpenVideo(event: Event) {
+                                val intent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                                val chooserIntent = Intent.createChooser(
+                                    intent,
+                                    getString(R.string.choose_where_open_your_video)
+                                )
+                                startActivity(chooserIntent)
+                            }
+
+                            override fun onOpenAudio(event: Event) {
+                                val intent =
+                                    Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
+                                val chooserIntent = Intent.createChooser(
+                                    intent,
+                                    getString(R.string.choose_where_open_your_audio)
+                                )
+                                startActivity(chooserIntent)
+                            }
+
+                            override fun followingTheLink(event: Event) {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
+                                startActivity(intent)
+                            }
+                        }, it).bind(event)
+                    }
+
+
+                    eventMenuButton.setOnClickListener {
+                        PopupMenu(it.context, it).apply {
+                            inflate(R.menu.options_event)
+                            setOnMenuItemClickListener { menuItem ->
+                                when (menuItem.itemId) {
+                                    R.id.editEvent -> {
+                                        eventsViewModel.editEvent(event)
+                                        true
+                                    }
+
+                                    R.id.deleteEvent -> {
+                                        eventsViewModel.removeEvent(event.id)
+                                        true
+                                    }
+
+                                    else -> false
                                 }
-                            )
-                        }
-
-                        override fun onOpenVideo(event: Event) {
-                            val intent =
-                                Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
-                            val chooserIntent = Intent.createChooser(
-                                intent,
-                                getString(R.string.choose_where_open_your_video)
-                            )
-                            startActivity(chooserIntent)
-                        }
-
-                        override fun onOpenAudio(event: Event) {
-                            val intent =
-                                Intent(Intent.ACTION_VIEW, Uri.parse(event.attachment?.url))
-                            val chooserIntent = Intent.createChooser(
-                                intent,
-                                getString(R.string.choose_where_open_your_audio)
-                            )
-                            startActivity(chooserIntent)
-                        }
-
-                        override fun followingTheLink(event: Event) {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.link))
-                            startActivity(intent)
-                        }
-                    }).bind(event)
+                            }
+                        }.show()
+                    }
 
                     likersListShort.adapter = usersFilteredAdapter
                     speakersList.adapter = usersFilteredAdapter
@@ -193,20 +217,14 @@ class FragmentEventInDetails : Fragment() {
                     }
 
                     mapView?.findViewById<MapView>(R.id.eventInDetailsMapView)?.isVisible =
-                        event.coordinates != null
+                        true
 
                     MapKitFactory.initialize(requireContext())
                     mapView?.findViewById<MapView>(R.id.eventInDetailsMapView)
 
-                    val latitude = event.coordinates?.latitude!!.toDouble()
-                    val longitude = event.coordinates.longitude!!.toDouble()
+                    val latitude = event.coordinates.latitude.toDouble()
+                    val longitude = event.coordinates.longitude.toDouble()
 
-                    CameraPosition(
-                        Point(latitude, longitude),
-                        /* zoom = */ 17.0f,
-                        /* azimuth = */ 150.0f,
-                        /* tilt = */ 30.0f
-                    )
 
                     val imageProvider =
                         ImageProvider.fromResource(requireContext(), R.drawable.map_point)
@@ -243,5 +261,10 @@ class FragmentEventInDetails : Fragment() {
         mapView?.onStop()
         MapKitFactory.getInstance().onStop()
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        mapView = null
+        super.onDestroy()
     }
 }

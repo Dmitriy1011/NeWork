@@ -1,22 +1,16 @@
 package ru.testapp.nework.activity.authentication
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentSignInBinding
@@ -33,6 +27,7 @@ class FragmentSignIn : Fragment() {
     private val viewModel: ViewModelSignIn by viewModels()
     private val authViewModel: ViewModelAuth by viewModels()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,13 +36,21 @@ class FragmentSignIn : Fragment() {
         val binding = FragmentSignInBinding.inflate(inflater, container, false)
 
         binding.signInButton.setOnClickListener {
-            val login = binding.loginTextField.editText?.text.toString()
-            val pass = binding.passwordTextField.editText?.text.toString()
+            val login = binding.loginTextFieldInput.text.toString()
+            val pass = binding.passwordTextFieldInput.text.toString()
+
             viewModel.saveIdAndToken(login, pass)
 
-            Log.d("AUTH", "${viewModel.saveIdAndToken(login, pass)}")
-
-            binding.progressBar.isVisible = true
+            viewModel.wrongDataErrorState.observe(viewLifecycleOwner) {
+                binding.progressBar.isVisible = it.loading
+                if (it.error) {
+                    Toast.makeText(
+                        requireContext(),
+                        requireContext().getString(R.string.incorrect_login_or_password),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
 
             authViewModel.data.observe(viewLifecycleOwner) {
                 if (authViewModel.authenticated) {
@@ -60,6 +63,6 @@ class FragmentSignIn : Fragment() {
             findNavController().navigate(R.id.action_fragmentSignIn_to_fragmentSignUp)
         }
 
-       return binding.root
+        return binding.root
     }
 }

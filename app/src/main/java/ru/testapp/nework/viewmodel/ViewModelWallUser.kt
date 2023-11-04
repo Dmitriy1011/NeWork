@@ -1,5 +1,7 @@
 package ru.testapp.nework.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.repository.RepositoryWallUser
+import ru.testapp.nework.state.StateWallUserPosts
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,17 +38,18 @@ class ViewModelWallUser @Inject constructor(
                 }
             }
 
+    private val _wallUserPostsState = MutableLiveData(StateWallUserPosts())
+    val wallUserPostsState: LiveData<StateWallUserPosts>
+        get() = _wallUserPostsState
 
-    init {
-        loadUserWallPosts()
-    }
-
-    fun loadUserWallPosts() {
+    fun loadUserWallPosts(authorId: Long) {
         viewModelScope.launch {
+            _wallUserPostsState.value = StateWallUserPosts(loading = true)
             try {
-                repository.getAllFromUsersWall()
+                repository.getAllFromUsersWall(authorId)
+                _wallUserPostsState.value = StateWallUserPosts()
             } catch (e: Exception) {
-                e.printStackTrace()
+                _wallUserPostsState.value = StateWallUserPosts(error = true)
             }
         }
     }

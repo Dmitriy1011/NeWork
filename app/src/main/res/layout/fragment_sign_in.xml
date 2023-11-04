@@ -23,6 +23,7 @@
             android:hint="Login">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/loginTextFieldInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#E6E0E9"/>
@@ -43,9 +44,9 @@
             app:helperTextTextAppearance="?attr/textAppearanceCaption">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordTextFieldInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:background="#E6E0E9"/>
 
         </com.google.android.material.textfield.TextInputLayout>

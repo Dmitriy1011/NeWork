@@ -1,31 +1,24 @@
 package ru.testapp.nework.activity.wall
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputLayout
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.FragmentJobCreateBinding
 import ru.testapp.nework.utils.HideKeyBoardUtil
-
 import ru.testapp.nework.viewmodel.ViewModelJobs
 
 @AndroidEntryPoint
 class FragmentJobCreate : Fragment() {
 
     private val viewModel: ViewModelJobs by viewModels()
-
-    private lateinit var dialog: Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +28,13 @@ class FragmentJobCreate : Fragment() {
         val binding = FragmentJobCreateBinding.inflate(inflater, container, false)
 
         binding.buttonCreateJob.setOnClickListener {
+            viewModel.changeContent(
+                binding.jobCreateNameFieldInput.text.toString(),
+                binding.jobCreatePositionFieldInput.text.toString(),
+                binding.jobCreateLinkFieldInput.text.toString(),
+                binding.startDataText.text.toString(),
+                binding.finishDataText.text.toString()
+            )
             viewModel.saveJob()
             HideKeyBoardUtil.hideKeyBoard(requireView())
         }
@@ -44,21 +44,7 @@ class FragmentJobCreate : Fragment() {
             findNavController().navigateUp()
         }
 
-        dialog = Dialog(requireContext())
-
-        binding.dateLayout.setOnClickListener {
-            dialog.setContentView(R.layout.card_enter_dates)
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.setCancelable(true)
-
-            dialog.show()
-        }
-
-//        val startDate = dialog.findViewById<TextInputLayout>(R.id.selectStartDate)
-//        val endDate = dialog.findViewById<TextInputLayout>(R.id.selectEndDate)
-//
-//        binding.startDataText.text = startDate.toString()
-//        binding.finishDataText.text = endDate.toString()
+        val dialog = FragmentEnterDate()
 
         viewModel.startDateState.observe(viewLifecycleOwner) {
             binding.startDataText.text = it
@@ -68,6 +54,9 @@ class FragmentJobCreate : Fragment() {
             binding.finishDataText.text = it
         }
 
+        binding.dateLayout.setOnClickListener {
+            dialog.show(requireActivity().supportFragmentManager, "FragmentEnterDate")
+        }
         return binding.root
     }
 }

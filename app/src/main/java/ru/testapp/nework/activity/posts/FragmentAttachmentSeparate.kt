@@ -11,7 +11,6 @@ import ru.testapp.nework.R
 import ru.testapp.nework.activity.posts.FragmentPostsFeed.Companion.textArg
 import ru.testapp.nework.databinding.FragmentImageSeparateBinding
 import ru.testapp.nework.handler.loadAttachmentImage
-import ru.testapp.nework.utils.SeparateIdPostArg
 
 @AndroidEntryPoint
 class FragmentAttachmentSeparate : Fragment() {
@@ -19,7 +18,7 @@ class FragmentAttachmentSeparate : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentImageSeparateBinding.inflate(inflater, container, false)
 
         arguments?.textArg?.let(binding.separateImage::loadAttachmentImage)

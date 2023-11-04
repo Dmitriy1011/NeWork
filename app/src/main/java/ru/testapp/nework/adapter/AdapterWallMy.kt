@@ -7,7 +7,6 @@ import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardPostBinding
 import ru.testapp.nework.dto.Post

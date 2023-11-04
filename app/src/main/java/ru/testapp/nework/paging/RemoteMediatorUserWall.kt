@@ -20,8 +20,7 @@ class RemoteMediatorUserWall(
     private val keyDao: DaoRemoteKeyWallUsers,
 ) : RemoteMediator<Int, PostEntity>() {
 
-    lateinit var post: Post
-
+    val post: Post? = null
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PostEntity>
@@ -29,7 +28,7 @@ class RemoteMediatorUserWall(
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> apiServiceWallUser.getLatestFromUserWall(
-                    post.authorId,
+                    post?.authorId!!,
                     state.config.pageSize
                 )
 
@@ -37,7 +36,7 @@ class RemoteMediatorUserWall(
                 LoadType.APPEND -> {
                     val id = keyDao.max() ?: return RemoteMediator.MediatorResult.Success(false)
                     apiServiceWallUser.getAfterFromUserWall(
-                        post.authorId,
+                        post?.authorId!!,
                         id,
                         state.config.pageSize
                     )

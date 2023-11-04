@@ -1,13 +1,10 @@
 package ru.testapp.nework.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import ru.testapp.nework.auth.AppAuth
-import ru.testapp.nework.dto.PhotoModel
 import javax.inject.Inject
 
 @HiltViewModel

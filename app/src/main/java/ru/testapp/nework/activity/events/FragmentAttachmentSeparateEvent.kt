@@ -8,16 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.testapp.nework.R
 import ru.testapp.nework.activity.posts.FragmentPostsFeed.Companion.textArg
-import ru.testapp.nework.databinding.FragmentImageSeparateBinding
 import ru.testapp.nework.databinding.FragmentImageSeparateEventBinding
 import ru.testapp.nework.handler.loadAttachmentImage
 
-class FragmentAttachmentSeparateEvent  : Fragment() {
+class FragmentAttachmentSeparateEvent : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentImageSeparateEventBinding.inflate(inflater, container, false)
 
         arguments?.textArg?.let(binding.separateImage::loadAttachmentImage)

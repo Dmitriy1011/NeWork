@@ -91,4 +91,11 @@
     <string name="event_likers_empty_text">Это событие пока ещё никому не нравится, но всё ещё впереди ;)</string>
     <string name="here_will_be_your_jobs">Here will be your jobs</string>
     <string name="clear">Clear</string>
+    <string name="online_type_status">Online</string>
+    <string name="offline_type_status">Offline</string>
+    <string name="incorrect_login_or_password">Incorrect login or password</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="startdate">StartDate</string>
+    <string name="enddate">EndDate</string>
+    <string name="write_your_text_here">Write your text here</string>
 </resources>

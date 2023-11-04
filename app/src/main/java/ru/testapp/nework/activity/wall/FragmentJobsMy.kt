@@ -6,13 +6,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterJobs
 import ru.testapp.nework.adapter.OnIteractionListenerJobs
 import ru.testapp.nework.databinding.FragmentJobsMyBinding
@@ -50,9 +54,30 @@ class FragmentJobsMy : Fragment() {
                 viewModel.jobDataMy.observe(viewLifecycleOwner) { modelJobMy ->
                     if (modelJobMy.jobsMy.isEmpty()) {
                         binding.myJobsEmptyText.visibility = View.VISIBLE
+                    } else {
+                        adapter.submitList(modelJobMy.jobsMy)
                     }
-                    adapter.submitList(modelJobMy.jobsMy)
                 }
+            }
+        }
+
+        viewModel.loadingJobMyState.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.loadingJobMyState.observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = it.refreshing || it.loading
+            binding.progressBar.isVisible = it.loading
+            if (it.error) {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.something_went_wrong_try_again),
+                    Snackbar.LENGTH_LONG
+                ).setAction(
+                    getString(R.string.retry)
+                ) {
+                    viewModel.loadJobsMy()
+                }.show()
             }
         }
 

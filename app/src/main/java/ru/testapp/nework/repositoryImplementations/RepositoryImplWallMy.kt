@@ -41,7 +41,7 @@ class RepositoryImplWallMy @Inject constructor(
         it.map(PostEntity::toDto)
     }
 
-    override suspend fun getAllFromMyWall(): List<Post>{
+    override suspend fun getAllFromMyWall(): List<Post> {
         try {
             val response = apiServiceWallMy.getAllFromMyWall()
 

@@ -123,7 +123,7 @@ class FragmentEvents : Fragment() {
                     }
                 )
             }
-        })
+        }, requireContext())
 
         binding.eventsList.adapter = adapter
 

@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="start|top"
+                android:hint="@string/write_your_text_here"
                 android:inputType="textMultiLine"
                 tools:text="@tools:sample/lorem[70]" />
 

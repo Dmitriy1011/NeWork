@@ -8,16 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardMentionedUserBinding
-import ru.testapp.nework.databinding.CardUserBinding
-import ru.testapp.nework.dto.Post
 import ru.testapp.nework.dto.User
 import ru.testapp.nework.handler.loadAvatarImage
 
 
-class AdapterChooseUsers : ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
+class AdapterChooseUsers :
+    ListAdapter<User, AdapterChooseUsers.UserChooseViewHolder>(UserChooseDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserChooseViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -32,11 +30,12 @@ class AdapterChooseUsers : ListAdapter<User, AdapterChooseUsers.UserChooseViewHo
 
     override fun onBindViewHolder(holder: UserChooseViewHolder, position: Int) {
         holder.bind(getItem(position))
-        holder.itemView.findViewById<CheckBox>(R.id.mentionedUserCheckBox).setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                _mentionedList.value = getItemId(position).toInt()
+        holder.itemView.findViewById<CheckBox>(R.id.mentionedUserCheckBox)
+            .setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    _mentionedList.value = getItemId(position).toInt()
+                }
             }
-        }
     }
 
     class UserChooseViewHolder(

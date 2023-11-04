@@ -68,8 +68,13 @@ class FragmentCreateAndEditPost : Fragment() {
             findNavController().navigateUp()
         }
 
+
         binding.clearPreview.setOnClickListener {
-            viewModel.clearPhoto()
+            viewModel.photoState.observe(viewLifecycleOwner) { photoModel ->
+                if (photoModel != null) {
+                    viewModel.clearPhoto()
+                }
+            }
         }
 
         val pickPhotoLauncher =
@@ -90,13 +95,13 @@ class FragmentCreateAndEditPost : Fragment() {
 
         viewModel.photoState.observe(viewLifecycleOwner) { photoModel ->
             if (photoModel == null) {
-                binding.previewImage.isGone = true
-                binding.clearPreview.isGone = true
+                binding.previewImage.visibility = View.GONE
+                binding.clearPreview.visibility = View.GONE
                 return@observe
             }
 
-            binding.clearPreview.isVisible = true
-            binding.previewImage.isVisible = true
+            binding.clearPreview.visibility = View.VISIBLE
+            binding.previewImage.visibility = View.VISIBLE
             binding.previewImage.setImageURI(photoModel.uri)
         }
 
