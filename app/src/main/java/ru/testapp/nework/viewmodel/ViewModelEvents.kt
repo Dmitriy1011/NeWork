@@ -22,6 +22,8 @@ import ru.testapp.nework.dto.PhotoModel
 import ru.testapp.nework.models.ModelEvent
 import ru.testapp.nework.repository.RepositoryEvents
 import ru.testapp.nework.state.StateEventModel
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 
 private val emptyEvent = Event(
@@ -181,15 +183,24 @@ class ViewModelEvents @Inject constructor(
         edited.value = event
     }
 
-    fun changeContent(content: String, date: String, eventType: String) {
+
+    private val serverDateFormat = DateTimeFormatter.ISO_DATE
+    private val localDateFormat = DateTimeFormatter.ofPattern("MM.dd.yyyy HH:mm", Locale.US)
+
+    fun changeContent(content: String, dateTime: String, eventType: String) {
         val text = content.trim()
-        val date = date.trim()
         val type = eventType.trim()
+
         if (edited.value?.content == text) {
             return
         }
+
         edited.value =
-            edited.value?.copy(content = text, datetime = date, type = eventType)
+            edited.value?.copy(
+                content = text,
+                datetime = serverDateFormat.format(localDateFormat.parse(dateTime.trim())),
+                type = eventType
+            )
     }
 
     fun removeEvent(id: Long) {

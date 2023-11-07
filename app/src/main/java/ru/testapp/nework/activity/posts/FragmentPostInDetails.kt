@@ -40,7 +40,7 @@ class FragmentPostInDetails : Fragment() {
     private val viewModel: ViewModelUsers by viewModels()
     private val viewModelPosts: ViewModelPost by viewModels()
 
-    private var mapView: MapView? = null
+    private var mapView: MapView = MapView(requireContext())
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -17,6 +17,7 @@ import ru.testapp.nework.models.ModelJobUser
 import ru.testapp.nework.repository.RepositoryJobs
 import ru.testapp.nework.state.StateJobMy
 import ru.testapp.nework.state.StateJobUser
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 private val emptyJob = Job(
@@ -119,6 +120,8 @@ class ViewModelJobs @Inject constructor(
                 try {
                     repositoryJobs.saveJob(it)
                     _loadingJobMyState.value = StateJobMy()
+                    jobCreated.postValue(Unit)
+                    edited.value = emptyJob
                 } catch (e: Exception) {
                     _loadingJobMyState.value = StateJobMy(error = true)
                 }
@@ -127,12 +130,32 @@ class ViewModelJobs @Inject constructor(
         edited.value = emptyJob
     }
 
-    fun changeContent(nameArg: String, positionArg: String, link: String?, dateStart: String, dateFinish: String?) {
+    private val serverDateFormat = DateTimeFormatter.ISO_DATE
+    private val localDateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
+    fun changeContent(
+        nameArg: String,
+        positionArg: String,
+        link: String?,
+        dateStart: String,
+        dateFinish: String?
+    ) {
         val name = nameArg.trim()
         val position = positionArg.trim()
         val link = link?.trim()
-        val dateStart = dateStart.trim()
-        val dateFinish = dateFinish?.trim()
+        val start = dateStart.trim()
+        val finish = dateFinish?.trim()
+
+        edited.value =
+            edited.value?.copy(
+                name = nameArg.trim(),
+                position = positionArg.trim(),
+                link = link?.trim()?.takeIf { it.isNotBlank() },
+                start = serverDateFormat.format(localDateFormat.parse(dateStart.trim())),
+                finish = dateFinish?.trim()?.let {
+                    serverDateFormat.format(localDateFormat.parse(it))
+                }
+            )
 
         if (edited.value?.name == name && edited.value?.position == position) {
             return

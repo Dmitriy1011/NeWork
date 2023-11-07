@@ -53,7 +53,7 @@ class FragmentCreateAndEditPost : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.saveNewPost -> {
-                        viewModel.changeContent(binding.editText.toString())
+                        viewModel.changeContent(binding.editText.text?.toString().orEmpty())
                         viewModel.savePost()
                         HideKeyBoardUtil.hideKeyBoard(requireView())
                         true

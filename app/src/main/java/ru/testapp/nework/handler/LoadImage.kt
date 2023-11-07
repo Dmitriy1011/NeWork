@@ -10,6 +10,7 @@ fun ImageView.loadImage(url: String) {
         .load(url)
         .placeholder(R.drawable.baseline_crop_original_24)
         .transition(DrawableTransitionOptions.withCrossFade())
+        .centerCrop()
         .error(R.drawable.baseline_error_outline_24)
         .into(this)
 }

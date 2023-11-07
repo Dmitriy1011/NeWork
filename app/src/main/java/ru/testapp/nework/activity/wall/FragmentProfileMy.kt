@@ -28,13 +28,22 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_profile_my, menu)
+                if (appAuth.authStateFlow.value.token != null) {
+                    menuInflater.inflate(R.menu.menu_profile_my, menu)
+                } else {
+                    menuInflater.inflate(R.menu.menu_profile_my_authorize, menu)
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
                 when (menuItem.itemId) {
                     R.id.logout -> {
                         appAuth.removeAuth()
+                        true
+                    }
+
+                    R.id.loginFromMyProfile -> {
+                        findNavController().navigate(R.id.action_fragmentProfileMy_to_fragmentSignIn)
                         true
                     }
 

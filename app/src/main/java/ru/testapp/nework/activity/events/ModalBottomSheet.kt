@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,21 +25,23 @@ class ModalBottomSheet(
 
         binding.radioButtonOnline.isChecked = true
 
-        viewModel.eventTypesState.observe(viewLifecycleOwner) {
-            binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
-                when (checkedId) {
-                    binding.radioButtonOnline.id -> viewModel.editType(binding.radioButtonOnline.text.toString())
-                    binding.radioButtonOffline.id -> viewModel.editType(binding.radioButtonOffline.text.toString())
-                }
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                binding.radioButtonOnline.id -> viewModel.editType(binding.radioButtonOnline.text.toString())
+                binding.radioButtonOffline.id -> viewModel.editType(binding.radioButtonOffline.text.toString())
             }
         }
 
         viewModel.dateTimeState.observe(viewLifecycleOwner) {
-            viewModel.editDateTime(binding.dateField.toString())
+            requireNotNull(binding.dateField.editText).doAfterTextChanged {
+                viewModel.editDateTime(it?.toString().orEmpty())
+            }
         }
+
 
         return binding.root
     }
+
     companion object {
         const val TAG = "ModalBottomSheet"
     }

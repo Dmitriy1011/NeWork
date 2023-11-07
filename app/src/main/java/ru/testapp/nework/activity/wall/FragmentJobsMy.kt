@@ -19,14 +19,20 @@ import kotlinx.coroutines.launch
 import ru.testapp.nework.R
 import ru.testapp.nework.adapter.AdapterJobs
 import ru.testapp.nework.adapter.OnIteractionListenerJobs
+import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentJobsMyBinding
 import ru.testapp.nework.dto.Job
+import ru.testapp.nework.viewmodel.ViewModelAuth
 import ru.testapp.nework.viewmodel.ViewModelJobs
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentJobsMy : Fragment() {
 
     private val viewModel: ViewModelJobs by viewModels()
+
+    @Inject
+    lateinit var appAuth: AppAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,22 +58,30 @@ class FragmentJobsMy : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.jobDataMy.observe(viewLifecycleOwner) { modelJobMy ->
-                    if (modelJobMy.jobsMy.isEmpty()) {
-                        binding.myJobsEmptyText.visibility = View.VISIBLE
-                    } else {
-                        adapter.submitList(modelJobMy.jobsMy)
-                    }
+                        if (appAuth.authStateFlow.value.token == null) {
+                            binding.myJobsEmptyTextWithoutAuth.visibility = View.VISIBLE
+                            binding.myJobsEmptyText.visibility = View.GONE
+                            binding.errorGroup.visibility = View.GONE
+                        } else if (modelJobMy.jobsMy.isEmpty() && appAuth.authStateFlow.value.token != null) {
+                            binding.myJobsEmptyText.visibility = View.VISIBLE
+                            binding.profileMyJobsList.visibility = View.GONE
+                        } else {
+                            adapter.submitList(modelJobMy.jobsMy)
+                        }
                 }
             }
         }
 
         viewModel.loadingJobMyState.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+            if (it.error) {
+                Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+            }
         }
 
         viewModel.loadingJobMyState.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = it.refreshing || it.loading
             binding.progressBar.isVisible = it.loading
+            binding.errorGroup.isVisible = it.error
             if (it.error) {
                 Snackbar.make(
                     binding.root,
@@ -79,6 +93,10 @@ class FragmentJobsMy : Fragment() {
                     viewModel.loadJobsMy()
                 }.show()
             }
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.loadJobsMy()
         }
 
         return binding.root

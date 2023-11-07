@@ -26,6 +26,10 @@ class ViewModelSignUp @Inject constructor(
         _registerImageState.value = media
     }
 
+    fun clearPhoto() {
+        _registerImageState.value = null
+    }
+
     fun saveRegisteredUser(login: String, password: String, name: String, file: File) {
         viewModelScope.launch {
             try {

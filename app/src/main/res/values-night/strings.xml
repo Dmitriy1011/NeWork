@@ -98,4 +98,8 @@
     <string name="startdate">StartDate</string>
     <string name="enddate">EndDate</string>
     <string name="write_your_text_here">Write your text here</string>
+    <string name="date_time_error_text">Введите дату в правильном формате</string>
+    <string name="empty_job_text_without_auth">Авторизируйтесь, чтобы видеть список работа</string>
+    <string name="come_into_account">Войти</string>
+    <string name="save_photo">Save photo</string>
 </resources>

@@ -4,7 +4,7 @@
     <string name="published_date">Published date</string>
     <string name="postTextContent">Шляпа — это головной убор, который носили в Древней Греции. В наше время шляпы носят для защиты от солнца или просто для красоты.</string>
     <string name="events">Events</string>
-    <string name="posts">Posts\t\t\t\t\t\t\t</string>
+    <string name="posts">Posts</string>
     <string name="users">Users</string>
     <string name="logout">logout</string>
     <string name="signin">SignIn</string>
@@ -101,4 +101,8 @@
     <string name="startdate">StartDate</string>
     <string name="enddate">EndDate</string>
     <string name="write_your_text_here">Write your text here</string>
+    <string name="date_time_error_text">Введите дату в правильном формате</string>
+    <string name="empty_job_text_without_auth">Авторизируйтесь, чтобы видеть список работа</string>
+    <string name="come_into_account">Войти</string>
+    <string name="save_photo">Save photo</string>
 </resources>

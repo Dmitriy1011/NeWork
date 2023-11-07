@@ -19,6 +19,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
@@ -51,12 +52,13 @@ class FragmentCreateAndEditEvent : Fragment() {
                 when (menuItem.itemId) {
                     R.id.saveNewEvent -> {
                         viewModel.changeContent(
-                            binding.eventEditText.toString(),
-                            binding.displayEventDateTextButton.text.toString(),
-                            binding.displayEventTypeButton.text.toString()
+                            binding.eventEditText.text?.toString().orEmpty(),
+                            binding.displayEventDateTextButton.text?.toString().orEmpty(),
+                            binding.displayEventTypeButton.text?.toString().orEmpty()
                         )
                         viewModel.saveEvent()
                         HideKeyBoardUtil.hideKeyBoard(requireView())
+                        findNavController().navigate(R.id.action_fragmentCreateAndEditEvent_to_fragmentEvents)
                         true
                     }
 

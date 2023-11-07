@@ -3,9 +3,10 @@ package ru.testapp.nework.activity.wall
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
 import ru.testapp.nework.databinding.CardEnterDatesBinding
@@ -19,7 +20,7 @@ class FragmentEnterDate : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
 
-            val builder = AlertDialog.Builder(it)
+            val builder = MaterialAlertDialogBuilder(it)
             val binding = CardEnterDatesBinding.inflate(layoutInflater)
 
             builder
@@ -30,11 +31,23 @@ class FragmentEnterDate : DialogFragment() {
                     )
                     binding.apply {
                         okButton.setOnClickListener {
-                            val startDate = binding.selectStartDateInput.text.toString()
-                            val endDate = binding.selectEndDateInput.text.toString()
+                            val startDate = binding.selectStartDateInput.text?.toString().orEmpty()
+                            val endDate = binding.selectEndDateInput.text?.toString().orEmpty()
 
-                            viewModel.editStartDate(startDate)
-                            viewModel.editEndDate(endDate)
+
+                            parentFragment?.viewLifecycleOwnerLiveData?.value?.let { lifecycleOwner ->
+                                viewModel.startDateState.observe(lifecycleOwner) {
+                                    requireNotNull(binding.selectStartDate.editText).doAfterTextChanged { item ->
+                                        viewModel.editStartDate(item?.toString().orEmpty())
+                                    }
+                                }
+
+                                viewModel.endDateState.observe(lifecycleOwner) {
+                                    requireNotNull(binding.selectEndDate.editText).doAfterTextChanged { item ->
+                                        viewModel.editEndDate(item?.toString().orEmpty())
+                                    }
+                                }
+                            }
 
                             binding.progressBar.visibility = View.VISIBLE
 
