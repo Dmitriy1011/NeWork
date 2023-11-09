@@ -32,12 +32,9 @@ class ModalBottomSheet(
             }
         }
 
-        viewModel.dateTimeState.observe(viewLifecycleOwner) {
-            requireNotNull(binding.dateField.editText).doAfterTextChanged {
-                viewModel.editDateTime(it?.toString().orEmpty())
-            }
+        requireNotNull(binding.dateField.editText).doAfterTextChanged {
+            viewModel.editDateTime(it?.toString().orEmpty())
         }
-
 
         return binding.root
     }

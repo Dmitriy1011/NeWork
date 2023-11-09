@@ -1,5 +1,6 @@
 package ru.testapp.nework.activity.wall
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -7,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +18,7 @@ import ru.testapp.nework.R
 import ru.testapp.nework.adapter.ViewPagerAdapter
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentProfileMyBinding
+import ru.testapp.nework.viewmodel.ViewModelSignUp
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,6 +26,7 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
     @Inject
     lateinit var appAuth: AppAuth
 
+    private val viewModelSignUp: ViewModelSignUp by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val binding = FragmentProfileMyBinding.bind(view)
 
@@ -89,6 +93,12 @@ class FragmentProfileMy : Fragment(R.layout.fragment_profile_my) {
             ) {
                 findNavController().navigate(R.id.action_fragmentProfileMy_to_fragmentSignIn)
             }.show()
+        }
+
+        viewModelSignUp.registerImageState.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.profileMyImage.setImageURI(Uri.parse(it.file.toString()))
+            }
         }
     }
 }

@@ -46,12 +46,12 @@ class FragmentJobCreate : Fragment() {
 
         val dialog = FragmentEnterDate()
 
-        viewModel.startDateState.observe(viewLifecycleOwner) {
-            binding.startDataText.text = it
+        viewModel.startDateState.observe(viewLifecycleOwner) { startDate ->
+            binding.startDataText.text = startDate
         }
 
-        viewModel.endDateState.observe(viewLifecycleOwner) {
-            binding.finishDataText.text = it
+        viewModel.endDateState.observe(viewLifecycleOwner) { endDate ->
+            binding.finishDataText.text = endDate
         }
 
         binding.dateLayout.setOnClickListener {

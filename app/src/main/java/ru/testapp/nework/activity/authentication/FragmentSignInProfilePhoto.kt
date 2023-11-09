@@ -45,6 +45,7 @@ class FragmentSignInProfilePhoto : Fragment() {
                         findNavController().navigateUp()
                         true
                     }
+
                     else -> false
                 }
         })
@@ -72,13 +73,14 @@ class FragmentSignInProfilePhoto : Fragment() {
             binding.signInProfilePhoto.setImageURI(Uri.parse(media.file.toString()))
         }
 
-        binding.clearPhoto.setOnClickListener {
-            signUpViewModel.registerImageState.observe(viewLifecycleOwner) { media ->
+        signUpViewModel.registerImageState.observe(viewLifecycleOwner) { media ->
+            binding.clearPhoto.setOnClickListener {
                 if (media != null) {
                     signUpViewModel.clearPhoto()
                 }
             }
         }
+
 
         binding.cameraAddPhoto.setOnClickListener {
             ImagePicker.with(this)

@@ -1,5 +1,6 @@
 package ru.testapp.nework.activity.authentication
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +42,7 @@ class FragmentSignUp : Fragment() {
             signUpViewModel.registerImageState.observe(viewLifecycleOwner) { media ->
                 if (media != null) {
                     viewModel.saveRegisteredUser(login, pass, name, media.file)
+                    binding.signInProfilePhoto.setImageURI(Uri.parse(media.toString()))
                 }
                 viewModel.saveRegisterUserWithoutAvatar(login, pass, name)
             }

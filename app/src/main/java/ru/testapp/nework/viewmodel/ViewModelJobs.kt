@@ -47,12 +47,12 @@ class ViewModelJobs @Inject constructor(
         get() = _jobCreated
 
 
-    private val _startDateState = MutableLiveData<String>()
-    val startDateState: LiveData<String>
+    private val _startDateState = MutableLiveData<String?>()
+    val startDateState: LiveData<String?>
         get() = _startDateState
 
-    private val _endDateState = MutableLiveData<String>()
-    val endDateState: LiveData<String>
+    private val _endDateState = MutableLiveData<String?>()
+    val endDateState: LiveData<String?>
         get() = _endDateState
 
 
@@ -66,12 +66,12 @@ class ViewModelJobs @Inject constructor(
     }
 
 
-    fun editStartDate(date: String) {
-        _startDateState.value = date
+    fun editStartDate(startDate: String) {
+        _startDateState.value = startDate
     }
 
-    fun editEndDate(date: String) {
-        _endDateState.value = date
+    fun editEndDate(endDate: String) {
+        _endDateState.value = endDate
     }
 
     private val _loadingJobMyState = MutableLiveData(StateJobMy())

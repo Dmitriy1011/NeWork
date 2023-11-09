@@ -102,4 +102,5 @@
     <string name="empty_job_text_without_auth">Авторизируйтесь, чтобы видеть список работа</string>
     <string name="come_into_account">Войти</string>
     <string name="save_photo">Save photo</string>
+    <string name="profile_photo">Profile photo</string>
 </resources>

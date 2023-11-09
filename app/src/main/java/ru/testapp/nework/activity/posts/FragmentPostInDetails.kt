@@ -40,7 +40,7 @@ class FragmentPostInDetails : Fragment() {
     private val viewModel: ViewModelUsers by viewModels()
     private val viewModelPosts: ViewModelPost by viewModels()
 
-    private var mapView: MapView = MapView(requireContext())
+    private var mapView: MapView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +48,8 @@ class FragmentPostInDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentPostInDetailsBinding.inflate(inflater, container, false)
+
+        mapView = binding.cardPostInDetails.postInDetailsMapView
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -191,15 +193,15 @@ class FragmentPostInDetails : Fragment() {
                     }
 
                     if (post.coordinates == null) {
-                        mapView?.findViewById<MapView>(R.id.postInDetailsMapView)?.onStop()
+                        mapView?.onStop()
                         return@observe
                     }
 
-                    mapView?.findViewById<MapView>(R.id.postInDetailsMapView)?.isVisible =
+                    mapView?.isVisible =
                         true
 
                     MapKitFactory.initialize(requireContext())
-                    mapView?.findViewById<MapView>(R.id.postInDetailsMapView)
+                    mapView
 
                     val latitude = post.coordinates.latitude.toDouble()
                     val longitude = post.coordinates.longitude.toDouble()
