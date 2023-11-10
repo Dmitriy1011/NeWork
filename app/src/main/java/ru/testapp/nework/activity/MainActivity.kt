@@ -31,17 +31,17 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         navController = navHostFragment.navController
 
+        val toolbar = binding.toolbar
+
         setSupportActionBar(toolbar)
         setupActionBarWithNavController(navController)
 
-        val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
+        val navView: BottomNavigationView = binding.bottomNav
 
         val bottomAppBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(

@@ -504,7 +504,7 @@
             app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <dialog
-        android:id="@+id/fargmentEnterDate"
-        android:name="ru.testapp.nework.activity.wall.FargmentEnterDate"
-        android:label="FargmentEnterDate" />
+        android:id="@+id/fragmentEnterDate"
+        android:name="ru.testapp.nework.activity.wall.FragmentEnterDate"
+        android:label="FragmentEnterDate" />
 </navigation>
