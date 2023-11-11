@@ -103,4 +103,7 @@
     <string name="come_into_account">Войти</string>
     <string name="save_photo">Save photo</string>
     <string name="profile_photo">Profile photo</string>
+    <string name="pass_do_not_match">Пароли не совпадают</string>
+    <string name="registration_error">Произошла ошибка при регистрации. Попробуйте ещё раз</string>
+    <string name="incorrect_data">Неверный логин или пароль</string>
 </resources>

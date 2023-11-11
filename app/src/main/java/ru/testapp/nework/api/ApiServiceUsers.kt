@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -19,12 +20,12 @@ interface ApiServiceUsers {
     @GET("/api/users/{user_id}/")
     suspend fun getUserById(@Path("user_id") id: Long): Response<User>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("/api/users/registration/")
     suspend fun registerUser(
-        @Part("login") login: RequestBody,
-        @Part("password") password: RequestBody,
-        @Part("name") name: RequestBody,
+        @Part("login") login: MultipartBody.Part,
+        @Part("password") password: MultipartBody.Part,
+        @Part("name") name: MultipartBody.Part,
         @Part media: MultipartBody.Part
     ): Response<Token>
 

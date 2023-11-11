@@ -55,6 +55,8 @@ class FragmentSignIn : Fragment() {
             authViewModel.data.observe(viewLifecycleOwner) {
                 if (authViewModel.authenticated) {
                     findNavController().navigateUp()
+                } else {
+                    binding.passwordTextField.isHelperTextEnabled = true
                 }
             }
         }

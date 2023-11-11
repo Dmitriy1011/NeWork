@@ -1,6 +1,6 @@
 package ru.testapp.nework.modules
 
-import com.google.firebase.BuildConfig
+import ru.testapp.nework.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +31,6 @@ class ModuleApi {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
-
 
     @Singleton
     @Provides

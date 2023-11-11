@@ -39,7 +39,7 @@
             android:hint="Password"
             app:endIconCheckable="false"
             app:helperText="Password cannot be empty"
-            app:helperTextEnabled="true"
+            app:helperTextEnabled="false"
             app:helperTextTextColor="#B3261E"
             app:helperTextTextAppearance="?attr/textAppearanceCaption">
 

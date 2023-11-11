@@ -24,7 +24,7 @@ import ru.testapp.nework.dto.MediaUpload
 import ru.testapp.nework.viewmodel.ViewModelSignUp
 
 @AndroidEntryPoint
-class FragmentSignInProfilePhoto : Fragment() {
+class FragmentSignUpProfilePhoto : Fragment() {
 
     private val signUpViewModel: ViewModelSignUp by activityViewModels()
     override fun onCreateView(
@@ -48,7 +48,7 @@ class FragmentSignInProfilePhoto : Fragment() {
 
                     else -> false
                 }
-        })
+        }, viewLifecycleOwner)
 
         val pickPhotoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -73,13 +73,14 @@ class FragmentSignInProfilePhoto : Fragment() {
             binding.signInProfilePhoto.setImageURI(Uri.parse(media.file.toString()))
         }
 
-        signUpViewModel.registerImageState.observe(viewLifecycleOwner) { media ->
-            binding.clearPhoto.setOnClickListener {
-                if (media != null) {
-                    signUpViewModel.clearPhoto()
-                }
+        val mediaValue = signUpViewModel.registerImageState.value
+
+        binding.clearPhoto.setOnClickListener {
+            if (mediaValue != null) {
+                signUpViewModel.clearPhoto()
             }
         }
+
 
 
         binding.cameraAddPhoto.setOnClickListener {

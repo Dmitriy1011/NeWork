@@ -19,8 +19,6 @@ import javax.inject.Inject
 class ViewModelSignIn @Inject constructor(
     private val repository: RepositoryUsers
 ) : ViewModel() {
-
-
     private val _wrongDataErrorState = MutableLiveData<StateAuth>()
     val wrongDataErrorState: LiveData<StateAuth>
         get() = _wrongDataErrorState

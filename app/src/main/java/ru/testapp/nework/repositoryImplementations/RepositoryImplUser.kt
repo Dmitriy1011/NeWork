@@ -91,17 +91,14 @@ class RepositoryImplUser @Inject constructor(
         file: File
     ) {
 
+        val response = apiService.registerUser(
+            MultipartBody.Part.createFormData("login", login),
+            MultipartBody.Part.createFormData("password", password),
+            MultipartBody.Part.createFormData("name", name),
+            MultipartBody.Part.createFormData("file", file.name, file.asRequestBody())
+        )
+
         try {
-            val formData = MultipartBody.Part.createFormData(
-                "file", file.name, file.asRequestBody()
-            )
-
-            val userLogin = login.toRequestBody("text/plain".toMediaType())
-            val userPassword = password.toRequestBody("text/plain".toMediaType())
-            val userName = name.toRequestBody("text/plain".toMediaType())
-
-            val response = apiService.registerUser(userLogin, userPassword, userName, formData)
-
             if (!response.isSuccessful) {
                 throw RuntimeException(response.message())
             }

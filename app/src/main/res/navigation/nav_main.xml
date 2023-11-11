@@ -493,7 +493,7 @@
         android:label="FragmentJobsMy" />
     <fragment
         android:id="@+id/fragmentSignInProfilePhoto"
-        android:name="ru.testapp.nework.activity.authentication.FragmentSignInProfilePhoto"
+        android:name="ru.testapp.nework.activity.authentication.FragmentSignUpProfilePhoto"
         android:label="FragmentSignInProfilePhoto" >
         <action
             android:id="@+id/action_fragmentSignInProfilePhoto_to_fragmentSignUp"
