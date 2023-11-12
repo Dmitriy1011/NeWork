@@ -47,6 +47,7 @@
             app:layout_constraintBottom_toBottomOf="@id/startDate"
             app:layout_constraintStart_toEndOf="@id/startDate"
             app:layout_constraintEnd_toStartOf="@id/deleteJobButton"
+            android:singleLine="false"
             android:text="@string/_1_2020"/>
 
         <TextView

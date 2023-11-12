@@ -109,4 +109,5 @@
     <string name="pass_do_not_match">Пароли не совпадают</string>
     <string name="registration_error">Произошла ошибка при регистрации. Попробуйте ещё раз</string>
     <string name="incorrect_data">Неверный логин или пароль</string>
+    <string name="password_cannot_be_empty">Password cannot be empty</string>
 </resources>

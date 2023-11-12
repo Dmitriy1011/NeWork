@@ -39,6 +39,10 @@ class FragmentSignIn : Fragment() {
             val login = binding.loginTextFieldInput.text.toString()
             val pass = binding.passwordTextFieldInput.text.toString()
 
+            if (pass == "") {
+                binding.passwordTextField.isHelperTextEnabled = true
+            }
+
             viewModel.saveIdAndToken(login, pass)
 
             viewModel.wrongDataErrorState.observe(viewLifecycleOwner) {
@@ -55,8 +59,6 @@ class FragmentSignIn : Fragment() {
             authViewModel.data.observe(viewLifecycleOwner) {
                 if (authViewModel.authenticated) {
                     findNavController().navigateUp()
-                } else {
-                    binding.passwordTextField.isHelperTextEnabled = true
                 }
             }
         }
