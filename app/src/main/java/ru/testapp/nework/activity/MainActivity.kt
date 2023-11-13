@@ -60,11 +60,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    fun testChanges() {
-        return
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
