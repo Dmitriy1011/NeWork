@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import ru.netology.nmedia.util.SingleLiveEvent
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.dto.Post
 import ru.testapp.nework.repository.RepositoryWallMy

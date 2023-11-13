@@ -158,7 +158,8 @@ class FragmentEvents : Fragment() {
         }
 
         viewModel.eventSaveError.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), viewModel.eventSaveError.value, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), viewModel.eventSaveError.value, Toast.LENGTH_LONG)
+                .show()
         }
 
         viewModel.eventsState.observe(viewLifecycleOwner) {

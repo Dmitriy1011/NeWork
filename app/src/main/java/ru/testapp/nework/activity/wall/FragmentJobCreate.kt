@@ -1,17 +1,13 @@
 package ru.testapp.nework.activity.wall
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import ru.testapp.nework.R
 import ru.testapp.nework.databinding.FragmentJobCreateBinding
 import ru.testapp.nework.utils.HideKeyBoardUtil
 import ru.testapp.nework.viewmodel.ViewModelJobs

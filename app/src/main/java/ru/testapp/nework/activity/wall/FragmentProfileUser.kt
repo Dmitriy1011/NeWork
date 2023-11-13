@@ -9,12 +9,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import ru.testapp.nework.R
-import ru.testapp.nework.activity.events.FragmentEvents.Companion.eventIdArg
 import ru.testapp.nework.activity.users.FragmentUsers.Companion.userIdArg
 import ru.testapp.nework.adapter.ViewPagerAdapterUser
 import ru.testapp.nework.databinding.FragmentProfileUserBinding
 import ru.testapp.nework.handler.loadImage
-import ru.testapp.nework.utils.UserIdArg
 import ru.testapp.nework.viewmodel.ViewModelJobs
 import ru.testapp.nework.viewmodel.ViewModelUsers
 

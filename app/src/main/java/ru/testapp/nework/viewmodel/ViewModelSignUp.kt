@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.util.SingleLiveEvent
-import ru.testapp.nework.dto.Media
 import ru.testapp.nework.dto.MediaUpload
 import ru.testapp.nework.repository.RepositoryUsers
 import ru.testapp.nework.state.StateRegisterUser
@@ -47,6 +46,7 @@ class ViewModelSignUp @Inject constructor(
             }
         }
     }
+
     fun saveRegisterUserWithoutAvatar(login: String, password: String, name: String) {
         viewModelScope.launch {
             try {

@@ -22,7 +22,6 @@ import ru.testapp.nework.adapter.OnIteractionListenerJobs
 import ru.testapp.nework.auth.AppAuth
 import ru.testapp.nework.databinding.FragmentJobsMyBinding
 import ru.testapp.nework.dto.Job
-import ru.testapp.nework.viewmodel.ViewModelAuth
 import ru.testapp.nework.viewmodel.ViewModelJobs
 import javax.inject.Inject
 
@@ -58,16 +57,16 @@ class FragmentJobsMy : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.jobDataMy.observe(viewLifecycleOwner) { modelJobMy ->
-                        if (appAuth.authStateFlow.value.token == null) {
-                            binding.myJobsEmptyTextWithoutAuth.visibility = View.VISIBLE
-                            binding.myJobsEmptyText.visibility = View.GONE
-                            binding.errorGroup.visibility = View.GONE
-                        } else if (modelJobMy.jobsMy.isEmpty() && appAuth.authStateFlow.value.token != null) {
-                            binding.myJobsEmptyText.visibility = View.VISIBLE
-                            binding.profileMyJobsList.visibility = View.GONE
-                        } else {
-                            adapter.submitList(modelJobMy.jobsMy)
-                        }
+                    if (appAuth.authStateFlow.value.token == null) {
+                        binding.myJobsEmptyTextWithoutAuth.visibility = View.VISIBLE
+                        binding.myJobsEmptyText.visibility = View.GONE
+                        binding.errorGroup.visibility = View.GONE
+                    } else if (modelJobMy.jobsMy.isEmpty() && appAuth.authStateFlow.value.token != null) {
+                        binding.myJobsEmptyText.visibility = View.VISIBLE
+                        binding.profileMyJobsList.visibility = View.GONE
+                    } else {
+                        adapter.submitList(modelJobMy.jobsMy)
+                    }
                 }
             }
         }

@@ -1,6 +1,5 @@
 package ru.testapp.nework.modules
 
-import ru.testapp.nework.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import ru.testapp.nework.BuildConfig
 import ru.testapp.nework.api.ApiServiceEvents
 import ru.testapp.nework.api.ApiServiceJobs
 import ru.testapp.nework.api.ApiServicePosts
