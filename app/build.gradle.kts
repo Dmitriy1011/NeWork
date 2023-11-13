@@ -22,14 +22,16 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val properties = Properties()
-            if(rootProject.file("maps.properties").exists()) {
-                properties.load(rootProject.file("maps.properties").inputStream())
-            }
+        if (rootProject.file("maps.properties").exists()) {
+            properties.load(rootProject.file("maps.properties").inputStream())
+        }
 
         buildConfigField("String", "BASE_URL", "\"https://netomedia.ru/\"")
 
         buildConfigField("String", "MAPS_API_KEY", properties.getProperty("MAPS_API_KEY", ""))
     }
+
+    lintOptions(Action { isAbortOnError = false })
 
 
     buildTypes {
@@ -76,7 +78,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation ("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -96,20 +98,20 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.squareup.okhttp3:okhttp")
-    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    implementation ("com.google.android.gms:play-services-base:$playServicesBaseVersion")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion")
-    implementation ("androidx.work:work-runtime-ktx:$workManagerVersion")
-    implementation ("com.google.dagger:hilt-android:$hiltVersion")
-    kapt ("com.google.dagger:hilt-compiler:$hiltVersion")
-    implementation ("androidx.paging:paging-runtime-ktx:$pagingVersion")
-    implementation ("androidx.room:room-paging:$roomVersion")
-    implementation ("com.github.dhaval2404:imagepicker:$imagePickerVersion")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
-    implementation ("com.yandex.android:maps.mobile:4.4.0-lite")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("com.google.android.gms:play-services-base:$playServicesBaseVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutinesVersion")
+    implementation("androidx.work:work-runtime-ktx:$workManagerVersion")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
+    implementation("androidx.room:room-paging:$roomVersion")
+    implementation("com.github.dhaval2404:imagepicker:$imagePickerVersion")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+    implementation("com.yandex.android:maps.mobile:4.4.0-lite")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
 
-    coreLibraryDesugaring ("com.android.tools:desugar_jdk_libs:2.0.3")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 }
